@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#080e18">
+    <title>IGNIS | Spacecraft Fire Safety Intelligence</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+<div class="app-shell">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">🔥</div>
+            <div>
+                <h1>IGNIS<span>.</span></h1>
+                <small>FIRE SAFETY INTELLIGENCE</small>
+            </div>
+        </div>
+
+        <div class="nav-label">WORKSPACE</div>
+
+        <nav>
+            <a href="#overview" class="nav-item active">
+                <span>◫</span> Overview
+            </a>
+            <a href="#analytics" class="nav-item">
+                <span>⌁</span> Sensor Analytics
+            </a>
+            <a href="#ignition" class="nav-item">
+                <span>◉</span> Ignition Timeline
+            </a>
+            <a href="#intelligence" class="nav-item">
+                <span>✧</span> Intelligence
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="source-status">
+                <span class="status-dot"></span>
+                <div>
+                    <strong>DATA ENGINE</strong>
+                    <small>Flask API connected</small>
+                </div>
+            </div>
+            <div class="sidebar-footer">IGNIS · RESEARCH PROTOTYPE<br>NASA PSI DATA SOURCE</div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+
+        <header class="topbar">
+            <div>
+                <div class="breadcrumb">WORKSPACE / INVESTIGATIONS / <span>PSI-98</span></div>
+                <h2>Investigation Overview</h2>
+            </div>
+            <div class="topbar-right">
+                <span class="live-indicator"><i></i> LIVE DATA</span>
+                <span class="top-date" id="currentDate">14 NOV 2026</span>
+            </div>
+        </header>
+
+        <section class="hero" id="overview">
+            <div class="hero-content">
+                <div class="eyebrow"><span class="eyebrow-line"></span> NASA PHYSICAL SCIENCES INFORMATICS</div>
+                <h1>Understanding fire.<br><span>Protecting exploration.</span></h1>
+                <p>
+                    Turning microgravity combustion research into actionable
+                    spacecraft fire-safety insights.
+                </p>
+                <div class="hero-tags">
+                    <span>PSI-98</span>
+                    <span>SAFFIRE-I</span>
+                    <span>SAMPLE 2</span>
+                    <span>MICROGRAVITY</span>
+                </div>
+            </div>
+            <div class="hero-graphic">
+                <div class="orbit orbit-one"></div>
+                <div class="orbit orbit-two"></div>
+                <div class="orbit-core">🔥</div>
+                <div class="orbit-label">COMBUSTION<br>SCIENCE</div>
+            </div>
+        </section>
+
+        <div id="errorMessage" class="error-message hidden"></div>
+
+        <section class="section-block">
+            <div class="section-heading">
+                <div>
+                    <div class="section-kicker">01 / DATA SNAPSHOT</div>
+                    <h3>Telemetry at a glance</h3>
+                </div>
+                <span class="section-note">CALCULATED FROM SOURCE DATA</span>
+            </div>
+
+            <div class="metric-grid">
+                <article class="metric-card accent-orange">
+                    <div class="metric-top"><span>PEAK PLUME TEMPERATURE</span><span>◈</span></div>
+                    <div class="metric-value" id="peakTemp">--</div>
+                    <div class="metric-bottom" id="peakSensor">Loading sensor data</div>
+                </article>
+
+                <article class="metric-card accent-blue">
+                    <div class="metric-top"><span>IGNITION ACTIVATION</span><span>◉</span></div>
+                    <div class="metric-value" id="ignitionDuration">--</div>
+                    <div class="metric-bottom" id="ignitionPeriod">Electrical control enabled</div>
+                </article>
+
+                <article class="metric-card accent-purple">
+                    <div class="metric-top"><span>TIMESTAMPED RECORDS</span><span>▤</span></div>
+                    <div class="metric-value" id="recordCount">--</div>
+                    <div class="metric-bottom" id="samplingRate">Telemetry records</div>
+                </article>
+
+                <article class="metric-card accent-green">
+                    <div class="metric-top"><span>DATA CHANNELS</span><span>⌘</span></div>
+                    <div class="metric-value" id="channelCount">--</div>
+                    <div class="metric-bottom">Available workbook columns</div>
+                </article>
+            </div>
+        </section>
+
+        <section class="section-block" id="analytics">
+            <div class="section-heading">
+                <div>
+                    <div class="section-kicker">02 / SENSOR ANALYTICS</div>
+                    <h3>Thermal behaviour</h3>
+                </div>
+                <span class="section-note">60–150 SECONDS · °C</span>
+            </div>
+
+            <div class="panel chart-panel">
+                <div class="panel-heading">
+                    <div>
+                        <h4>Plume temperature telemetry</h4>
+                        <p>Six thermocouple channels · Sample 2</p>
+                    </div>
+                    <span class="chart-badge">TIME SERIES</span>
+                </div>
+                <div class="chart-wrap large-chart">
+                    <canvas id="temperatureChart"></canvas>
+                </div>
+                <div class="chart-legend-note">
+                    Select sensor labels in the chart legend to show or hide individual channels.
+                </div>
+            </div>
+
+            <div class="two-column">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h4>Sensor peak comparison</h4>
+                            <p>Peak temperature within analysis window</p>
+                        </div>
+                    </div>
+                    <div class="chart-wrap medium-chart">
+                        <canvas id="sensorChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h4>TC3 threshold analysis</h4>
+                            <p>Cumulative sampled time above threshold</p>
+                        </div>
+                    </div>
+                    <div class="threshold-list" id="thresholdList">
+                        <div class="loading-state">Loading threshold analysis...</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-block" id="ignition">
+            <div class="section-heading">
+                <div>
+                    <div class="section-kicker">03 / EVENT ANALYSIS</div>
+                    <h3>Ignition timeline</h3>
+                </div>
+                <span class="section-note">ELECTRICAL CONTROL SIGNAL</span>
+            </div>
+
+            <div class="panel timeline-panel">
+                <div class="timeline-track">
+                    <div class="timeline-event">
+                        <div class="timeline-marker marker-muted"></div>
+                        <div class="timeline-time" id="preIgnitionTime">--</div>
+                        <h4>Pre-ignition</h4>
+                        <p>Baseline observation period</p>
+                    </div>
+                    <div class="timeline-event">
+                        <div class="timeline-marker marker-orange"></div>
+                        <div class="timeline-time" id="ignitionStart">--</div>
+                        <h4>Igniter enabled</h4>
+                        <p>Electrical ignition control activated</p>
+                    </div>
+                    <div class="timeline-event">
+                        <div class="timeline-marker marker-blue"></div>
+                        <div class="timeline-time" id="ignitionEnd">--</div>
+                        <h4>Igniter disabled</h4>
+                        <p>Thermal response continues after activation</p>
+                    </div>
+                    <div class="timeline-event">
+                        <div class="timeline-marker marker-red"></div>
+                        <div class="timeline-time" id="peakTime">--</div>
+                        <h4>TC3 peak</h4>
+                        <p>Highest TC3 reading in analysis window</p>
+                    </div>
+                </div>
+                <div class="timeline-disclaimer">
+                    Igniter control activation is not proof of flame establishment or total combustion duration.
+                </div>
+            </div>
+        </section>
+
+        <section class="section-block" id="intelligence">
+            <div class="section-heading">
+                <div>
+                    <div class="section-kicker">04 / SCIENTIFIC INTERPRETATION</div>
+                    <h3>Intelligence insights</h3>
+                </div>
+                <span class="section-note">EVIDENCE-BASED</span>
+            </div>
+
+            <div class="insight-grid">
+                <article class="insight-card insight-featured">
+                    <div class="insight-icon">⌁</div>
+                    <div class="insight-type">THERMAL RESPONSE</div>
+                    <h4>Localised temperature elevation</h4>
+                    <p id="thermalInsight">Analysing thermocouple response...</p>
+                    <span class="evidence-label">EVIDENCE · PLUME THERMOCOUPLES</span>
+                </article>
+
+                <article class="insight-card">
+                    <div class="insight-icon">◉</div>
+                    <div class="insight-type">IGNITION ANALYSIS</div>
+                    <h4>Post-activation response</h4>
+                    <p id="ignitionInsight">Analysing ignition timeline...</p>
+                    <span class="evidence-label">EVIDENCE · IGNITER CONTROL + TC3</span>
+                </article>
+
+                <article class="insight-card">
+                    <div class="insight-icon">▤</div>
+                    <div class="insight-type">DATA QUALITY</div>
+                    <h4>Telemetry boundaries</h4>
+                    <p id="dataInsight">Analysing dataset completeness...</p>
+                    <span class="evidence-label">EVIDENCE · TIMESTAMP COVERAGE</span>
+                </article>
+            </div>
+        </section>
+
+        <section class="section-block source-section">
+            <div class="section-heading">
+                <div>
+                    <div class="section-kicker">05 / RESEARCH TRACEABILITY</div>
+                    <h3>Investigation source</h3>
+                </div>
+            </div>
+            <div class="source-card">
+                <div class="source-symbol">NASA</div>
+                <div class="source-details">
+                    <h4>Spacecraft Fire Safety Experiment-I</h4>
+                    <p>NASA Physical Sciences Informatics · PSI-98 · SAFFIRE-I</p>
+                    <span>Investigation DOI: 10.60555/0t15-1z43</span>
+                </div>
+                <a href="https://psi.nasa.gov/physci/repo/data/investigations/PSI-98" target="_blank" rel="noopener noreferrer">VIEW SOURCE ↗</a>
+            </div>
+        </section>
+
+        <footer>
+            <div><strong>IGNIS</strong> · SPACECRAFT FIRE SAFETY INTELLIGENCE</div>
+            <div>RESEARCH PROTOTYPE · NASA PSI DATA</div>
+        </footer>
+
+    </main>
+</div>
+
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
