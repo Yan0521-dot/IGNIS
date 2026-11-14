@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IGNIS | {{ investigation.name }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="app-shell">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">🔥</div>
+            <div>
+                <h1>IGNIS<span>.</span></h1>
+                <small>FIRE SAFETY INTELLIGENCE</small>
+            </div>
+        </div>
+
+        <div class="nav-label">WORKSPACE</div>
+        <nav>
+            <a href="/" class="nav-item"><span>◫</span> Overview</a>
+            <a href="/investigations" class="nav-item active"><span>⌕</span> Investigations</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="source-status">
+                <span class="status-dot"></span>
+                <div><strong>DATA ENGINE</strong><small>Flask API connected</small></div>
+            </div>
+            <div class="sidebar-footer">IGNIS · RESEARCH PROTOTYPE<br>NASA PSI DATA SOURCE</div>
+        </div>
+    </aside>
+
+    <main class="main-content explorer-main">
+
+        <header class="topbar">
+            <div>
+                <div class="breadcrumb">
+                    <a href="/investigations">INVESTIGATIONS</a>
+                    / <span>{{ investigation.id }}</span>
+                </div>
+                <h2>Investigation Details</h2>
+            </div>
+            <a class="back-link" href="/investigations">← All investigations</a>
+        </header>
+
+        <section class="detail-hero">
+            <div class="detail-topline">
+                <span class="psi-id">{{ investigation.id }}</span>
+                <span class="pillar-tag">{{ investigation.pillar }}</span>
+            </div>
+
+            <div class="eyebrow">
+                <span class="eyebrow-line"></span>
+                NASA PHYSICAL SCIENCES INFORMATICS
+            </div>
+
+            <h1>{{ investigation.name }}</h1>
+            <h2>{{ investigation.full_name }}</h2>
+            <p>{{ investigation.description }}</p>
+
+            <a class="source-button" href="{{ investigation.url }}" target="_blank" rel="noopener noreferrer">
+                VIEW NASA PSI RECORD ↗
+            </a>
+{% if investigation.id == "PSI-98" %}
+<a
+    class="source-button analysis-source-button"
+    href="/?investigation=PSI-98#analytics">
+    OPEN DATA ANALYSIS →
+</a>
+{% endif %}
+        </section>
+
+        <section class="detail-section">
+            <div class="section-kicker">01 / INVESTIGATION PROFILE</div>
+            <h3>Research overview</h3>
+
+            <div class="detail-grid">
+                <article class="detail-card">
+                    <span>INVESTIGATION ID</span>
+                    <strong>{{ investigation.id }}</strong>
+                </article>
+                <article class="detail-card">
+                    <span>PROJECT TYPE</span>
+                    <strong>{{ investigation.type }}</strong>
+                </article>
+                <article class="detail-card">
+                    <span>PLATFORM</span>
+                    <strong>{{ investigation.platform }}</strong>
+                </article>
+                <article class="detail-card">
+                    <span>IGNIS CATEGORY</span>
+                    <strong>{{ investigation.pillar }}</strong>
+                </article>
+            </div>
+        </section>
+
+        <section class="detail-section">
+            <div class="section-kicker">02 / SCIENTIFIC FOCUS</div>
+            <h3>What does this investigation study?</h3>
+
+            <div class="detail-card focus-card">
+                <span>RESEARCH FOCUS</span>
+                <h4>{{ investigation.focus }}</h4>
+                <p>{{ investigation.description }}</p>
+            </div>
+        </section>
+
+               {% if investigation.experimental_details %}
+        <section class="detail-section">
+            <div class="section-kicker">03 / EXPERIMENTAL CONDITIONS</div>
+            <h3>Inside the experiment</h3>
+
+            <div class="detail-grid">
+                {% for detail in investigation.experimental_details %}
+                <article class="detail-card">
+                    <span>{{ detail.label }}</span>
+                    <strong>{{ detail.value }}</strong>
+                </article>
+                {% endfor %}
+            </div>
+
+            <p class="section-note">
+                Source: NASA PSI-25 investigation metadata.
+                Experimental conditions are reported from the original
+                study description.
+            </p>
+        </section>
+        {% endif %}
+
+        <section class="detail-section">
+            <div class="section-kicker">03 / FIRE SAFETY RELEVANCE</div>
+            <h3>Why does it matter?</h3>
+
+            <div class="detail-card focus-card">
+                <p>{{ investigation.relevance }}</p>
+            </div>
+        </section>
+
+{% if investigation.experimental_details %}
+<section class="detail-section">
+    <div class="section-kicker">04 / EXPERIMENTAL CONDITIONS</div>
+    <h3>Inside the experiment</h3>
+
+    <div class="detail-grid">
+        {% for detail in investigation.experimental_details %}
+        <article class="detail-card">
+            <span>{{ detail.label }}</span>
+            <strong>{{ detail.value }}</strong>
+        </article>
+        {% endfor %}
+    </div>
+
+    <p class="section-note">
+        Source: NASA PSI-25 investigation metadata.
+    </p>
+</section>
+{% endif %}
+        <section class="detail-section">
+            <div class="section-kicker">
+             {{ "05" if investigation.experimental_details else "04" }} / RESEARCH TRACEABILITY
+</div>
+            <h3>Source and citation</h3>
+
+            <div class="detail-card source-detail">
+                <div>
+                    <span>NASA PSI INVESTIGATION RECORD</span>
+                    <strong>{{ investigation.id }} · {{ investigation.name }}</strong>
+                    <p>DOI: {{ investigation.doi }}</p>
+                    <small>{{ investigation.source_status }}</small>
+                </div>
+                <a href="{{ investigation.url }}" target="_blank" rel="noopener noreferrer">
+                    OPEN NASA RECORD ↗
+                </a>
+            </div>
+        </section>
+
+        <footer>
+            <div><strong>IGNIS</strong> · SPACECRAFT FIRE SAFETY INTELLIGENCE</div>
+            <div>RESEARCH PROTOTYPE · NASA PSI DATA</div>
+        </footer>
+
+    </main>
+</div>
+</body>
+</html>

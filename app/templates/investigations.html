@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#080e18">
+    <title>IGNIS | Investigation Explorer</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">🔥</div>
+            <div>
+                <h1>IGNIS<span>.</span></h1>
+                <small>FIRE SAFETY INTELLIGENCE</small>
+            </div>
+        </div>
+
+        <div class="nav-label">WORKSPACE</div>
+
+        <nav>
+            <a href="/" class="nav-item">
+                <span>◫</span> Overview
+            </a>
+            <a href="/investigations" class="nav-item active">
+                <span>⌕</span> Investigations
+            </a>
+            <a href="/comparison" class="nav-item">
+    <span>⇄</span> Scientific Comparison
+</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="source-status">
+                <span class="status-dot"></span>
+                <div>
+                    <strong>DATA ENGINE</strong>
+                    <small>Flask API connected</small>
+                </div>
+            </div>
+            <div class="sidebar-footer">
+                IGNIS · RESEARCH PROTOTYPE<br>
+                NASA PSI DATA SOURCE
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content explorer-main">
+
+        <header class="topbar">
+            <div>
+                <div class="breadcrumb">
+                    WORKSPACE / <span>INVESTIGATION EXPLORER</span>
+                </div>
+                <h2>Investigation Explorer</h2>
+            </div>
+            <div class="topbar-right">
+                <span class="live-indicator"><i></i> DATA CONNECTED</span>
+            </div>
+        </header>
+
+        <section class="explorer-hero">
+            <div class="eyebrow">
+                <span class="eyebrow-line"></span>
+                NASA PHYSICAL SCIENCES INFORMATICS
+            </div>
+
+            <h1>Explore the science<br><span>behind spacecraft fire safety.</span></h1>
+
+            <p>
+                Discover microgravity combustion investigations,
+                examine their research objectives and explore how
+                their findings contribute to spacecraft fire safety.
+            </p>
+
+            <div class="explorer-stats">
+                <div>
+                    <strong id="totalInvestigations">--</strong>
+                    <span>INVESTIGATIONS</span>
+                </div>
+                <div>
+                    <strong>03</strong>
+                    <span>SAFETY PILLARS</span>
+                </div>
+                <div>
+                    <strong>NASA PSI</strong>
+                    <span>PRIMARY SOURCE</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="explorer-section">
+            <div class="section-heading">
+                <div>
+                    <div class="section-kicker">01 / RESEARCH CATALOGUE</div>
+                    <h3>Browse investigations</h3>
+                </div>
+                <span class="section-note">NASA PSI REFERENCES</span>
+            </div>
+
+            <div class="explorer-controls">
+                <div class="search-box">
+                    <span>⌕</span>
+                    <input
+                        type="search"
+                        id="searchInput"
+                        placeholder="Search by name, PSI ID or research focus..."
+                    >
+                </div>
+
+                <div class="filter-group" id="filterGroup">
+                    <button class="filter-btn active" data-filter="All">All</button>
+                    <button class="filter-btn" data-filter="Prevention">Prevention</button>
+                    <button class="filter-btn" data-filter="Detection">Detection</button>
+                    <button class="filter-btn" data-filter="Suppression">Suppression</button>
+                    <button class="filter-btn" data-filter="Supporting Research">Supporting Research</button>
+                </div>
+            </div>
+
+            <div class="results-line">
+                <span id="resultsCount">Loading investigations...</span>
+                <span>SELECT A RECORD TO EXPLORE</span>
+            </div>
+
+            <div class="investigation-grid" id="investigationGrid">
+                <div class="loading-card">Loading NASA investigation catalogue...</div>
+            </div>
+
+            <div class="empty-state hidden" id="emptyState">
+                <div>⌕</div>
+                <h3>No investigations found</h3>
+                <p>Try another search term or research category.</p>
+            </div>
+        </section>
+
+        <section class="classification-note">
+            <div class="note-icon">ⓘ</div>
+            <div>
+                <strong>About IGNIS classifications</strong>
+                <p>
+                    Prevention, Detection, Suppression and Supporting Research
+                    are IGNIS-developed organisational categories. They are
+                    not official NASA PSI classifications. Each investigation's
+                    original research description remains available through
+                    its NASA source record.
+                </p>
+            </div>
+        </section>
+
+        <footer>
+            <div><strong>IGNIS</strong> · SPACECRAFT FIRE SAFETY INTELLIGENCE</div>
+            <div>RESEARCH PROTOTYPE · NASA PSI DATA</div>
+        </footer>
+
+    </main>
+</div>
+
+<script src="{{ url_for('static', filename='js/investigations.js') }}"></script>
+</body>
+</html>

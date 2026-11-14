@@ -1,11 +1,13 @@
-
+<section class="section-block source-section">
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#080e18">
-    <title>IGNIS | Spacecraft Fire Safety Intelligence</title>
+    <title>
+    IGNIS | {{ "SAFFIRE-I Scientific Analysis" if analysis_mode else "Spacecraft Fire Safety Intelligence" }}
+</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -28,9 +30,17 @@
 
         <div class="nav-label">WORKSPACE</div>
 
+
+
         <nav>
             <a href="#overview" class="nav-item active">
                 <span>◫</span> Overview
+            </a>
+            <a href="#conditions" class="nav-item">
+                <span>⚙</span> Experimental Conditions
+            </a>
+            <a href="#instrumentation" class="nav-item">
+                <span>⌘</span> Instrumentation
             </a>
             <a href="#analytics" class="nav-item">
                 <span>⌁</span> Sensor Analytics
@@ -41,7 +51,23 @@
             <a href="#intelligence" class="nav-item">
                 <span>✧</span> Intelligence
             </a>
+
+            <a href="/investigations" class="nav-item">
+                <span>⌕</span> Investigation Explorer
+            </a>
+
+            <a href="/comparison" class="nav-item">
+    <span>⇄</span> Scientific Comparison
+</a>
+
+            {% if analysis_mode %}
+            <a href="/investigations/saffire-i" class="nav-item">
+                <span>←</span> SAFFIRE-I Details
+            </a>
+            {% endif %}
         </nav>
+
+
 
         <div class="sidebar-bottom">
             <div class="source-status">
@@ -59,8 +85,19 @@
 
         <header class="topbar">
             <div>
-                <div class="breadcrumb">WORKSPACE / INVESTIGATIONS / <span>PSI-98</span></div>
-                <h2>Investigation Overview</h2>
+              {% if analysis_mode %}
+<div class="breadcrumb">
+    <a href="/investigations">INVESTIGATIONS</a> /
+    <a href="/investigations/saffire-i">SAFFIRE-I</a> /
+    <span>SCIENTIFIC ANALYSIS</span>
+</div>
+<h2>SAFFIRE-I Scientific Analysis</h2>
+{% else %}
+<div class="breadcrumb">
+    WORKSPACE / INVESTIGATIONS / <span>PSI-98</span>
+</div>
+<h2>Investigation Overview</h2>
+{% endif %}
             </div>
             <div class="topbar-right">
                 <span class="live-indicator"><i></i> LIVE DATA</span>
@@ -71,7 +108,11 @@
         <section class="hero" id="overview">
             <div class="hero-content">
                 <div class="eyebrow"><span class="eyebrow-line"></span> NASA PHYSICAL SCIENCES INFORMATICS</div>
-                <h1>Understanding fire.<br><span>Protecting exploration.</span></h1>
+                 {% if analysis_mode %}
+<h1>Scientific data.<br><span>Evidence-driven insights.</span></h1>
+{% else %}
+<h1>Understanding fire.<br><span>Protecting exploration.</span></h1>
+{% endif %}
                 <p>
                     Turning microgravity combustion research into actionable
                     spacecraft fire-safety insights.
@@ -129,62 +170,263 @@
             </div>
         </section>
 
-        <section class="section-block" id="analytics">
+        <!-- EXPERIMENTAL CONDITIONS -->
+        <section class="section-block" id="conditions">
+
             <div class="section-heading">
                 <div>
-                    <div class="section-kicker">02 / SENSOR ANALYTICS</div>
-                    <h3>Thermal behaviour</h3>
+                    <div class="section-kicker">02 / EXPERIMENTAL PROFILE</div>
+                    <h3>Experimental conditions</h3>
                 </div>
-                <span class="section-note">60–150 SECONDS · °C</span>
+                <span class="section-note">NASA PSI-98 · SAMPLE 2</span>
             </div>
 
-            <div class="panel chart-panel">
-                <div class="panel-heading">
-                    <div>
-                        <h4>Plume temperature telemetry</h4>
-                        <p>Six thermocouple channels · Sample 2</p>
-                    </div>
-                    <span class="chart-badge">TIME SERIES</span>
-                </div>
-                <div class="chart-wrap large-chart">
-                    <canvas id="temperatureChart"></canvas>
-                </div>
-                <div class="chart-legend-note">
-                    Select sensor labels in the chart legend to show or hide individual channels.
-                </div>
+            <div class="conditions-grid">
+
+                <article class="condition-card">
+                    <span class="condition-label">TEST MATERIAL</span>
+                    <h4>SIBAL Composite Fabric</h4>
+                    <p>75% cotton · 25% fiberglass</p>
+                </article>
+
+                <article class="condition-card">
+                    <span class="condition-label">AIRFLOW VELOCITY</span>
+                    <h4>20 cm/s</h4>
+                    <p>Opposed-flow configuration</p>
+                </article>
+
+                <article class="condition-card">
+                    <span class="condition-label">OXYGEN CONCENTRATION</span>
+                    <h4>~21.5%</h4>
+                    <p>Reported experimental condition</p>
+                </article>
+
+                <article class="condition-card">
+                    <span class="condition-label">IGNITION POWER</span>
+                    <h4>182 W</h4>
+                    <p>Electrical igniter power</p>
+                </article>
+
+                <article class="condition-card">
+                    <span class="condition-label">IGNITION TIME</span>
+                    <h4>8 seconds</h4>
+                    <p>Reported ignition activation period</p>
+                </article>
+
+                <article class="condition-card">
+                    <span class="condition-label">BURN TIME</span>
+                    <h4>70 seconds</h4>
+                    <p>Metadata-reported Sample 2 value</p>
+                </article>
+
             </div>
 
-            <div class="two-column">
-                <div class="panel">
-                    <div class="panel-heading">
-                        <div>
-                            <h4>Sensor peak comparison</h4>
-                            <p>Peak temperature within analysis window</p>
-                        </div>
-                    </div>
-                    <div class="chart-wrap medium-chart">
-                        <canvas id="sensorChart"></canvas>
-                    </div>
-                </div>
-
-                <div class="panel">
-                    <div class="panel-heading">
-                        <div>
-                            <h4>TC3 threshold analysis</h4>
-                            <p>Cumulative sampled time above threshold</p>
-                        </div>
-                    </div>
-                    <div class="threshold-list" id="thresholdList">
-                        <div class="loading-state">Loading threshold analysis...</div>
-                    </div>
-                </div>
+            <div class="conditions-note">
+                <strong>DATA INTERPRETATION NOTE</strong>
+                <p>
+                    These values describe the reported experimental
+                    conditions for SAFFIRE-I Sample 2. They are
+                    metadata-reported values and should not be confused
+                    with measurements calculated from the telemetry.
+                </p>
             </div>
+
         </section>
+
+
+        <!-- SENSOR AND INSTRUMENTATION -->
+        <section class="section-block" id="instrumentation">
+
+            <div class="section-heading">
+                <div>
+                    <div class="section-kicker">03 / INSTRUMENTATION</div>
+                    <h3>Sensor & instrumentation</h3>
+                </div>
+                <span class="section-note">73 WORKBOOK CHANNELS</span>
+            </div>
+
+            <div class="instrument-grid">
+
+                <article class="instrument-card">
+                    <div class="instrument-icon">🌡️</div>
+                    <span class="instrument-type">TEMPERATURE</span>
+                    <h4>Thermocouples</h4>
+                    <p>Monitor thermal behaviour around the flame plume and test material.</p>
+                    <div class="instrument-channels">
+                        <strong>12 CHANNELS</strong>
+                        <span>TC1–TC6: Plume temperature</span>
+                        <span>TC7–TC12: Sample temperature</span>
+                    </div>
+                </article>
+
+                <article class="instrument-card">
+                    <div class="instrument-icon">📡</div>
+                    <span class="instrument-type">THERMAL RADIATION</span>
+                    <h4>Radiometers</h4>
+                    <p>Record radiometer measurements at multiple instrument positions.</p>
+                    <div class="instrument-channels">
+                        <strong>4 MEASUREMENT CHANNELS</strong>
+                        <span>Radiometer 1–4</span>
+                        <span>Associated position labels in workbook</span>
+                    </div>
+                </article>
+
+                <article class="instrument-card">
+                    <div class="instrument-icon">🎥</div>
+                    <span class="instrument-type">VISUAL OBSERVATION</span>
+                    <h4>Imaging system</h4>
+                    <p>Camera instrumentation supports visual observation of the experiment.</p>
+                    <div class="instrument-channels">
+                        <strong>2 CAMERA SYSTEMS</strong>
+                        <span>Camera 1 and Camera 2 triggers</span>
+                        <span>Camera power-control channels</span>
+                    </div>
+                    <div class="instrument-note">
+                        Camera image pixels are not included in this calibrated workbook.
+                    </div>
+                </article>
+
+                <article class="instrument-card">
+                    <div class="instrument-icon">🫧</div>
+                    <span class="instrument-type">GAS COMPOSITION</span>
+                    <h4>Oxygen & CO₂</h4>
+                    <p>Track the recorded oxygen and carbon dioxide concentrations.</p>
+                    <div class="instrument-channels">
+                        <strong>2 MEASUREMENT CHANNELS</strong>
+                        <span>O₂</span>
+                        <span>CO₂</span>
+                    </div>
+                </article>
+
+                <article class="instrument-card">
+                    <div class="instrument-icon">💨</div>
+                    <span class="instrument-type">AIRFLOW</span>
+                    <h4>Anemometers</h4>
+                    <p>Record airflow measurements within the experiment test section.</p>
+                    <div class="instrument-channels">
+                        <strong>2 MEASUREMENT CHANNELS</strong>
+                        <span>Anemometer 1</span>
+                        <span>Anemometer 2</span>
+                    </div>
+                </article>
+
+                <article class="instrument-card">
+                    <div class="instrument-icon">📊</div>
+                    <span class="instrument-type">ENVIRONMENTAL</span>
+                    <h4>Pressure & humidity</h4>
+                    <p>Monitor environmental conditions recorded during the experiment.</p>
+                    <div class="instrument-channels">
+                        <strong>2 MEASUREMENT CHANNELS</strong>
+                        <span>Ambient Pressure</span>
+                        <span>Humidity</span>
+                    </div>
+                </article>
+
+            </div>
+
+            <div class="instrument-footer">
+                <strong>DATASET STRUCTURE</strong>
+                <p>
+                    The 73 workbook columns include timestamp fields,
+                    scientific measurements, instrument readings and
+                    equipment control signals. Not every column represents
+                    an independent sensor measurement.
+                </p>
+            </div>
+
+        </section>
+
+
+
+<section class="section-block" id="analytics">
+    <div class="section-heading">
+        <div>
+            <div class="section-kicker">04 / SENSOR ANALYTICS</div>
+            <h3>Thermal behaviour</h3>
+        </div>
+        <span class="section-note">60–150 SECONDS · °C</span>
+    </div>
+
+    <div class="panel chart-panel">
+        <div class="panel-heading">
+            <div>
+                <h4>Thermal sensor comparison</h4>
+                <p>12 thermocouple channels · SAFFIRE-I Sample 2</p>
+            </div>
+            <span class="chart-badge">INTERACTIVE ANALYSIS</span>
+        </div>
+
+        <div class="sensor-controls">
+            <div class="sensor-control-group">
+                <span class="control-label">SENSOR GROUP</span>
+                <div class="sensor-group-buttons">
+                    <button class="sensor-group-btn active" data-group="plume">
+                        Plume · TC1–TC6
+                    </button>
+                    <button class="sensor-group-btn" data-group="sample">
+                        Sample · TC7–TC12
+                    </button>
+                    <button class="sensor-group-btn" data-group="all">
+                        All sensors
+                    </button>
+                </div>
+            </div>
+
+            <div class="sensor-control-group">
+                <div class="sensor-selection-heading">
+                    <span class="control-label">SELECT THERMOCOUPLES</span>
+                    <button id="resetSensors" class="sensor-reset-btn" type="button">
+                        Reset selection
+                    </button>
+                </div>
+                <div id="sensorCheckboxes" class="sensor-checkboxes">
+                    <span class="loading-state">Loading sensors...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-wrap large-chart">
+            <canvas id="temperatureChart"></canvas>
+        </div>
+
+        <div class="chart-legend-note">
+            Select or deselect thermocouples to compare their temperature behaviour.
+            All readings are from the calibrated telemetry dataset.
+        </div>
+    </div>
+
+    <div class="two-column">
+        <div class="panel">
+            <div class="panel-heading">
+                <div>
+                    <h4>Sensor peak comparison</h4>
+                    <p>Peak temperature within analysis window</p>
+                </div>
+            </div>
+            <div class="chart-wrap medium-chart">
+                <canvas id="sensorChart"></canvas>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-heading">
+                <div>
+                    <h4>TC3 threshold analysis</h4>
+                    <p>Cumulative sampled time above threshold</p>
+                </div>
+            </div>
+            <div class="threshold-list" id="thresholdList">
+                <div class="loading-state">Loading threshold analysis...</div>
+            </div>
+        </div>
+    </div>
+</section>
+
 
         <section class="section-block" id="ignition">
             <div class="section-heading">
                 <div>
-                    <div class="section-kicker">03 / EVENT ANALYSIS</div>
+                    <div class="section-kicker">05 / EVENT ANALYSIS</div>
                     <h3>Ignition timeline</h3>
                 </div>
                 <span class="section-note">ELECTRICAL CONTROL SIGNAL</span>
@@ -226,7 +468,7 @@
         <section class="section-block" id="intelligence">
             <div class="section-heading">
                 <div>
-                    <div class="section-kicker">04 / SCIENTIFIC INTERPRETATION</div>
+                    <div class="section-kicker">06 / SCIENTIFIC INTERPRETATION</div>
                     <h3>Intelligence insights</h3>
                 </div>
                 <span class="section-note">EVIDENCE-BASED</span>
@@ -259,10 +501,114 @@
             </div>
         </section>
 
+
+        <section class="section-block" id="fire-safety-intelligence">
+
+            <div class="section-heading">
+                <div>
+                    <div class="section-kicker">07 / FIRE SAFETY RESEARCH</div>
+                    <h3>Fire Safety Research Intelligence</h3>
+                </div>
+                <span class="section-note">NASA PSI RESEARCH CATALOGUE</span>
+            </div>
+
+            <p class="intelligence-intro">
+                Explore how microgravity combustion investigations
+                and supporting research contribute to spacecraft
+                fire prevention, detection and suppression.
+            </p>
+
+            <div class="intelligence-summary">
+                <div>
+                    <strong id="intelligenceTotal">--</strong>
+                    <span>INVESTIGATIONS</span>
+                </div>
+                <div>
+                    <strong id="intelligencePillars">--</strong>
+                    <span>RESEARCH PILLARS</span>
+                </div>
+                <div>
+                    <strong>NASA PSI</strong>
+                    <span>PRIMARY SOURCE</span>
+                </div>
+            </div>
+
+            <div id="fireSafetyPillars" class="fire-safety-grid">
+                <div class="loading-state">
+                    Loading fire-safety research catalogue...
+                </div>
+            </div>
+
+            <div class="classification-note">
+                <div class="note-icon">ⓘ</div>
+                <div>
+                    <strong>Research classification notice</strong>
+                    <p id="intelligenceClassification">
+                        IGNIS-developed categories. These are not
+                        official NASA PSI classifications.
+                    </p>
+                </div>
+            </div>
+
+        </section>
+
+
+<section class="section-block" id="evidence-availability">
+
+    <div class="section-heading">
+        <div>
+            <div class="section-kicker">08 / SCIENTIFIC EVIDENCE</div>
+            <h3>Evidence Availability</h3>
+        </div>
+        <span class="section-note">LOCAL DATASET INVENTORY</span>
+    </div>
+
+    <p class="intelligence-intro">
+        Examine the evidence currently integrated into IGNIS.
+        Each investigation is classified according to its
+        locally available files and numerical data.
+    </p>
+
+    <div class="intelligence-summary">
+        <div>
+            <strong id="evidenceTelemetry">--</strong>
+            <span>WITH NUMERICAL TELEMETRY</span>
+        </div>
+        <div>
+            <strong id="evidenceMetadata">--</strong>
+            <span>WITH LOCAL METADATA</span>
+        </div>
+        <div>
+            <strong id="evidenceSourceOnly">--</strong>
+            <span>SOURCE RECORD ONLY</span>
+        </div>
+    </div>
+
+    <div id="evidenceInvestigationList" class="evidence-list">
+        <div class="loading-state">
+            Checking local scientific evidence...
+        </div>
+    </div>
+
+    <div class="classification-note">
+        <div class="note-icon">ⓘ</div>
+        <div>
+            <strong>Evidence interpretation</strong>
+            <p id="evidenceClassification">
+                Evidence status describes locally available
+                files. NASA PSI source verification does not
+                establish local dataset availability.
+            </p>
+        </div>
+    </div>
+
+</section>
+
+
         <section class="section-block source-section">
             <div class="section-heading">
                 <div>
-                    <div class="section-kicker">05 / RESEARCH TRACEABILITY</div>
+                    <div class="section-kicker">09 / RESEARCH TRACEABILITY</div>
                     <h3>Investigation source</h3>
                 </div>
             </div>

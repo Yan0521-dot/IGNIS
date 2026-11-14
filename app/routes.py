@@ -3,6 +3,7 @@ from flask import Blueprint, jsonify, render_template
 from pathlib import Path
 import pandas as pd
 import json
+from app.investigations import INVESTIGATIONS
 
 main = Blueprint("main", __name__)
 
@@ -166,9 +167,11 @@ def dashboard_data():
             })
 
         # Downsample telemetry for browser charts
-        chart_columns = [
-            "Elapsed Time (s)"
-        ] + PLUME_SENSORS
+        chart_columns = (
+    ["Elapsed Time (s)"]
+    + PLUME_SENSORS
+    + SAMPLE_SENSORS
+)
 
         step = max(1, len(df) // 600)
 
@@ -235,3 +238,241 @@ def dashboard_data():
         return jsonify({
             "error": str(error)
         }), 500
+
+
+@main.route("/investigations")
+def investigations_page():
+    return render_template("investigations.html")
+
+
+@main.route("/investigations/<slug>")
+def investigation_detail(slug):
+    investigation = next(
+        (item for item in INVESTIGATIONS if item["slug"] == slug),
+        None
+    )
+
+    if investigation is None:
+        return render_template("404.html"), 404
+
+    return render_template(
+        "investigation_detail.html",
+        investigation=investigation
+    )
+
+
+@main.route("/api/investigations")
+def investigations_api():
+    return jsonify({
+        "total": len(INVESTIGATIONS),
+        "investigations": INVESTIGATIONS
+    })
+
+
+
+# =========================================
+# IGNIS FIRE SAFETY INTELLIGENCE API
+# =========================================
+
+@main.route("/api/fire-safety-intelligence")
+def fire_safety_intelligence():
+
+    pillar_descriptions = {
+        "Prevention": (
+            "Research into material flammability, ignition, "
+            "flame growth and flame spread."
+        ),
+        "Detection": (
+            "Research into smoke aerosols, particle behaviour "
+            "and spacecraft fire detection."
+        ),
+        "Suppression": (
+            "Research into flame extinction and the effectiveness "
+            "of gaseous fire suppressants."
+        ),
+        "Supporting Research": (
+            "Ground-based computational research supporting "
+            "the interpretation and modelling of combustion."
+        )
+    }
+
+    pillar_order = [
+        "Prevention",
+        "Detection",
+        "Suppression",
+        "Supporting Research"
+    ]
+
+    pillars = []
+
+    for pillar in pillar_order:
+
+        records = [
+            item for item in INVESTIGATIONS
+            if item["pillar"] == pillar
+        ]
+
+        investigations = []
+
+        for item in records:
+
+            investigations.append({
+                "id": item["id"],
+                "name": item["name"],
+                "full_name": item["full_name"],
+                "slug": item["slug"],
+                "focus": item["focus"],
+                "type": item["type"],
+                "platform": item["platform"],
+                "relevance": item["relevance"],
+                "url": item["url"],
+                "detail_url": f"/investigations/{item['slug']}"
+            })
+
+        pillars.append({
+            "name": pillar,
+            "description": pillar_descriptions[pillar],
+            "count": len(investigations),
+            "investigations": investigations
+        })
+
+    return jsonify({
+        "total_investigations": len(INVESTIGATIONS),
+        "total_pillars": len(pillars),
+        "pillars": pillars,
+        "classification_note": (
+            "These are IGNIS-developed research categories, "
+            "not official NASA classifications."
+        )
+    })
+
+# =========================================
+# IGNIS EVIDENCE AVAILABILITY API
+# =========================================
+
+@main.route("/api/evidence-availability")
+def evidence_availability():
+
+    evidence_files = {
+        "PSI-98": [
+            "datasets/PSI-98/metadata/i_Investigation.txt",
+            "datasets/PSI-98/metadata/s_PSI-98.txt",
+            "datasets/PSI-98/Saffire-I Sample 2 Sensor Data Complete TM graphs.xlsx"
+        ],
+        "PSI-25": [
+            "datasets/PSI-25/metadata/i_Investigation.txt"
+        ],
+        "PSI-101": [],
+        "PSI-69": [],
+        "PSI-62": []
+    }
+
+    results = []
+
+    for investigation in INVESTIGATIONS:
+
+        investigation_id = investigation["id"]
+
+        expected_files = evidence_files.get(
+            investigation_id, []
+        )
+
+        available_files = []
+
+        for relative_path in expected_files:
+
+            file_path = BASE_DIR / relative_path
+
+            if file_path.is_file():
+
+                available_files.append({
+                    "name": file_path.name,
+                    "path": relative_path,
+                    "size_bytes": file_path.stat().st_size
+                })
+
+        has_telemetry = any(
+            file["name"].lower().endswith((".xlsx", ".csv"))
+            for file in available_files
+        )
+
+        has_metadata = any(
+            file["name"] == "i_Investigation.txt"
+            for file in available_files
+        )
+
+        if has_telemetry:
+            evidence_level = "telemetry_and_metadata"
+            evidence_label = "Numerical telemetry + metadata"
+
+        elif has_metadata:
+            evidence_level = "metadata_only"
+            evidence_label = "Metadata only"
+
+        else:
+            evidence_level = "source_record_only"
+            evidence_label = "NASA PSI record only"
+
+        results.append({
+            "id": investigation_id,
+            "name": investigation["name"],
+            "pillar": investigation["pillar"],
+            "type": investigation["type"],
+            "doi": investigation.get("doi"),
+            "source_url": investigation["url"],
+            "source_status": investigation.get(
+                "source_status",
+                "Not verified"
+            ),
+            "source_verified": (
+                investigation.get("source_status")
+                == "NASA PSI record verified"
+            ),
+            "evidence_level": evidence_level,
+            "evidence_label": evidence_label,
+            "has_numerical_telemetry": has_telemetry,
+            "has_local_metadata": has_metadata,
+            "local_file_count": len(available_files),
+            "files": available_files
+        })
+
+    return jsonify({
+        "total_investigations": len(results),
+        "with_telemetry": sum(
+            item["has_numerical_telemetry"]
+            for item in results
+        ),
+        "with_local_metadata": sum(
+            item["has_local_metadata"]
+            for item in results
+        ),
+        "source_record_only": sum(
+            item["evidence_level"] == "source_record_only"
+            for item in results
+        ),
+        "investigations": results,
+        "classification_note": (
+            "Evidence availability reflects files currently "
+            "present in the IGNIS local dataset directory. "
+            "A verified NASA PSI source record does not mean "
+            "its numerical dataset has been downloaded or analysed."
+        )
+    })
+
+# =========================================
+# SAFFIRE-I DEDICATED DATA ANALYSIS
+# =========================================
+
+@main.route("/investigations/saffire-i/analysis")
+def saffire_analysis():
+    return render_template(
+        "index.html",
+        analysis_mode=True
+    )
+# =========================================
+# IGNIS SCIENTIFIC COMPARISON
+# =========================================
+
+@main.route("/comparison")
+def comparison_page():
+    return render_template("comparison.html")

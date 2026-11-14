@@ -1,0 +1,819 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#080e18">
+
+    <title>IGNIS | Scientific Comparison</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="app-shell">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">🔥</div>
+            <div>
+                <h1>IGNIS<span>.</span></h1>
+                <small>FIRE SAFETY INTELLIGENCE</small>
+            </div>
+        </div>
+
+        <div class="nav-label">WORKSPACE</div>
+
+        <nav>
+            <a href="/" class="nav-item">
+                <span>◫</span> Overview
+            </a>
+
+            <a href="/investigations" class="nav-item">
+                <span>⌕</span> Investigations
+            </a>
+
+            <a href="/comparison" class="nav-item active">
+                <span>⇄</span> Scientific Comparison
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="source-status">
+                <span class="status-dot"></span>
+                <div>
+                    <strong>DATA ENGINE</strong>
+                    <small>Flask API connected</small>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                IGNIS · RESEARCH PROTOTYPE<br>
+                NASA PSI DATA SOURCE
+            </div>
+        </div>
+
+    </aside>
+
+    <main class="main-content explorer-main">
+
+        <header class="topbar">
+            <div>
+                <div class="breadcrumb">
+                    WORKSPACE / <span>SCIENTIFIC COMPARISON</span>
+                </div>
+                <h2>Scientific Comparison</h2>
+            </div>
+
+            <div class="topbar-right">
+                <span class="live-indicator"><i></i> DATA CONNECTED</span>
+            </div>
+        </header>
+
+        <section class="explorer-hero">
+
+            <div class="eyebrow">
+                <span class="eyebrow-line"></span>
+                CROSS-INVESTIGATION ANALYSIS
+            </div>
+
+            <h1>Compare the science.<br>
+                <span>Understand the fire.</span>
+            </h1>
+
+            <p>
+                Examine NASA microgravity combustion investigations
+                through their experimental conditions, research
+                objectives and available scientific measurements.
+            </p>
+
+            <div class="explorer-stats">
+                <div>
+                    <strong>02</strong>
+                    <span>INVESTIGATIONS</span>
+                </div>
+
+                <div>
+                    <strong>01</strong>
+                    <span>NUMERICAL DATASET</span>
+                </div>
+
+                <div>
+                    <strong>NASA PSI</strong>
+                    <span>PRIMARY SOURCE</span>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="detail-section">
+
+            <div class="section-kicker">01 / INVESTIGATION COMPARISON</div>
+            <h3>Experimental overview</h3>
+
+            <div class="comparison-grid">
+
+                <article class="detail-card">
+                    <span>PSI-98 · PREVENTION</span>
+                    <h3>SAFFIRE-I</h3>
+
+                    <p>
+                        Spacecraft Fire Safety Experiment-I
+                    </p>
+
+                    <strong>Platform: Cygnus cargo vehicle</strong>
+
+                    <p>
+                        Investigates large-scale flame growth and
+                        material flammability in microgravity.
+                    </p>
+
+                    <a href="/investigations/saffire-i">
+                        Explore investigation →
+                    </a>
+                </article>
+
+                <article class="detail-card">
+                    <span>PSI-25 · PREVENTION</span>
+                    <h3>BASS-II</h3>
+
+                    <p>
+                        Burning and Suppression of Solids-II
+                    </p>
+
+                    <strong>Platform: International Space Station</strong>
+
+                    <p>
+                        Studies ignition, flame growth, flame spread
+                        and extinction limits in low-velocity flows.
+                    </p>
+
+                    <a href="/investigations/bass-ii">
+                        Explore investigation →
+                    </a>
+                </article>
+
+            </div>
+
+        </section>
+
+        <section class="detail-section">
+
+            <div class="section-kicker">02 / PARAMETER ANALYSIS</div>
+            <h3>Compare experimental conditions</h3>
+
+            <div class="comparison-table-wrap">
+
+                <table class="comparison-table">
+
+                    <thead>
+                        <tr>
+                            <th>PARAMETER</th>
+                            <th>SAFFIRE-I · PSI-98</th>
+                            <th>BASS-II · PSI-25</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>Research environment</td>
+                            <td>Microgravity</td>
+                            <td>Microgravity</td>
+                        </tr>
+
+                        <tr>
+                            <td>Platform</td>
+                            <td>Cygnus cargo vehicle</td>
+                            <td>International Space Station</td>
+                        </tr>
+
+                        <tr>
+                            <td>Experimental hardware</td>
+                            <td>Cygnus-based experiment</td>
+                            <td>Microgravity Science Glovebox (MSG)</td>
+                        </tr>
+
+                        <tr>
+                            <td>Fuel material</td>
+                            <td>SIBAL composite fabric: 75% cotton, 25% fiberglass</td>
+                            <td>Multiple solid-fuel geometries</td>
+                        </tr>
+
+                        <tr>
+                            <td>Airflow</td>
+                            <td>20 cm/s</td>
+                            <td>Up to 40 cm/s</td>
+                        </tr>
+
+                        <tr>
+                            <td>Oxygen conditions</td>
+                            <td>Approximately 21.5% for Sample 2</td>
+                            <td>Varied below 21% through nitrogen addition</td>
+                        </tr>
+
+                        <tr>
+                            <td>Flow configuration</td>
+                            <td>Opposed-flow for Sample 2</td>
+                            <td>Opposed-flow and concurrent-flow</td>
+                        </tr>
+
+                        <tr>
+                            <td>Ignition</td>
+                            <td>182 W; 8-second ignition time (Sample 2 metadata)</td>
+                            <td>Ignition behaviour investigated; no matching value in current metadata extract</td>
+                        </tr>
+
+                        <tr>
+                            <td>Combustion research</td>
+                            <td>Large-scale flame growth and material flammability</td>
+                            <td>Ignition, flame growth, spread and extinction limits</td>
+                        </tr>
+
+                        <tr>
+                            <td>Burn duration</td>
+                            <td>70 seconds reported for Sample 2</td>
+                            <td>No directly comparable duration in current metadata extract</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+<section class="detail-section" id="interactive-comparison">
+
+    <div class="section-kicker">03 / INTERACTIVE EVIDENCE ENGINE</div>
+    <h3>Explore scientific parameters</h3>
+
+    <p class="intelligence-intro">
+        Select a parameter to compare SAFFIRE-I measured
+        telemetry and documented experimental conditions
+        against BASS-II investigation metadata.
+    </p>
+
+    <div class="parameter-selector" id="parameterSelector">
+
+        <button class="parameter-button active"
+                data-parameter="airflow">
+            Airflow
+        </button>
+
+        <button class="parameter-button"
+                data-parameter="oxygen">
+            Oxygen
+        </button>
+
+        <button class="parameter-button"
+                data-parameter="fuel">
+            Fuel material
+        </button>
+
+        <button class="parameter-button"
+                data-parameter="flow">
+            Flow direction
+        </button>
+
+        <button class="parameter-button"
+                data-parameter="temperature">
+            TC3 peak
+        </button>
+
+        <button class="parameter-button"
+                data-parameter="temperature-rise">
+            TC3 temperature rise
+        </button>
+
+    </div>
+
+    <div class="parameter-result" id="parameterResult">
+
+        <div class="parameter-result-header">
+            <span>SELECTED PARAMETER</span>
+            <h4 id="parameterTitle">Airflow</h4>
+        </div>
+
+        <div class="parameter-comparison-grid">
+
+            <article class="parameter-evidence">
+                <span>PSI-98 · SAFFIRE-I</span>
+                <div class="evidence-status metadata"
+                     id="saffireEvidenceType">
+                    DOCUMENTED CONDITION
+                </div>
+                <h3 id="saffireParameterValue">20 cm/s</h3>
+                <p id="saffireParameterDescription">
+                    Documented airflow condition for Sample 2.
+                </p>
+            </article>
+
+            <article class="parameter-evidence">
+                <span>PSI-25 · BASS-II</span>
+                <div class="evidence-status metadata"
+                     id="bassEvidenceType">
+                    DOCUMENTED CONDITION
+                </div>
+                <h3 id="bassParameterValue">Up to 40 cm/s</h3>
+                <p id="bassParameterDescription">
+                    Maximum documented airflow.
+                </p>
+            </article>
+
+        </div>
+
+        <div class="parameter-interpretation">
+            <span>SCIENTIFIC INTERPRETATION</span>
+            <p id="parameterInterpretation">
+                Both investigations examine forced airflow
+                under microgravity conditions, but their
+                experimental conditions differ.
+            </p>
+        </div>
+
+        <div class="parameter-source" id="parameterSource">
+            Sources: NASA PSI-98 and NASA PSI-25.
+        </div>
+
+    </div>
+
+</section>
+
+
+        <section class="detail-section">
+
+            <div class="section-kicker">04 / MEASURED TELEMETRY</div>
+            <h3>SAFFIRE-I sensor evidence</h3>
+
+            <div class="comparison-grid">
+
+                <article class="detail-card">
+                    <span>PLUME TEMPERATURE · TC3</span>
+                    <strong id="tc3Peak">Loading...</strong>
+                    <p>Maximum recorded TC3 temperature in the 60–150 second analysis window.</p>
+                </article>
+
+                <article class="detail-card">
+                    <span>TEMPERATURE RISE · TC3</span>
+                    <strong id="tc3Rise">Loading...</strong>
+                    <p>Difference between the recorded baseline average and the analysis-window peak.</p>
+                </article>
+
+                <article class="detail-card">
+                    <span>IGNITER ACTIVATION</span>
+                    <strong id="ignitionDuration">Loading...</strong>
+                    <p>Time between the first and last recorded enabled readings.</p>
+                </article>
+
+                <article class="detail-card">
+                    <span>TIME-STAMPED RECORDS</span>
+                    <strong id="timestampedRows">Loading...</strong>
+                    <p>Records with valid elapsed-time values in the calibrated dataset.</p>
+                </article>
+
+            </div>
+
+            <p class="section-note" id="telemetrySource">
+                Retrieving measured values from the SAFFIRE-I dataset...
+            </p>
+
+        </section>
+
+        <section class="detail-section">
+
+            <div class="section-kicker">05 / EVIDENCE AVAILABILITY</div>
+            <h3>What can currently be compared?</h3>
+
+            <div class="comparison-grid">
+
+                <article class="detail-card">
+                    <span>SAFFIRE-I · PSI-98</span>
+                    <h3>Numerical telemetry available</h3>
+                    <p>
+                        A calibrated workbook containing temperature,
+                        pressure, oxygen, carbon dioxide, airflow-related
+                        and other recorded channels.
+                    </p>
+                    <strong>32,599 raw rows · 73 columns</strong>
+                </article>
+
+                <article class="detail-card">
+                    <span>BASS-II · PSI-25</span>
+                    <h3>Metadata available</h3>
+                    <p>
+                        Investigation metadata documents the research
+                        approach, hardware, experimental variables and
+                        scientific objectives.
+                    </p>
+                    <strong>No numerical telemetry integrated yet</strong>
+                </article>
+
+            </div>
+
+            <div class="classification-note">
+                <div class="note-icon">ⓘ</div>
+                <div>
+                    <strong>Scientific interpretation notice</strong>
+                    <p>
+                        SAFFIRE-I numerical measurements and BASS-II
+                        metadata describe different evidence types.
+                        The values above are not a controlled
+                        head-to-head experiment. Missing BASS-II
+                        measurements are intentionally left unreported
+                        rather than estimated.
+                    </p>
+                </div>
+            </div>
+
+        </section>
+
+
+        <section class="detail-section">
+
+            <div class="section-kicker">06 / SCIENTIFIC INTERPRETATION</div>
+            <h3>Scientific findings & limitations</h3>
+
+            <div class="comparison-grid">
+
+                <article class="detail-card">
+                    <span>OBSERVED · PSI-98</span>
+                    <h3>Localised thermal response</h3>
+                    <p>
+                        SAFFIRE-I Sample 2 recorded a maximum
+                        Plume TC3 temperature of 94.403 °C
+                        within the 60–150 second analysis window.
+                        Its peak was 67.309 °C above the
+                        calculated baseline average.
+                    </p>
+                    <strong>Measured telemetry</strong>
+                </article>
+
+                <article class="detail-card">
+                    <span>EXPERIMENTAL SCOPE · PSI-25</span>
+                    <h3>Multiple combustion variables</h3>
+                    <p>
+                        BASS-II investigates how airflow velocity,
+                        oxygen concentration, fuel geometry and
+                        flow direction relate to ignition, flame
+                        growth, flame spread and extinction limits
+                        under microgravity conditions.
+                    </p>
+                    <strong>NASA investigation metadata</strong>
+                </article>
+
+                <article class="detail-card">
+                    <span>ENGINEERING SIGNIFICANCE</span>
+                    <h3>Fire safety research</h3>
+                    <p>
+                        These investigations contribute different
+                        evidence towards understanding material
+                        flammability and combustion behaviour
+                        in spacecraft environments. Their findings
+                        can inform future material selection and
+                        spacecraft fire-safety research.
+                    </p>
+                    <strong>Research relevance</strong>
+                </article>
+
+                <article class="detail-card">
+                    <span>DATA LIMITATION</span>
+                    <h3>No direct performance ranking</h3>
+                    <p>
+                        The available datasets do not establish
+                        which investigation had better fire
+                        performance. BASS-II numerical telemetry
+                        has not yet been integrated, and the
+                        experiments are not a controlled
+                        head-to-head comparison.
+                    </p>
+                    <strong>Further evidence required</strong>
+                </article>
+
+            </div>
+
+            <div class="classification-note">
+                <div class="note-icon">ⓘ</div>
+                <div>
+                    <strong>How IGNIS handles scientific evidence</strong>
+                    <p>
+                        IGNIS distinguishes measured observations,
+                        NASA-documented experimental objectives
+                        and engineering interpretations.
+                        Temperature peaks do not independently
+                        establish sustained combustion or fire
+                        duration. Conclusions are restricted
+                        to the evidence currently available.
+                    </p>
+                </div>
+            </div>
+
+        </section>
+
+
+        <section class="detail-section">
+
+            <div class="section-kicker">07 / RESEARCH TRACEABILITY</div>
+            <h3>NASA source records</h3>
+
+            <div class="detail-card">
+                <p>
+                    SAFFIRE-I:
+                    <a href="https://psi.nasa.gov/physci/repo/data/investigations/PSI-98" target="_blank" rel="noopener">
+                        NASA PSI-98 · DOI 10.60555/0t15-1z43
+                    </a>
+                </p>
+
+                <p>
+                    BASS-II:
+                    <a href="https://psi.nasa.gov/physci/repo/data/investigations/PSI-25" target="_blank" rel="noopener">
+                        NASA PSI-25 · DOI 10.60555/4qc4-de67
+                    </a>
+                </p>
+            </div>
+
+        </section>
+
+        <footer>
+            <div><strong>IGNIS</strong> · SPACECRAFT FIRE SAFETY INTELLIGENCE</div>
+            <div>RESEARCH PROTOTYPE · NASA PSI DATA</div>
+        </footer>
+
+    </main>
+
+</div>
+
+<script>
+
+
+// =========================================
+// IGNIS SCIENTIFIC PARAMETER COMPARISON
+// =========================================
+
+let comparisonTelemetry = null;
+
+const scientificParameters = {
+
+    airflow: {
+        title: "Forced airflow velocity",
+        saffire: {
+            value: "20 cm/s",
+            type: "DOCUMENTED CONDITION",
+            description: "Sample 2 airflow condition recorded in SAFFIRE-I metadata."
+        },
+        bass: {
+            value: "Up to 40 cm/s",
+            type: "DOCUMENTED CONDITION",
+            description: "BASS-II metadata describes forced airflow velocities up to 40 cm/s."
+        },
+        interpretation:
+            "Both investigations examine forced airflow in microgravity. " +
+            "The documented BASS-II maximum is not evidence that every test " +
+            "used 40 cm/s. These values describe experimental conditions, " +
+            "not directly comparable combustion outcomes."
+    },
+
+    oxygen: {
+        title: "Ambient oxygen concentration",
+        saffire: {
+            value: "~21.5%",
+            type: "DOCUMENTED CONDITION",
+            description: "Approximate oxygen concentration documented for SAFFIRE-I Sample 2."
+        },
+        bass: {
+            value: "Below 21% (varied)",
+            type: "DOCUMENTED CONDITION",
+            description: "BASS-II varied oxygen concentration by adding nitrogen."
+        },
+        interpretation:
+            "The investigations explored different oxygen conditions. " +
+            "BASS-II intentionally varied oxygen below 21%, while the " +
+            "documented SAFFIRE-I Sample 2 condition was approximately 21.5%. " +
+            "This is a comparison of documented test conditions, not a " +
+            "controlled comparison of flame behaviour."
+    },
+
+    fuel: {
+        title: "Fuel material and geometry",
+        saffire: {
+            value: "SIBAL composite",
+            type: "DOCUMENTED MATERIAL",
+            description: "Sample 2 used fabric containing 75% cotton and 25% fiberglass."
+        },
+        bass: {
+            value: "Multiple geometries",
+            type: "DOCUMENTED RESEARCH SCOPE",
+            description: "BASS-II investigated slabs, cylinders, spherical sections, rods, films and fabric sheets."
+        },
+        interpretation:
+            "The fuel configurations differ. SAFFIRE-I Sample 2 provides " +
+            "a specific composite fabric case, while BASS-II examines a " +
+            "broader range of solid-fuel geometries. Material composition " +
+            "and geometry must be considered before interpreting differences."
+    },
+
+    flow: {
+        title: "Flow configuration",
+        saffire: {
+            value: "Opposed flow",
+            type: "DOCUMENTED CONDITION",
+            description: "SAFFIRE-I Sample 2 was documented as an opposed-flow experiment."
+        },
+        bass: {
+            value: "Opposed + concurrent",
+            type: "DOCUMENTED RESEARCH SCOPE",
+            description: "BASS-II investigated both opposed-flow and concurrent-flow configurations."
+        },
+        interpretation:
+            "Both investigations considered flow direction as part of " +
+            "microgravity combustion research. The BASS-II research scope " +
+            "includes two configurations; this does not mean both were used " +
+            "in every test."
+    },
+
+    temperature: {
+        title: "Plume thermocouple TC3 peak",
+        saffire: {
+            value: "Loading telemetry...",
+            type: "MEASURED TELEMETRY",
+            description: "Maximum TC3 temperature in the 60–150 second analysis window."
+        },
+        bass: {
+            value: "Not available",
+            type: "NO NUMERICAL TELEMETRY",
+            description: "BASS-II numerical temperature measurements are not integrated into IGNIS."
+        },
+        interpretation:
+            "The SAFFIRE-I value is a measured temperature peak, not a direct " +
+            "measurement of flame temperature or proof of sustained combustion. " +
+            "A corresponding BASS-II telemetry value is unavailable, so no " +
+            "numerical ranking can be made."
+    },
+
+    "temperature-rise": {
+        title: "Plume thermocouple TC3 temperature rise",
+        saffire: {
+            value: "Loading telemetry...",
+            type: "MEASURED TELEMETRY",
+            description: "Rise above the calculated baseline average during the analysis window."
+        },
+        bass: {
+            value: "Not available",
+            type: "NO NUMERICAL TELEMETRY",
+            description: "No corresponding BASS-II numerical measurement is currently integrated."
+        },
+        interpretation:
+            "The SAFFIRE-I temperature rise is calculated relative to its " +
+            "baseline average. It describes the recorded sensor response, " +
+            "not an independently verified flame intensity. BASS-II cannot " +
+            "be compared numerically without its corresponding telemetry."
+    }
+};
+
+function renderScientificParameter(parameterKey) {
+
+    const parameter = scientificParameters[parameterKey];
+
+    if (!parameter) return;
+
+    document.getElementById("parameterTitle").textContent =
+        parameter.title;
+
+    document.getElementById("saffireEvidenceType").textContent =
+        parameter.saffire.type;
+
+    document.getElementById("saffireParameterValue").textContent =
+        parameter.saffire.value;
+
+    document.getElementById("saffireParameterDescription").textContent =
+        parameter.saffire.description;
+
+    document.getElementById("bassEvidenceType").textContent =
+        parameter.bass.type;
+
+    document.getElementById("bassParameterValue").textContent =
+        parameter.bass.value;
+
+    document.getElementById("bassParameterDescription").textContent =
+        parameter.bass.description;
+
+    document.getElementById("parameterInterpretation").textContent =
+        parameter.interpretation;
+
+    document.getElementById("parameterSource").textContent =
+        "Sources: NASA PSI-98 (10.60555/0t15-1z43) · " +
+        "NASA PSI-25 (10.60555/4qc4-de67).";
+
+    // Populate live SAFFIRE-I telemetry when available.
+    if (
+        comparisonTelemetry &&
+        (parameterKey === "temperature" ||
+         parameterKey === "temperature-rise")
+    ) {
+        const tc3 = comparisonTelemetry.sensors.find(
+            sensor => sensor.sensor === "Plume Temp 3 (TC3)"
+        );
+
+        if (tc3) {
+            if (parameterKey === "temperature") {
+                document.getElementById("saffireParameterValue").textContent =
+                    Number(tc3.peak).toFixed(3) + " °C";
+            } else {
+                document.getElementById("saffireParameterValue").textContent =
+                    "+" + Number(tc3.rise).toFixed(3) + " °C";
+            }
+        }
+    }
+
+    document.querySelectorAll(".parameter-button").forEach(button => {
+        button.classList.toggle(
+            "active",
+            button.dataset.parameter === parameterKey
+        );
+    });
+}
+
+document.querySelectorAll(".parameter-button").forEach(button => {
+
+    button.addEventListener("click", () => {
+        renderScientificParameter(button.dataset.parameter);
+    });
+
+});
+
+// Display the initial parameter.
+renderScientificParameter("airflow");
+
+
+async function loadComparisonTelemetry() {
+
+    try {
+
+        const response = await fetch("/api/dashboard-data");
+        const data = await response.json();
+
+        if (!response.ok || data.error) {
+            throw new Error(data.error || "Unable to load telemetry");
+        }
+
+        comparisonTelemetry = data;
+renderScientificParameter(
+    document.querySelector(".parameter-button.active").dataset.parameter
+);
+
+        const tc3 = data.sensors.find(
+            sensor => sensor.sensor === "Plume Temp 3 (TC3)"
+        );
+
+        if (tc3) {
+            document.getElementById("tc3Peak").textContent =
+                tc3.peak.toFixed(3) + " °C";
+
+            document.getElementById("tc3Rise").textContent =
+                "+" + tc3.rise.toFixed(3) + " °C";
+        }
+
+        const ignition = data.ignition;
+
+        if (ignition.start !== null && ignition.end !== null) {
+            document.getElementById("ignitionDuration").textContent =
+                (ignition.end - ignition.start).toFixed(3) + " s";
+        } else {
+            document.getElementById("ignitionDuration").textContent =
+                "Unavailable";
+        }
+
+        document.getElementById("timestampedRows").textContent =
+            data.dataset.timestamped_rows.toLocaleString();
+
+        document.getElementById("telemetrySource").textContent =
+            "Source: SAFFIRE-I Sample 2 calibrated telemetry workbook. " +
+            "Analysis window: 60–150 seconds.";
+
+    } catch (error) {
+
+        console.error("Comparison telemetry error:", error);
+
+        document.getElementById("tc3Peak").textContent = "Unavailable";
+        document.getElementById("tc3Rise").textContent = "Unavailable";
+        document.getElementById("ignitionDuration").textContent = "Unavailable";
+        document.getElementById("timestampedRows").textContent = "Unavailable";
+
+        document.getElementById("telemetrySource").textContent =
+            "Unable to retrieve SAFFIRE-I telemetry: " + error.message;
+    }
+}
+
+loadComparisonTelemetry();
+</script>
+
+</body>
+</html>
