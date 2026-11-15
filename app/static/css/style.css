@@ -1831,7 +1831,7 @@ footer strong {
 
 .intelligence-summary {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 14px;
     margin-bottom: 22px;
 }
@@ -2087,6 +2087,12 @@ footer strong {
     border: 1px solid #315b85;
 }
 
+.evidence-status.test-results {
+    color: #d6bdff;
+    background: #302448;
+    border: 1px solid #654b91;
+}
+
 .evidence-status.source-only {
     color: #d2c2a1;
     background: #393124;
@@ -2095,7 +2101,7 @@ footer strong {
 
 .evidence-details {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 10px;
     margin: 15px 0;
 }

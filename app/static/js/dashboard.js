@@ -895,6 +895,10 @@ async function loadEvidenceAvailability() {
         ).textContent = data.with_telemetry;
 
         document.getElementById(
+            "evidenceResults"
+        ).textContent = data.with_numerical_results;
+
+        document.getElementById(
             "evidenceMetadata"
         ).textContent = data.with_local_metadata;
 
@@ -908,6 +912,7 @@ async function loadEvidenceAvailability() {
 
         const statusClass = {
             telemetry_and_metadata: "telemetry",
+            numerical_results_and_metadata: "test-results",
             metadata_only: "metadata",
             source_record_only: "source-only"
         };
@@ -970,7 +975,21 @@ async function loadEvidenceAvailability() {
                             <strong>
                                 ${item.has_numerical_telemetry ? "YES" : "NO"}
                             </strong>
-                            <span>NUMERICAL TELEMETRY</span>
+                            <span>TIME-SERIES TELEMETRY</span>
+                        </div>
+
+                        <div class="evidence-detail">
+                            <strong>
+                                ${item.has_numerical_results ? "YES" : "NO"}
+                            </strong>
+                            <span>NUMERICAL TEST RESULTS</span>
+                        </div>
+
+                        <div class="evidence-detail">
+                            <strong>
+                                ${item.has_local_metadata ? "YES" : "NO"}
+                            </strong>
+                            <span>LOCAL METADATA</span>
                         </div>
 
                     </div>

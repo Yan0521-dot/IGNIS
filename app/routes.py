@@ -4,6 +4,7 @@ from pathlib import Path
 import pandas as pd
 import json
 from app.investigations import INVESTIGATIONS
+from app.samer_evidence import build_samer_evidence
 
 main = Blueprint("main", __name__)
 
@@ -362,7 +363,11 @@ def evidence_availability():
         "PSI-25": [
             "datasets/PSI-25/metadata/i_Investigation.txt"
         ],
-        "PSI-101": [],
+        "PSI-101": [
+            "datasets/PSI-101/metadata/i_Investigation.txt",
+            "datasets/PSI-101/analysed_data/Combined SAMER Results 06 02 14.xlsx",
+            "datasets/PSI-101/reports/SAMER_Final_0602_2014.pdf"
+        ],
         "PSI-69": [],
         "PSI-62": []
     }
@@ -391,9 +396,20 @@ def evidence_availability():
                     "size_bytes": file_path.stat().st_size
                 })
 
-        has_telemetry = any(
-            file["name"].lower().endswith((".xlsx", ".csv"))
-            for file in available_files
+        has_telemetry = (
+            investigation_id == "PSI-98"
+            and any(
+                file["name"].lower().endswith((".xlsx", ".csv"))
+                for file in available_files
+            )
+        )
+
+        has_numerical_results = (
+            investigation_id == "PSI-101"
+            and any(
+                file["name"] == "Combined SAMER Results 06 02 14.xlsx"
+                for file in available_files
+            )
         )
 
         has_metadata = any(
@@ -403,7 +419,11 @@ def evidence_availability():
 
         if has_telemetry:
             evidence_level = "telemetry_and_metadata"
-            evidence_label = "Numerical telemetry + metadata"
+            evidence_label = "Time-series telemetry + metadata"
+
+        elif has_numerical_results:
+            evidence_level = "numerical_results_and_metadata"
+            evidence_label = "Numerical test results + report + metadata"
 
         elif has_metadata:
             evidence_level = "metadata_only"
@@ -431,6 +451,7 @@ def evidence_availability():
             "evidence_level": evidence_level,
             "evidence_label": evidence_label,
             "has_numerical_telemetry": has_telemetry,
+            "has_numerical_results": has_numerical_results,
             "has_local_metadata": has_metadata,
             "local_file_count": len(available_files),
             "files": available_files
@@ -440,6 +461,10 @@ def evidence_availability():
         "total_investigations": len(results),
         "with_telemetry": sum(
             item["has_numerical_telemetry"]
+            for item in results
+        ),
+        "with_numerical_results": sum(
+            item["has_numerical_results"]
             for item in results
         ),
         "with_local_metadata": sum(
@@ -452,10 +477,12 @@ def evidence_availability():
         ),
         "investigations": results,
         "classification_note": (
-            "Evidence availability reflects files currently "
-            "present in the IGNIS local dataset directory. "
-            "A verified NASA PSI source record does not mean "
-            "its numerical dataset has been downloaded or analysed."
+            "Evidence availability reflects files currently present "
+            "in the IGNIS local dataset directory. SAFFIRE-I contains "
+            "time-series telemetry; SAME-R contains numerical test "
+            "results and a supporting report, not continuous telemetry. "
+            "BASS-II currently contains investigation metadata only. "
+            "NASA PSI source verification does not imply local data availability."
         )
     })
 
@@ -967,6 +994,9 @@ def scientific_evidence():
 
         evidence.extend(bass_metadata)
 
+        # SAME-R numerical test results and documented findings.
+        evidence.extend(build_samer_evidence())
+
         return jsonify({
             "investigation": {
                 "id": "PSI-98",
@@ -992,10 +1022,11 @@ def scientific_evidence():
             "evidence": evidence,
 
             "traceability_note": (
-                "IGNIS evidence records are generated "
-                "from locally integrated NASA PSI data. "
-                "Derived values use explicitly stated "
-                "calculation methods and analysis windows."
+                "IGNIS integrates SAFFIRE-I calibrated time-series "
+                "telemetry, SAME-R numerical test results and "
+                "BASS-II investigation metadata. Direct measurements, "
+                "derived results and documented metadata are "
+                "classified separately."
             )
         })
 

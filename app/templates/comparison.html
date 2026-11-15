@@ -942,9 +942,13 @@ function renderScientificEvidenceCards(records, dataset) {
             ? "documented"
             : (isDerived ? "derived" : "direct");
 
+        const isTestResult = evidenceType.includes("test result");
+
         const classificationLabel = isDocumented
             ? "DOCUMENTED METADATA"
-            : (isDerived ? "DERIVED MEASUREMENT" : "DIRECT MEASUREMENT");
+            : (isDerived
+                ? (isTestResult ? "DERIVED TEST RESULT" : "DERIVED MEASUREMENT")
+                : (isTestResult ? "DIRECT TEST RESULT" : "DIRECT MEASUREMENT"));
 
         const classification = createEvidenceElement(
             "span",
@@ -963,8 +967,12 @@ function renderScientificEvidenceCards(records, dataset) {
             Number.isFinite(Number(record.value))
         );
 
+        const valuePrecision = record.value_precision !== undefined
+            ? Math.max(0, Math.min(10, Number(record.value_precision)))
+            : 3;
+
         const displayValue = numericValue
-            ? Number(record.value).toFixed(3) + " " + (record.unit || "")
+            ? Number(record.value).toFixed(valuePrecision) + " " + (record.unit || "")
             : (
                 record.value !== null &&
                 record.value !== undefined &&
@@ -1071,10 +1079,10 @@ function renderScientificEvidenceCards(records, dataset) {
     });
 
     document.getElementById("scientificEvidenceNote").textContent =
-        "IGNIS combines locally integrated SAFFIRE-I calibrated telemetry " +
-        "with NASA PSI investigation metadata for BASS-II. Direct measurements, " +
-        "derived measurements and documented metadata are classified separately. " +
-        "Metadata records are not sensor measurements or experimental outcomes.";
+        "IGNIS combines SAFFIRE-I calibrated time-series telemetry, " +
+        "SAME-R numerical test results and BASS-II investigation metadata. " +
+        "Direct measurements, derived results and documented metadata " +
+        "are classified separately. Metadata is not presented as a sensor measurement.";
 }
 
 
