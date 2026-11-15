@@ -2316,3 +2316,287 @@ footer strong {
         padding: 15px;
     }
 }
+
+/* =========================================
+   SCIENTIFIC EVIDENCE REGISTER
+========================================= */
+
+.evidence-register-intro {
+    max-width: 760px;
+    margin: 0 0 22px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.9;
+}
+
+.evidence-register-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.evidence-register-summary > div {
+    display: grid;
+    gap: 8px;
+    padding: 18px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+}
+
+.evidence-register-summary strong {
+    color: var(--text);
+    font-size: 22px;
+}
+
+.evidence-register-summary span,
+.evidence-record-id,
+.evidence-record-label {
+    color: var(--muted);
+    font-family: "DM Mono", monospace;
+    font-size: 9px;
+    letter-spacing: .8px;
+}
+
+.evidence-register-list {
+    display: grid;
+    gap: 16px;
+}
+
+.evidence-record-card {
+    display: grid;
+    gap: 15px;
+    padding: 22px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 11px;
+}
+
+.evidence-record-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.evidence-record-heading {
+    min-width: 0;
+}
+
+.evidence-record-heading h4 {
+    margin-top: 8px;
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.evidence-classification {
+    flex-shrink: 0;
+    padding: 7px 9px;
+    border-radius: 5px;
+    font-family: "DM Mono", monospace;
+    font-size: 9px;
+    line-height: 1.5;
+}
+
+.evidence-classification.direct {
+    color: #8de0b0;
+    background: #17382c;
+    border: 1px solid #286b4b;
+}
+
+.evidence-classification.derived {
+    color: #9dcaff;
+    background: #192f49;
+    border: 1px solid #315b85;
+}
+
+.evidence-record-value {
+    color: var(--text);
+    font-size: 27px;
+    line-height: 1.4;
+}
+
+.evidence-record-details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.evidence-detail-item {
+    display: grid;
+    gap: 6px;
+    padding: 12px;
+    background: #101b2a;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    min-width: 0;
+}
+
+.evidence-detail-item span {
+    color: var(--muted);
+    font-family: "DM Mono", monospace;
+    font-size: 9px;
+}
+
+.evidence-detail-item strong {
+    color: var(--text);
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.evidence-record-description {
+    margin: -8px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.9;
+}
+
+.evidence-limitation {
+    padding: 15px;
+    background: #30251d;
+    border: 1px solid #746044;
+    border-radius: 8px;
+}
+
+.evidence-limitation strong {
+    color: #e8bd86;
+    font-family: "DM Mono", monospace;
+    font-size: 9px;
+    letter-spacing: .8px;
+}
+
+.evidence-limitation p {
+    margin-top: 8px;
+    color: #d8c8b5;
+    font-size: 11px;
+    line-height: 1.8;
+}
+
+.evidence-record-source {
+    width: fit-content;
+    color: var(--accent);
+    font-size: 11px;
+    text-decoration: none;
+}
+
+.evidence-record-source:hover {
+    text-decoration: underline;
+}
+
+.evidence-record-dataset {
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 700px) {
+    .evidence-register-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .evidence-record-details {
+        grid-template-columns: 1fr;
+    }
+
+    .evidence-record-header {
+        flex-direction: column;
+    }
+
+    .evidence-record-card {
+        padding: 16px;
+    }
+}
+
+
+/* =========================================
+   SCIENTIFIC EVIDENCE FILTERS
+========================================= */
+
+.evidence-filter-panel {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+    align-items: end;
+    gap: 12px;
+    margin: 22px 0 12px;
+    padding: 18px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+}
+
+.evidence-filter-field {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+}
+
+.evidence-filter-field label {
+    color: var(--muted);
+    font-family: "DM Mono", monospace;
+    font-size: 9px;
+    letter-spacing: .8px;
+}
+
+.evidence-filter-field select {
+    width: 100%;
+    min-width: 0;
+    padding: 11px 10px;
+    color: var(--text);
+    background: #101b2a;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font: inherit;
+    font-size: 11px;
+}
+
+.evidence-reset-button {
+    min-height: 38px;
+    padding: 0 14px;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: "DM Mono", monospace;
+    font-size: 9px;
+    letter-spacing: .6px;
+    cursor: pointer;
+}
+
+.evidence-reset-button:hover {
+    color: var(--text);
+    border-color: var(--accent);
+}
+
+.evidence-filter-status {
+    margin: 0 0 14px;
+    color: var(--muted);
+    font-family: "DM Mono", monospace;
+    font-size: 10px;
+}
+
+@media (max-width: 850px) {
+    .evidence-filter-panel {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .evidence-reset-button {
+        min-height: 40px;
+    }
+}
+
+@media (max-width: 520px) {
+    .evidence-filter-panel {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* Documented metadata evidence classification */
+.evidence-classification.documented {
+    color: #d7b6ff;
+    background: rgba(145, 85, 210, 0.14);
+    border: 1px solid rgba(175, 125, 235, 0.35);
+}

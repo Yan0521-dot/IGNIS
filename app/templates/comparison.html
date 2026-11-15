@@ -388,9 +388,75 @@
 
         </section>
 
+        <section class="detail-section" id="scientific-evidence-register">
+
+            <div class="section-kicker">05 / SCIENTIFIC EVIDENCE REGISTER</div>
+            <h3>Traceable scientific findings</h3>
+
+            <p class="evidence-register-intro">
+                Every finding is linked to its underlying SAFFIRE-I telemetry,
+                calculation method, interpretation and source record.
+            </p>
+
+            <div class="evidence-register-summary">
+                <div>
+                    <strong id="scientificEvidenceCount">--</strong>
+                    <span>TRACEABLE FINDINGS</span>
+                </div>
+                <div>
+                    <strong id="scientificEvidenceRows">--</strong>
+                    <span>SAFFIRE-I TIMESTAMPED ROWS</span>
+                </div>
+                <div>
+                    <strong>PSI-98</strong>
+                    <span>TELEMETRY SOURCE</span>
+                </div>
+            </div>
+
+            <div class="evidence-filter-panel">
+                <div class="evidence-filter-field">
+                    <label for="evidenceInvestigationFilter">INVESTIGATION</label>
+                    <select id="evidenceInvestigationFilter">
+                        <option value="all">All investigations</option>
+                    </select>
+                </div>
+
+                <div class="evidence-filter-field">
+                    <label for="evidenceTypeFilter">EVIDENCE TYPE</label>
+                    <select id="evidenceTypeFilter">
+                        <option value="all">All evidence types</option>
+                    </select>
+                </div>
+
+                <div class="evidence-filter-field">
+                    <label for="evidenceSensorFilter">EVIDENCE SUBJECT</label>
+                    <select id="evidenceSensorFilter">
+                        <option value="all">All evidence subjects</option>
+                    </select>
+                </div>
+
+                <button type="button" id="resetEvidenceFilters" class="evidence-reset-button">
+                    RESET FILTERS
+                </button>
+            </div>
+
+            <div class="evidence-filter-status">
+                <span id="scientificEvidenceResultCount">Showing all findings</span>
+            </div>
+
+            <div id="scientificEvidenceList" class="evidence-register-list">
+                <p class="section-note">Loading scientific evidence...</p>
+            </div>
+
+            <p class="section-note" id="scientificEvidenceNote">
+                Retrieving evidence records and source references...
+            </p>
+
+        </section>
+
         <section class="detail-section">
 
-            <div class="section-kicker">05 / EVIDENCE AVAILABILITY</div>
+            <div class="section-kicker">06 / EVIDENCE AVAILABILITY</div>
             <h3>What can currently be compared?</h3>
 
             <div class="comparison-grid">
@@ -439,7 +505,7 @@
 
         <section class="detail-section">
 
-            <div class="section-kicker">06 / SCIENTIFIC INTERPRETATION</div>
+            <div class="section-kicker">07 / SCIENTIFIC INTERPRETATION</div>
             <h3>Scientific findings & limitations</h3>
 
             <div class="comparison-grid">
@@ -521,7 +587,7 @@
 
         <section class="detail-section">
 
-            <div class="section-kicker">07 / RESEARCH TRACEABILITY</div>
+            <div class="section-kicker">08 / RESEARCH TRACEABILITY</div>
             <h3>NASA source records</h3>
 
             <div class="detail-card">
@@ -811,6 +877,398 @@ renderScientificParameter(
             "Unable to retrieve SAFFIRE-I telemetry: " + error.message;
     }
 }
+
+
+function createEvidenceElement(tag, className, text) {
+    const element = document.createElement(tag);
+
+    if (className) {
+        element.className = className;
+    }
+
+    if (text !== undefined && text !== null) {
+        element.textContent = text;
+    }
+
+    return element;
+}
+
+function addEvidenceDetail(parent, label, value) {
+    if (value === undefined || value === null || value === "") {
+        return;
+    }
+
+    const item = createEvidenceElement("div", "evidence-detail-item");
+    item.appendChild(
+        createEvidenceElement("span", "", label)
+    );
+    item.appendChild(
+        createEvidenceElement("strong", "", String(value))
+    );
+
+    parent.appendChild(item);
+}
+
+function renderScientificEvidenceCards(records, dataset) {
+    const container = document.getElementById("scientificEvidenceList");
+
+    container.replaceChildren();
+
+    document.getElementById("scientificEvidenceCount").textContent =
+        String(records.length);
+
+    document.getElementById("scientificEvidenceRows").textContent =
+        Number(dataset.timestamped_rows || 0).toLocaleString();
+
+    records.forEach(record => {
+        const card = createEvidenceElement("article", "evidence-record-card");
+
+        const header = createEvidenceElement("div", "evidence-record-header");
+        const heading = createEvidenceElement("div", "evidence-record-heading");
+
+        heading.appendChild(
+            createEvidenceElement("span", "evidence-record-id", record.id)
+        );
+
+        heading.appendChild(
+            createEvidenceElement("h4", "", record.finding)
+        );
+
+        const evidenceType = String(record.evidence_type || "").toLowerCase();
+        const isDocumented = evidenceType.includes("documented");
+        const isDerived = evidenceType.includes("derived");
+
+        const classificationClass = isDocumented
+            ? "documented"
+            : (isDerived ? "derived" : "direct");
+
+        const classificationLabel = isDocumented
+            ? "DOCUMENTED METADATA"
+            : (isDerived ? "DERIVED MEASUREMENT" : "DIRECT MEASUREMENT");
+
+        const classification = createEvidenceElement(
+            "span",
+            "evidence-classification " + classificationClass,
+            classificationLabel
+        );
+
+        header.appendChild(heading);
+        header.appendChild(classification);
+        card.appendChild(header);
+
+        const numericValue = (
+            record.value !== null &&
+            record.value !== undefined &&
+            record.value !== "" &&
+            Number.isFinite(Number(record.value))
+        );
+
+        const displayValue = numericValue
+            ? Number(record.value).toFixed(3) + " " + (record.unit || "")
+            : (
+                record.value !== null &&
+                record.value !== undefined &&
+                record.value !== ""
+                    ? String(record.value) + (record.unit ? " " + record.unit : "")
+                    : "Unavailable"
+            );
+
+        card.appendChild(
+            createEvidenceElement("strong", "evidence-record-value", displayValue)
+        );
+
+        const details = createEvidenceElement("div", "evidence-record-details");
+
+        addEvidenceDetail(details, "INVESTIGATION", record.investigation_name);
+        addEvidenceDetail(details, "SAMPLE", record.sample);
+        addEvidenceDetail(
+            details,
+            record.sensor ? "SENSOR / CHANNEL" : "EVIDENCE SUBJECT",
+            record.sensor || record.subject
+        );
+        addEvidenceDetail(details, "ANALYSIS WINDOW", record.analysis_window);
+
+        if (record.measurement_time !== undefined) {
+            addEvidenceDetail(
+                details,
+                "PEAK TIMESTAMP",
+                Number(record.measurement_time).toFixed(3) + " s"
+            );
+        }
+
+        if (record.measurement_start !== undefined) {
+            addEvidenceDetail(
+                details,
+                "ENABLE START",
+                Number(record.measurement_start).toFixed(3) + " s"
+            );
+        }
+
+        if (record.measurement_end !== undefined) {
+            addEvidenceDetail(
+                details,
+                "ENABLE END",
+                Number(record.measurement_end).toFixed(3) + " s"
+            );
+        }
+
+        if (record.baseline_value !== undefined) {
+            addEvidenceDetail(
+                details,
+                "BASELINE MEAN",
+                Number(record.baseline_value).toFixed(3) + " °C"
+            );
+        }
+
+        card.appendChild(details);
+
+        card.appendChild(
+            createEvidenceElement("span", "evidence-record-label", "CALCULATION / METHOD")
+        );
+
+        card.appendChild(
+            createEvidenceElement("p", "evidence-record-description", record.calculation)
+        );
+
+        card.appendChild(
+            createEvidenceElement("span", "evidence-record-label", "INTERPRETATION")
+        );
+
+        card.appendChild(
+            createEvidenceElement("p", "evidence-record-description", record.interpretation)
+        );
+
+        const limitation = createEvidenceElement("div", "evidence-limitation");
+        limitation.appendChild(
+            createEvidenceElement("strong", "", "SCIENTIFIC LIMITATION")
+        );
+        limitation.appendChild(
+            createEvidenceElement("p", "", record.limitation)
+        );
+        card.appendChild(limitation);
+
+        if (record.source && record.source.url) {
+            const source = document.createElement("a");
+            source.className = "evidence-record-source";
+            source.href = record.source.url;
+            source.target = "_blank";
+            source.rel = "noopener noreferrer";
+            source.textContent =
+                "NASA PSI source · DOI " + record.source.doi;
+
+            card.appendChild(source);
+        }
+
+        card.appendChild(
+            createEvidenceElement(
+                "p",
+                "evidence-record-dataset",
+                "Dataset: " + record.dataset
+            )
+        );
+
+        container.appendChild(card);
+    });
+
+    document.getElementById("scientificEvidenceNote").textContent =
+        "IGNIS combines locally integrated SAFFIRE-I calibrated telemetry " +
+        "with NASA PSI investigation metadata for BASS-II. Direct measurements, " +
+        "derived measurements and documented metadata are classified separately. " +
+        "Metadata records are not sensor measurements or experimental outcomes.";
+}
+
+
+let scientificEvidenceRecords = [];
+let scientificEvidenceDataset = {};
+
+function populateEvidenceFilter(selectId, values, defaultLabel) {
+    const select = document.getElementById(selectId);
+    select.replaceChildren();
+
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "all";
+    defaultOption.textContent = defaultLabel;
+    select.appendChild(defaultOption);
+
+    values.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.value;
+        option.textContent = item.label;
+        select.appendChild(option);
+    });
+}
+
+function setupScientificEvidenceFilters(records) {
+    const investigations = [...new Map(
+        records.map(record => [
+            record.investigation,
+            {
+                value: record.investigation,
+                label: record.investigation_name
+                    ? record.investigation_name + " (" + record.investigation + ")"
+                    : record.investigation
+            }
+        ])
+    ).values()];
+
+    const evidenceTypes = [...new Map(
+        records.map(record => {
+            const type = String(record.evidence_type || "").toLowerCase();
+
+            const key = type.includes("documented")
+                ? "documented"
+                : (type.includes("derived") ? "derived" : "direct");
+
+            const labels = {
+                documented: "Documented metadata",
+                derived: "Derived measurement",
+                direct: "Direct measurement"
+            };
+
+            return [
+                key,
+                {
+                    value: key,
+                    label: labels[key]
+                }
+            ];
+        })
+    ).values()];
+
+    const subjects = [...new Set(
+        records
+            .map(record => record.sensor || record.subject)
+            .filter(Boolean)
+    )].map(subject => ({
+        value: subject,
+        label: subject
+    }));
+
+    populateEvidenceFilter(
+        "evidenceInvestigationFilter",
+        investigations,
+        "All investigations"
+    );
+
+    populateEvidenceFilter(
+        "evidenceTypeFilter",
+        evidenceTypes,
+        "All evidence types"
+    );
+
+    populateEvidenceFilter(
+        "evidenceSensorFilter",
+        subjects,
+        "All evidence subjects"
+    );
+}
+
+function applyScientificEvidenceFilters() {
+    const investigation =
+        document.getElementById("evidenceInvestigationFilter").value;
+
+    const evidenceType =
+        document.getElementById("evidenceTypeFilter").value;
+
+    const sensor =
+        document.getElementById("evidenceSensorFilter").value;
+
+    const filteredRecords = scientificEvidenceRecords.filter(record => {
+        const type = String(record.evidence_type || "").toLowerCase();
+
+        const recordType = type.includes("documented")
+            ? "documented"
+            : (type.includes("derived") ? "derived" : "direct");
+
+        const subject = record.sensor || record.subject;
+
+        return (
+            (investigation === "all" ||
+                record.investigation === investigation) &&
+            (evidenceType === "all" || recordType === evidenceType) &&
+            (sensor === "all" || subject === sensor)
+        );
+    });
+
+    const total = scientificEvidenceRecords.length;
+
+    document.getElementById("scientificEvidenceResultCount").textContent =
+        "Showing " + filteredRecords.length + " of " + total + " findings";
+
+    renderScientificEvidenceCards(
+        filteredRecords,
+        scientificEvidenceDataset
+    );
+}
+
+function renderScientificEvidence(records, dataset) {
+    scientificEvidenceRecords = records;
+    scientificEvidenceDataset = dataset || {};
+
+    setupScientificEvidenceFilters(records);
+    applyScientificEvidenceFilters();
+}
+
+function initialiseEvidenceFilterEvents() {
+    [
+        "evidenceInvestigationFilter",
+        "evidenceTypeFilter",
+        "evidenceSensorFilter"
+    ].forEach(id => {
+        document.getElementById(id).addEventListener(
+            "change",
+            applyScientificEvidenceFilters
+        );
+    });
+
+    document.getElementById("resetEvidenceFilters").addEventListener(
+        "click",
+        () => {
+            document.getElementById("evidenceInvestigationFilter").value = "all";
+            document.getElementById("evidenceTypeFilter").value = "all";
+            document.getElementById("evidenceSensorFilter").value = "all";
+
+            applyScientificEvidenceFilters();
+        }
+    );
+}
+
+initialiseEvidenceFilterEvents();
+
+async function loadScientificEvidence() {
+    const container = document.getElementById("scientificEvidenceList");
+
+    try {
+        const response = await fetch("/api/scientific-evidence");
+        const data = await response.json();
+
+        if (!response.ok || data.error) {
+            throw new Error(data.error || "Unable to retrieve scientific evidence.");
+        }
+
+        if (!Array.isArray(data.evidence)) {
+            throw new Error("Evidence records are missing from the API response.");
+        }
+
+        renderScientificEvidence(data.evidence, data.dataset);
+
+    } catch (error) {
+        console.error("Scientific evidence error:", error);
+
+        container.replaceChildren(
+            createEvidenceElement(
+                "p",
+                "section-note",
+                "Unable to load scientific evidence: " + error.message
+            )
+        );
+
+        document.getElementById("scientificEvidenceNote").textContent =
+            "Check that the scientific evidence API is available.";
+    }
+}
+
+loadScientificEvidence();
 
 loadComparisonTelemetry();
 </script>
