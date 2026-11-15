@@ -459,6 +459,18 @@
                         <p>Highest TC3 reading in analysis window</p>
                     </div>
                 </div>
+                <div class="event-chart-heading">
+                    <h4>Measured thermal response and event markers</h4>
+                    <p>
+                        SAFFIRE-I Sample 2 · 50–150 seconds ·
+                        TC1, TC3 and TC4
+                    </p>
+                </div>
+
+                <div class="chart-wrap event-chart-wrap">
+                    <canvas id="eventTimelineChart"></canvas>
+                </div>
+
                 <div class="timeline-disclaimer">
                     Igniter control activation is not proof of flame establishment or total combustion duration.
                 </div>
@@ -506,51 +518,55 @@
 
             <div class="section-heading">
                 <div>
-                    <div class="section-kicker">07 / FIRE SAFETY RESEARCH</div>
-                    <h3>Fire Safety Research Intelligence</h3>
+                    <div class="section-kicker">07 / EVIDENCE-LED FIRE SAFETY INTELLIGENCE</div>
+                    <h3>Scientific Findings Across Fire Safety Pillars</h3>
                 </div>
-                <span class="section-note">NASA PSI RESEARCH CATALOGUE</span>
+                <span class="section-note">NASA PSI · SCIENTIFIC EVIDENCE</span>
             </div>
 
             <p class="intelligence-intro">
-                Explore how microgravity combustion investigations
-                and supporting research contribute to spacecraft
-                fire prevention, detection and suppression.
+                Explore measured telemetry, numerical test results
+                and documented research conditions from NASA physical
+                sciences investigations.
             </p>
 
-            <div class="intelligence-summary">
+             <!-- IGNIS SCIENTIFIC FINDINGS DASHBOARD -->
+             <div id="scientificFindingsSummary"
+                 class="findings-summary">
                 <div>
-                    <strong id="intelligenceTotal">--</strong>
-                    <span>INVESTIGATIONS</span>
+                    <strong id="findingsEvidenceCount">--</strong>
+                    <span>LINKED EVIDENCE RECORDS</span>
                 </div>
                 <div>
-                    <strong id="intelligencePillars">--</strong>
-                    <span>RESEARCH PILLARS</span>
+                    <strong id="findingsInvestigationCount">--</strong>
+                    <span>INVESTIGATIONS REPRESENTED</span>
                 </div>
                 <div>
-                    <strong>NASA PSI</strong>
-                    <span>PRIMARY SOURCE</span>
+                    <strong id="findingsNumericalCount">--</strong>
+                    <span>WITH NUMERICAL EVIDENCE</span>
                 </div>
             </div>
 
-            <div id="fireSafetyPillars" class="fire-safety-grid">
+            <div id="scientificFindingsGrid"
+                 class="scientific-findings-grid">
                 <div class="loading-state">
-                    Loading fire-safety research catalogue...
+                    Loading scientific findings from NASA investigation evidence...
                 </div>
             </div>
 
-            <div class="classification-note">
-                <div class="note-icon">ⓘ</div>
-                <div>
-                    <strong>Research classification notice</strong>
-                    <p id="intelligenceClassification">
-                        IGNIS-developed categories. These are not
-                        official NASA PSI classifications.
-                    </p>
-                </div>
+            <div class="findings-methodology-note">
+                <strong>Scientific interpretation and evidence boundaries</strong>
+                <p>
+                    Measured results, derived calculations and documented
+                    investigation metadata are identified separately.
+                    A research objective is not an experimental result.
+                    Source-record-only investigations are not presented
+                    as having locally integrated numerical findings.
+                </p>
             </div>
+            <!-- END SCIENTIFIC FINDINGS DASHBOARD -->
 
-        </section>
+         </section>
 
 
 <section class="section-block" id="evidence-availability">

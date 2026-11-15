@@ -40,6 +40,7 @@ const sensorColors = [
 
 let temperatureChart = null;
 let sensorChart = null;
+let eventTimelineChart = null;
 
 let activeSensorGroup = "plume";
 
@@ -529,6 +530,230 @@ function renderTimeline(data) {
 }
 
 // =========================================
+// INTERACTIVE EXPERIMENTAL EVENT TIMELINE
+// =========================================
+
+function renderEventTimeline(data) {
+    const rows = data.telemetry.filter(row => {
+        const time = Number(row["Elapsed Time (s)"]);
+        return time >= 50 && time <= 150;
+    });
+
+    if (!rows.length) {
+        console.warn("No telemetry available for event timeline.");
+        return;
+    }
+
+    const labels = rows.map(row => row["Elapsed Time (s)"]);
+
+    const selectedSensors = [
+        {
+            name: "Plume Temp 1 (TC1)",
+            label: "TC1",
+            color: "#55b9f5"
+        },
+        {
+            name: "Plume Temp 3 (TC3)",
+            label: "TC3",
+            color: "#ff914d"
+        },
+        {
+            name: "Plume Temp 4 (TC4)",
+            label: "TC4",
+            color: "#48d6a0"
+        }
+    ];
+
+    const datasets = selectedSensors.map(sensor => ({
+        label: sensor.label,
+        data: rows.map(row => row[sensor.name]),
+        borderColor: sensor.color,
+        backgroundColor: sensor.color + "18",
+        borderWidth: sensor.label === "TC3" ? 2.8 : 1.8,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+        tension: 0.2,
+        spanGaps: false
+    }));
+
+    function nearestIndex(target) {
+        if (target === null || target === undefined) {
+            return null;
+        }
+
+        let bestIndex = 0;
+        let bestDistance = Infinity;
+
+        labels.forEach((time, index) => {
+            const distance = Math.abs(Number(time) - Number(target));
+
+            if (distance < bestDistance) {
+                bestDistance = distance;
+                bestIndex = index;
+            }
+        });
+
+        return bestIndex;
+    }
+
+    const tc3 = data.sensors.find(
+        sensor => sensor.sensor === "Plume Temp 3 (TC3)"
+    );
+
+    const markers = [
+        {
+            label: "IGNITER ON",
+            time: data.ignition.start,
+            color: "#f59e0b",
+            index: nearestIndex(data.ignition.start)
+        },
+        {
+            label: "IGNITER OFF",
+            time: data.ignition.end,
+            color: "#60a5fa",
+            index: nearestIndex(data.ignition.end)
+        },
+        {
+            label: "TC3 PEAK",
+            time: tc3 ? tc3.peak_time : null,
+            color: "#f87171",
+            index: tc3 ? nearestIndex(tc3.peak_time) : null
+        }
+    ].filter(marker => marker.index !== null);
+
+    const markerPlugin = {
+        id: "ignisExperimentalEventMarkers",
+
+        afterDatasetsDraw(chart) {
+            const { ctx, chartArea, scales } = chart;
+
+            markers.forEach((marker, markerIndex) => {
+                const x = scales.x.getPixelForValue(marker.index);
+
+                if (x < chartArea.left || x > chartArea.right) {
+                    return;
+                }
+
+                ctx.save();
+                ctx.strokeStyle = marker.color;
+                ctx.fillStyle = marker.color;
+                ctx.lineWidth = 1.5;
+                ctx.setLineDash([5, 4]);
+
+                ctx.beginPath();
+                ctx.moveTo(x, chartArea.top);
+                ctx.lineTo(x, chartArea.bottom);
+                ctx.stroke();
+
+                ctx.setLineDash([]);
+                ctx.font = "bold 9px Inter, sans-serif";
+                ctx.textAlign = "left";
+
+                const labelX = Math.min(
+                    x + 5,
+                    chartArea.right - 76
+                );
+
+                ctx.fillText(
+                    marker.label,
+                    labelX,
+                    chartArea.top + 14 + markerIndex * 13
+                );
+
+                ctx.restore();
+            });
+        }
+    };
+
+    const canvas = document.getElementById("eventTimelineChart");
+
+    if (!canvas) return;
+
+    if (eventTimelineChart) {
+        eventTimelineChart.destroy();
+    }
+
+    eventTimelineChart = new Chart(canvas, {
+        type: "line",
+
+        data: {
+            labels,
+            datasets
+        },
+
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+
+            interaction: {
+                intersect: false,
+                mode: "index"
+            },
+
+            plugins: {
+                legend: {
+                    position: "bottom",
+                    labels: {
+                        color: "#a9b8cb",
+                        usePointStyle: true,
+                        padding: 18
+                    }
+                },
+
+                tooltip: {
+                    backgroundColor: "#152337",
+                    borderColor: "#40536a",
+                    borderWidth: 1,
+
+                    callbacks: {
+                        title: items =>
+                            "Elapsed time: " + items[0].label + " s",
+
+                        label: item =>
+                            item.dataset.label + ": " +
+                            formatNumber(item.raw) + "°C"
+                    }
+                }
+            },
+
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: "Elapsed time (seconds)",
+                        color: "#8292a8"
+                    },
+                    ticks: {
+                        color: "#8292a8",
+                        maxTicksLimit: 12
+                    },
+                    grid: {
+                        color: "#26364b"
+                    }
+                },
+
+                y: {
+                    title: {
+                        display: true,
+                        text: "Temperature (°C)",
+                        color: "#8292a8"
+                    },
+                    ticks: {
+                        color: "#8292a8"
+                    },
+                    grid: {
+                        color: "#26364b"
+                    }
+                }
+            }
+        },
+
+        plugins: [markerPlugin]
+    });
+}
+
+// =========================================
+// =========================================
 // SCIENTIFIC INSIGHTS
 // =========================================
 
@@ -599,6 +824,7 @@ async function loadDashboard() {
 
         renderThresholds(data);
         renderTimeline(data);
+        renderEventTimeline(data);
         renderInsights(data);
 
         // =========================================
@@ -652,13 +878,6 @@ document.addEventListener(
 
 
 
-// =========================================
-// IGNIS FIRE SAFETY INTELLIGENCE
-// =========================================
-
-const FIRE_SAFETY_API =
-    "/api/fire-safety-intelligence";
-
 function escapeHTML(value) {
     return String(value ?? "").replace(
         /[&<>"']/g,
@@ -671,199 +890,6 @@ function escapeHTML(value) {
         })[character]
     );
 }
-
-function getPillarIcon(name) {
-    const icons = {
-        "Prevention": "⬡",
-        "Detection": "◉",
-        "Suppression": "✧",
-        "Supporting Research": "⌘"
-    };
-
-    return icons[name] || "◇";
-}
-
-function renderFireInvestigation(item) {
-
-    const detailURL =
-        typeof item.detail_url === "string" &&
-        item.detail_url.startsWith("/investigations/")
-            ? item.detail_url
-            : "#";
-
-    const sourceURL =
-        typeof item.url === "string" &&
-        item.url.startsWith(
-            "https://psi.nasa.gov/physci/repo/data/investigations/"
-        )
-            ? item.url
-            : "#";
-
-    return `
-        <article class="fire-investigation-card">
-
-            <div class="fire-investigation-top">
-                <span class="fire-investigation-id">
-                    ${escapeHTML(item.id)}
-                </span>
-
-                <span class="fire-investigation-type">
-                    ${escapeHTML(item.type)}
-                </span>
-            </div>
-
-            <h5>${escapeHTML(item.name)}</h5>
-
-            <p class="fire-investigation-focus">
-                ${escapeHTML(item.focus)}
-            </p>
-
-            <p class="fire-investigation-platform">
-                PLATFORM · ${escapeHTML(item.platform)}
-            </p>
-
-            <div class="fire-investigation-links">
-                <a href="${escapeHTML(detailURL)}">
-                    INVESTIGATION DETAILS ↗
-                </a>
-
-                <a
-                    href="${escapeHTML(sourceURL)}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    NASA PSI SOURCE ↗
-                </a>
-            </div>
-
-        </article>
-    `;
-}
-
-function renderFirePillar(pillar) {
-
-    const investigations =
-        Array.isArray(pillar.investigations)
-            ? pillar.investigations
-            : [];
-
-    const cards = investigations.length
-        ? investigations.map(renderFireInvestigation).join("")
-        : `<p class="fire-pillar-empty">
-               No investigations currently registered.
-           </p>`;
-
-    return `
-        <article class="fire-pillar-card">
-
-            <div class="fire-pillar-header">
-
-                <div class="fire-pillar-heading">
-
-                    <div class="fire-pillar-icon">
-                        ${getPillarIcon(pillar.name)}
-                    </div>
-
-                    <div>
-                        <h4>${escapeHTML(pillar.name)}</h4>
-
-                        <span class="fire-pillar-count">
-                            ${investigations.length}
-                            INVESTIGATION${investigations.length === 1 ? "" : "S"}
-                        </span>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <p class="fire-pillar-description">
-                ${escapeHTML(pillar.description)}
-            </p>
-
-            <div class="fire-investigation-list">
-                ${cards}
-            </div>
-
-        </article>
-    `;
-}
-
-async function loadFireSafetyIntelligence() {
-
-    const container =
-        document.getElementById("fireSafetyPillars");
-
-    if (!container) {
-        return;
-    }
-
-    try {
-
-        const response = await fetch(FIRE_SAFETY_API);
-
-        if (!response.ok) {
-            throw new Error(
-                "API returned HTTP " + response.status
-            );
-        }
-
-        const data = await response.json();
-
-        if (
-            !Array.isArray(data.pillars) ||
-            data.total_investigations === undefined
-        ) {
-            throw new Error(
-                "Invalid fire-safety intelligence response."
-            );
-        }
-
-        document.getElementById(
-            "intelligenceTotal"
-        ).textContent = data.total_investigations;
-
-        document.getElementById(
-            "intelligencePillars"
-        ).textContent = data.total_pillars;
-
-        document.getElementById(
-            "intelligenceClassification"
-        ).textContent = data.classification_note;
-
-        container.innerHTML = data.pillars
-            .map(renderFirePillar)
-            .join("");
-
-        console.log(
-            "IGNIS Fire Safety Intelligence loaded.",
-            data
-        );
-
-    } catch (error) {
-
-        console.error(
-            "IGNIS Fire Safety Intelligence error:",
-            error
-        );
-
-        container.innerHTML = `
-            <div class="fire-safety-error">
-                Unable to load the fire-safety research catalogue.
-                ${escapeHTML(error.message)}
-            </div>
-        `;
-    }
-}
-
-// =========================================
-// INITIALIZE FIRE SAFETY INTELLIGENCE
-// =========================================
-
-document.addEventListener(
-    "DOMContentLoaded",
-    loadFireSafetyIntelligence
-);
 
 
 // =========================================
@@ -1040,4 +1066,651 @@ async function loadEvidenceAvailability() {
 document.addEventListener(
     "DOMContentLoaded",
     loadEvidenceAvailability
+);
+
+
+// =========================================
+// IGNIS SCIENTIFIC FINDINGS DASHBOARD
+// =========================================
+
+const SCIENTIFIC_FINDINGS_APIS = {
+    evidence: "/api/scientific-evidence",
+    investigations: "/api/investigations",
+    availability: "/api/evidence-availability",
+    sameRComparison: "/api/samer-t08-t11"
+};
+
+
+function getFindingRecord(records, id) {
+    return records.find(record => record.id === id);
+}
+
+
+function formatFindingValue(record) {
+
+    if (!record || record.value === undefined) {
+        return "Not available";
+    }
+
+    let value = record.value;
+
+    if (typeof value === "number") {
+        const precision = Number.isInteger(record.value_precision)
+            ? record.value_precision
+            : 3;
+
+        value = value.toLocaleString("en-US", {
+            minimumFractionDigits: precision,
+            maximumFractionDigits: precision
+        });
+    }
+
+    return `${escapeHTML(value)}${record.unit
+        ? " " + escapeHTML(record.unit)
+        : ""}`;
+}
+
+
+function renderFindingMetric(record, label) {
+
+    if (!record) {
+        return "";
+    }
+
+    return `
+        <article class="finding-metric">
+
+            <span class="finding-metric-label">
+                ${escapeHTML(label || record.finding)}
+            </span>
+
+            <strong>
+                ${formatFindingValue(record)}
+            </strong>
+
+            <span class="finding-evidence-type">
+                ${escapeHTML(record.evidence_type)}
+            </span>
+
+        </article>
+    `;
+}
+
+
+function getFindingInvestigation(investigations, id) {
+    return investigations.find(item => item.id === id);
+}
+
+
+function getFindingEvidenceCount(records, id) {
+    return records.filter(
+        record => record.investigation === id
+    ).length;
+}
+
+
+function renderFindingInvestigationLink(item) {
+
+    if (!item) {
+        return "";
+    }
+
+    const detailURL = `/investigations/${encodeURIComponent(item.slug)}`;
+
+    const sourceURL =
+        typeof item.url === "string" &&
+        item.url.startsWith(
+            "https://psi.nasa.gov/physci/repo/data/investigations/"
+        )
+            ? item.url
+            : null;
+
+    return `
+        <div class="finding-card-links">
+
+            <a href="${escapeHTML(detailURL)}">
+                INVESTIGATION DETAILS ↗
+            </a>
+
+            ${
+                sourceURL
+                ? `<a
+                    href="${escapeHTML(sourceURL)}"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    NASA PSI SOURCE ↗
+                   </a>`
+                : ""
+            }
+
+        </div>
+    `;
+}
+
+
+function renderFindingCard(config) {
+
+    const item = config.investigation;
+    const count = config.evidenceCount;
+
+    const statusClass = config.statusClass || "finding-status-limited";
+
+    return `
+        <article class="scientific-finding-card ${escapeHTML(config.cardClass)}">
+
+            <div class="finding-card-top">
+
+                <span class="finding-pillar-label">
+                    ${escapeHTML(config.pillar)}
+                </span>
+
+                <span class="finding-status ${statusClass}">
+                    ${escapeHTML(config.status)}
+                </span>
+
+            </div>
+
+            <h4>${escapeHTML(config.title)}</h4>
+
+            <p class="finding-card-description">
+                ${escapeHTML(config.description)}
+            </p>
+
+            <div class="finding-investigation-identity">
+                <strong>${escapeHTML(item.name)}</strong>
+                <span>${escapeHTML(item.id)} · ${escapeHTML(item.type)}</span>
+            </div>
+
+            ${
+                count > 0
+                ? `<div class="finding-evidence-count">
+                    ${count} LINKED EVIDENCE RECORD${count === 1 ? "" : "S"}
+                   </div>`
+                : `<div class="finding-no-data">
+                    NO LOCAL NUMERICAL FINDINGS INTEGRATED
+                   </div>`
+            }
+
+            <div class="finding-metrics">
+                ${config.metrics || ""}
+            </div>
+
+            ${
+                config.extra || ""
+            }
+
+            ${
+                config.limitation
+                ? `<div class="finding-limitation">
+                    <strong>Interpretation boundary</strong>
+                    <p>${escapeHTML(config.limitation)}</p>
+                   </div>`
+                : ""
+            }
+
+            ${renderFindingInvestigationLink(item)}
+
+        </article>
+    `;
+}
+
+
+function renderSameRPairComparison(comparison) {
+
+    if (!comparison || !Array.isArray(comparison.instruments)) {
+        return "";
+    }
+
+    const sts = comparison.instruments.find(
+        item => item.key === "sts_voltage"
+    );
+
+    if (!sts) {
+        return "";
+    }
+
+    const conditions = comparison.condition_summary || {};
+
+    return `
+        <div class="finding-comparison">
+
+            <div class="finding-comparison-heading">
+                T08 / T11 NEAR-MATCHED COMPARISON
+            </div>
+
+            <div class="finding-comparison-values">
+
+                <div>
+                    <span>T08 · STS OUTPUT</span>
+                    <strong>${escapeHTML(sts.t08.toFixed(6))} V</strong>
+                </div>
+
+                <div>
+                    <span>T11 · STS OUTPUT</span>
+                    <strong>${escapeHTML(sts.t11.toFixed(6))} V</strong>
+                </div>
+
+            </div>
+
+            <div class="finding-comparison-context">
+                <strong>
+                    ${conditions.matched_count ?? 0} matched conditions
+                    ·
+                    ${conditions.different_count ?? 0} different conditions
+                </strong>
+
+                <p>
+                    T08 and T11 used the same material and detector
+                    configuration, but their inlet velocities and
+                    Rt/R0 values differed.
+                </p>
+            </div>
+
+            <p class="finding-comparison-limitation">
+                ${escapeHTML(comparison.limitation)}
+            </p>
+
+            <a href="/comparison#samer-t08-t11-comparison">
+                EXPLORE FULL COMPARISON ↗
+            </a>
+
+        </div>
+    `;
+}
+
+
+function renderScientificFindings(data) {
+
+    const container = document.getElementById(
+        "scientificFindingsGrid"
+    );
+
+    if (!container) return;
+
+    const records = data.evidence;
+    const investigations = data.investigations;
+    const availability = data.availability;
+    const comparison = data.sameRComparison;
+
+    const numericalEvidenceIds = new Set(
+        availability.investigations
+            .filter(item =>
+                item.has_numerical_telemetry ||
+                item.has_numerical_results
+            )
+            .map(item => item.id)
+    );
+
+    document.getElementById(
+        "findingsEvidenceCount"
+    ).textContent = records.length;
+
+    document.getElementById(
+        "findingsInvestigationCount"
+    ).textContent = new Set(
+        records.map(item => item.investigation)
+    ).size;
+
+    document.getElementById(
+        "findingsNumericalCount"
+    ).textContent = numericalEvidenceIds.size;
+
+
+    // =====================================
+    // PREVENTION — SAFFIRE-I + BASS-II
+    // =====================================
+
+    const saffire = getFindingInvestigation(
+        investigations,
+        "PSI-98"
+    );
+
+    const bass = getFindingInvestigation(
+        investigations,
+        "PSI-25"
+    );
+
+    const saffirePeak = getFindingRecord(
+        records,
+        "PSI98-TC3-PEAK"
+    );
+
+    const saffireRise = getFindingRecord(
+        records,
+        "PSI98-TC3-RISE"
+    );
+
+    const bassAirflow = getFindingRecord(
+        records,
+        "PSI25-AIRFLOW"
+    );
+
+    const bassOxygen = getFindingRecord(
+        records,
+        "PSI25-OXYGEN"
+    );
+
+    const preventionMetrics = [
+        renderFindingMetric(saffirePeak, "SAFFIRE-I · TC3 peak"),
+        renderFindingMetric(saffireRise, "SAFFIRE-I · TC3 rise"),
+        renderFindingMetric(bassAirflow, "BASS-II · airflow capability"),
+        renderFindingMetric(bassOxygen, "BASS-II · oxygen conditions")
+    ].join("");
+
+    const preventionCard = `
+        <article class="scientific-finding-card finding-prevention">
+
+            <div class="finding-card-top">
+                <span class="finding-pillar-label">PREVENTION</span>
+                <span class="finding-status finding-status-measured">
+                    TELEMETRY + METADATA
+                </span>
+            </div>
+
+            <h4>Understand solid-fuel fire behaviour</h4>
+
+            <p class="finding-card-description">
+                Combine SAFFIRE-I thermal telemetry with BASS-II
+                documented combustion conditions to examine material
+                flammability, thermal response and experimental variables.
+            </p>
+
+            <div class="finding-investigation-identity">
+                <strong>SAFFIRE-I · PSI-98</strong>
+                <span>
+                    ${getFindingEvidenceCount(records, "PSI-98")}
+                    linked records
+                </span>
+            </div>
+
+            <div class="finding-metrics">
+                ${renderFindingMetric(saffirePeak, "TC3 measured peak")}
+                ${renderFindingMetric(saffireRise, "TC3 derived temperature rise")}
+            </div>
+
+            <div class="finding-investigation-identity">
+                <strong>BASS-II · PSI-25</strong>
+                <span>
+                    ${getFindingEvidenceCount(records, "PSI-25")}
+                    documented records
+                </span>
+            </div>
+
+            <div class="finding-metrics">
+                ${renderFindingMetric(bassAirflow, "Maximum airflow capability")}
+                ${renderFindingMetric(bassOxygen, "Oxygen conditions")}
+            </div>
+
+            <div class="finding-limitation">
+                <strong>Interpretation boundary</strong>
+                <p>
+                    SAFFIRE-I values are measurements from Sample 2.
+                    BASS-II values describe documented experimental
+                    conditions, not individual test outcomes.
+                </p>
+            </div>
+
+            ${renderFindingInvestigationLink(saffire)}
+            ${renderFindingInvestigationLink(bass)}
+
+        </article>
+    `;
+
+
+    // =====================================
+    // DETECTION — SAME-R
+    // =====================================
+
+    const sameR = getFindingInvestigation(
+        investigations,
+        "PSI-101"
+    );
+
+    const sameRSts = getFindingRecord(
+        records,
+        "PSI101-T11-STS"
+    );
+
+    const sameRDustTrak = getFindingRecord(
+        records,
+        "PSI101-T11-DUSTTRAK"
+    );
+
+    const sameRPtrak = getFindingRecord(
+        records,
+        "PSI101-T11-PTRAK"
+    );
+
+    const sameRParticleSize = getFindingRecord(
+        records,
+        "PSI101-T11-AMD"
+    );
+
+    const sameRAnomaly = getFindingRecord(
+        records,
+        "PSI101-T11-ANOMALY"
+    );
+
+    const detectionMetrics = [
+        renderFindingMetric(sameRSts, "T11 · STS output"),
+        renderFindingMetric(sameRDustTrak, "T11 · DustTrak B"),
+        renderFindingMetric(sameRPtrak, "T11 · P-Trak"),
+        renderFindingMetric(sameRParticleSize, "T11 · average particle diameter")
+    ].join("");
+
+    const detectionCard = `
+        <article class="scientific-finding-card finding-detection">
+
+            <div class="finding-card-top">
+                <span class="finding-pillar-label">DETECTION</span>
+                <span class="finding-status finding-status-measured">
+                    NUMERICAL TEST RESULTS
+                </span>
+            </div>
+
+            <h4>Investigate smoke aerosol and detector response</h4>
+
+            <p class="finding-card-description">
+                SAME-R provides measured aerosol and detector-channel
+                results that support investigation of smoke properties
+                and detection behaviour in reduced gravity.
+            </p>
+
+            <div class="finding-investigation-identity">
+                <strong>SAME-R · PSI-101 · T11 Teflon</strong>
+                <span>
+                    ${getFindingEvidenceCount(records, "PSI-101")}
+                    linked records
+                </span>
+            </div>
+
+            <div class="finding-metrics">
+                ${detectionMetrics}
+            </div>
+
+            <div class="finding-anomaly">
+                <span>RETAINED SCIENTIFIC ANOMALY</span>
+                <strong>${formatFindingValue(sameRAnomaly)}</strong>
+                <p>
+                    The STS output is unusually low despite non-zero
+                    readings from other aerosol measurement channels.
+                    Its cause remains undetermined.
+                </p>
+            </div>
+
+            ${renderSameRPairComparison(comparison)}
+
+            <div class="finding-limitation">
+                <strong>Interpretation boundary</strong>
+                <p>
+                    Different detector channels have different measurement
+                    scales. The T08/T11 comparison is near-matched, not
+                    fully controlled. The available report does not
+                    establish STS-specific failure criteria.
+                </p>
+            </div>
+
+            ${renderFindingInvestigationLink(sameR)}
+
+        </article>
+    `;
+
+
+    // =====================================
+    // SUPPRESSION — FLEX
+    // =====================================
+
+    const flex = getFindingInvestigation(
+        investigations,
+        "PSI-69"
+    );
+
+    const suppressionCard = renderFindingCard({
+        pillar: "SUPPRESSION",
+        title: "Explore flame extinction and suppressant research",
+        description:
+            "FLEX investigates liquid-fuel flame limits and gaseous fire suppressants, contributing to research relevant to spacecraft fire suppression.",
+        investigation: flex,
+        evidenceCount: getFindingEvidenceCount(records, "PSI-69"),
+        status: "NASA SOURCE RECORD ONLY",
+        statusClass: "finding-status-limited",
+        cardClass: "finding-suppression",
+        metrics: `
+            <div class="finding-no-data-detail">
+                <strong>Numerical findings not integrated locally</strong>
+                <p>
+                    IGNIS currently links the NASA investigation record,
+                    but does not yet contain its numerical experimental
+                    results.
+                </p>
+            </div>
+        `,
+        limitation:
+            "The documented research focus is not a measured suppression-efficiency result."
+    });
+
+
+    // =====================================
+    // SUPPORTING RESEARCH — PSI-62
+    // =====================================
+
+    const modelling = getFindingInvestigation(
+        investigations,
+        "PSI-62"
+    );
+
+    const supportingCard = renderFindingCard({
+        pillar: "SUPPORTING RESEARCH",
+        title: "Connect combustion experiments with modelling",
+        description:
+            "Flame Spread Modelling examines concurrent flame-spread behaviour using computational modelling. It provides supporting research, not another flight experiment.",
+        investigation: modelling,
+        evidenceCount: getFindingEvidenceCount(records, "PSI-62"),
+        status: "NASA SOURCE RECORD ONLY",
+        statusClass: "finding-status-limited",
+        cardClass: "finding-supporting",
+        metrics: `
+            <div class="finding-no-data-detail">
+                <strong>Ground-based modelling investigation</strong>
+                <p>
+                    Numerical modelling outputs are not currently
+                    integrated into the IGNIS evidence register.
+                </p>
+            </div>
+        `,
+        limitation:
+            "This investigation is ground-based computational research and must remain distinct from microgravity flight measurements."
+    });
+
+
+    container.innerHTML = [
+        preventionCard,
+        detectionCard,
+        suppressionCard,
+        supportingCard
+    ].join("");
+
+    console.log(
+        "IGNIS Scientific Findings Dashboard loaded.",
+        {
+            evidenceRecords: records.length,
+            investigationsRepresented: 3,
+            numericalInvestigations: numericalEvidenceIds.size
+        }
+    );
+}
+
+
+async function loadScientificFindings() {
+
+    const container = document.getElementById(
+        "scientificFindingsGrid"
+    );
+
+    if (!container) return;
+
+    try {
+
+        const responses = await Promise.all([
+            fetch(SCIENTIFIC_FINDINGS_APIS.evidence),
+            fetch(SCIENTIFIC_FINDINGS_APIS.investigations),
+            fetch(SCIENTIFIC_FINDINGS_APIS.availability),
+            fetch(SCIENTIFIC_FINDINGS_APIS.sameRComparison)
+        ]);
+
+        for (const response of responses) {
+            if (!response.ok) {
+                throw new Error(
+                    `API returned HTTP ${response.status}`
+                );
+            }
+        }
+
+        const [
+            evidenceData,
+            investigationData,
+            availabilityData,
+            sameRComparison
+        ] = await Promise.all(
+            responses.map(response => response.json())
+        );
+
+        if (
+            !Array.isArray(evidenceData.evidence) ||
+            !Array.isArray(investigationData.investigations) ||
+            !Array.isArray(availabilityData.investigations) ||
+            !Array.isArray(sameRComparison.instruments)
+        ) {
+            throw new Error(
+                "Scientific findings API returned an unexpected structure."
+            );
+        }
+
+        renderScientificFindings({
+            evidence: evidenceData.evidence,
+            investigations: investigationData.investigations,
+            availability: availabilityData,
+            sameRComparison
+        });
+
+    } catch (error) {
+
+        console.error(
+            "IGNIS Scientific Findings error:",
+            error
+        );
+
+        container.innerHTML = `
+            <div class="fire-safety-error">
+                Unable to load scientific findings:
+                ${escapeHTML(error.message)}
+            </div>
+        `;
+    }
+}
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    loadScientificFindings
 );

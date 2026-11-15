@@ -349,6 +349,182 @@
 </section>
 
 
+        <section class="detail-section" id="samer-anomaly-investigation">
+            <div class="section-kicker">03A / SAME-R DETECTOR RESPONSE INVESTIGATION</div>
+            <h3>An unusually low STS detector reading</h3>
+            <p class="section-intro">
+                SAME-R test 64 T (T11) recorded a very low STS Detector output.
+                Compare it with the other tests where the STS Detector was enabled.
+            </p>
+
+            <div class="samer-anomaly-metrics">
+                <article class="detail-card samer-anomaly-target-card">
+                    <span>T11 · RECORDED STS OUTPUT</span>
+                    <strong id="samerT11Voltage">Loading...</strong>
+                    <p>Test 64 T · SAME #111 · Teflon</p>
+                </article>
+                <article class="detail-card">
+                    <span>OTHER 16 TESTS · MEDIAN</span>
+                    <strong id="samerReferenceMedian">Loading...</strong>
+                    <p>Median of other STS-enabled records</p>
+                </article>
+                <article class="detail-card">
+                    <span>OTHER 16 TESTS · RANGE</span>
+                    <strong id="samerReferenceRange">Loading...</strong>
+                    <p>Minimum to maximum recorded output</p>
+                </article>
+                <article class="detail-card">
+                    <span>STS-ENABLED TESTS</span>
+                    <strong id="samerEnabledCount">Loading...</strong>
+                    <p>Valid readings, including T11</p>
+                </article>
+            </div>
+
+            <div class="samer-cohort-panel">
+                <div class="samer-cohort-heading">
+                    <div>
+                        <h4>STS detector response by test</h4>
+                        <p>Ranked recorded voltage · shared 0–5 V display scale</p>
+                    </div>
+                    <span class="samer-cohort-legend"><i></i> T11 target record</span>
+                </div>
+                <div id="samerCohortPlot" class="samer-cohort-plot">
+                    <p class="section-note">Loading SAME-R comparison records...</p>
+                </div>
+                <p class="samer-cohort-footnote" id="samerCohortSummary">
+                    Reference statistics are calculated from the source workbook.
+                </p>
+            </div>
+
+            <div class="samer-supporting-grid">
+                <article class="detail-card">
+                    <span>ISS DETECTOR SCATTER</span>
+                    <strong id="samerIssScatter">Loading...</strong>
+                    <p>Separate optical-scatter channel</p>
+                </article>
+                <article class="detail-card">
+                    <span>DUSTTRAK B</span>
+                    <strong id="samerDusttrak">Loading...</strong>
+                    <p>Recorded aerosol mass concentration</p>
+                </article>
+                <article class="detail-card">
+                    <span>P-TRAK</span>
+                    <strong id="samerPtrak">Loading...</strong>
+                    <p>Recorded particle number concentration</p>
+                </article>
+                <article class="detail-card">
+                    <span>STS RECORDED OFFSET</span>
+                    <strong id="samerStsOffset">Loading...</strong>
+                    <p>Reported offset; not applied as a validated correction</p>
+                </article>
+            </div>
+
+            <div class="samer-anomaly-interpretation">
+                <span class="evidence-record-label">SCIENTIFIC INTERPRETATION</span>
+                <h4>Unusual recorded response — cause undetermined</h4>
+                <p id="samerAnomalyInterpretation">Loading interpretation...</p>
+                <div class="evidence-limitation">
+                    <strong>IMPORTANT LIMITATION</strong>
+                    <p id="samerAnomalyLimitation">
+                        This comparison does not establish detector failure or a pass/fail outcome.
+                    </p>
+                </div>
+                <p class="samer-anomaly-source">
+                    Source: NASA PSI-101 · DOI 10.60555/2np7-jv14 ·
+                    <a href="https://psi.nasa.gov/physci/repo/data/investigations/PSI-101"
+                       target="_blank" rel="noopener noreferrer">NASA investigation record</a>.
+                </p>
+            </div>
+        </section>
+
+        <section class="detail-section" id="samer-t08-t11-comparison">
+
+            <div class="section-kicker">03B / NEAR-MATCHED TEST COMPARISON</div>
+            <h3>T08 vs T11 — investigating the Teflon response</h3>
+            <p class="section-note">
+                Two SAME-R Teflon tests with seven matched conditions
+                and two recorded differences.
+            </p>
+
+            <div class="samer-pair-summary">
+                <article class="samer-pair-card">
+                    <span>REFERENCE TEST</span>
+                    <h4>T08 · SAME #89</h4>
+                    <strong>4.866637 V</strong>
+                    <p>STS detector output · Baseline STS detector</p>
+                </article>
+
+                <article class="samer-pair-card samer-pair-target">
+                    <span>INVESTIGATION TEST</span>
+                    <h4>T11 · SAME #111</h4>
+                    <strong>0.000839233 V</strong>
+                    <p>STS detector output · Low-flow run with STS</p>
+                </article>
+            </div>
+
+            <div class="samer-match-summary">
+                <div>
+                    <strong id="samerMatchedCount">Loading...</strong>
+                    <span>Matched conditions</span>
+                </div>
+                <div>
+                    <strong id="samerDifferentCount">Loading...</strong>
+                    <span>Different conditions</span>
+                </div>
+                <div>
+                    <strong id="samerComparisonType">Loading...</strong>
+                    <span>Comparison classification</span>
+                </div>
+            </div>
+
+            <div class="samer-condition-grid">
+                <article class="samer-condition-card">
+                    <h4><span class="samer-status-dot matched"></span>Matched conditions</h4>
+                    <div id="samerMatchedConditions">
+                        <p class="section-note">Loading condition matches...</p>
+                    </div>
+                </article>
+
+                <article class="samer-condition-card">
+                    <h4><span class="samer-status-dot different"></span>Conditions that differ</h4>
+                    <div id="samerDifferentConditions">
+                        <p class="section-note">Loading condition differences...</p>
+                    </div>
+                </article>
+            </div>
+
+            <div class="samer-instrument-panel">
+                <div class="samer-instrument-heading">
+                    <div>
+                        <span class="evidence-record-label">RECORDED INSTRUMENT OUTPUTS</span>
+                        <h4>Four-channel comparison</h4>
+                    </div>
+                    <span class="section-note">Each channel uses its own scale and unit.</span>
+                </div>
+
+                <div id="samerInstrumentComparison">
+                    <p class="section-note">Loading instrument measurements...</p>
+                </div>
+            </div>
+
+            <div class="samer-pair-interpretation">
+                <span class="evidence-record-label">SCIENTIFIC INTERPRETATION</span>
+                <p id="samerPairInterpretation">Loading interpretation...</p>
+
+                <div class="evidence-limitation">
+                    <strong>COMPARABILITY LIMITATION</strong>
+                    <p id="samerPairLimitation">Loading limitations...</p>
+                </div>
+
+                <p class="samer-anomaly-source">
+                    Dataset: Combined SAMER Results 06 02 14.xlsx ·
+                    NASA PSI-101 · DOI 10.60555/2np7-jv14 ·
+                    <a href="https://psi.nasa.gov/physci/repo/data/investigations/PSI-101"
+                       target="_blank" rel="noopener noreferrer">NASA investigation record</a>.
+                </p>
+            </div>
+        </section>
+
         <section class="detail-section">
 
             <div class="section-kicker">04 / MEASURED TELEMETRY</div>
@@ -388,14 +564,145 @@
 
         </section>
 
+
+        <section class="detail-section" id="cross-investigation-explorer">
+
+            <div class="section-kicker">05 / CROSS-INVESTIGATION EXPLORER</div>
+            <h3>Connect the science across missions</h3>
+
+            <p class="evidence-register-intro">
+                Explore how NASA microgravity combustion investigations
+                contribute to spacecraft fire prevention, detection and
+                suppression. Evidence availability is shown separately
+                from each investigation's scientific relevance.
+            </p>
+
+            <div class="cross-explorer-summary">
+                <div>
+                    <strong id="crossInvestigationCount">--</strong>
+                    <span>INVESTIGATIONS</span>
+                </div>
+                <div>
+                    <strong id="crossEvidenceCount">--</strong>
+                    <span>TRACEABLE FINDINGS</span>
+                </div>
+                <div>
+                    <strong id="crossNumericalCount">--</strong>
+                    <span>WITH NUMERICAL DATA</span>
+                </div>
+            </div>
+
+            <div class="cross-explorer-filters">
+                <div class="evidence-filter-field">
+                    <label for="crossPillarFilter">SAFETY PILLAR</label>
+                    <select id="crossPillarFilter">
+                        <option value="all">All pillars</option>
+                    </select>
+                </div>
+
+                <div class="evidence-filter-field">
+                    <label for="crossAvailabilityFilter">EVIDENCE AVAILABILITY</label>
+                    <select id="crossAvailabilityFilter">
+                        <option value="all">All evidence levels</option>
+                        <option value="numerical">Numerical evidence available</option>
+                        <option value="metadata">Metadata only</option>
+                        <option value="source">NASA source record only</option>
+                    </select>
+                </div>
+            </div>
+
+            <p class="section-note" id="crossExplorerStatus">
+                Retrieving investigation and evidence records...
+            </p>
+
+            <div id="crossInvestigationCards" class="cross-investigation-grid">
+                <p class="section-note">Loading investigations...</p>
+            </div>
+
+            <div class="cross-relationship-panel">
+                <span class="evidence-record-label">SCIENTIFIC RELATIONSHIPS</span>
+                <h4>How the investigations connect</h4>
+
+                <p class="section-note">
+                    These connections describe complementary research
+                    questions. They do not imply identical measurements,
+                    matched experimental conditions or direct causal proof.
+                </p>
+
+                <div id="crossScientificRelationships"
+                     class="cross-relationship-grid">
+                    <p class="section-note">Loading scientific connections...</p>
+                </div>
+            </div>
+
+            <div class="classification-note">
+                <div class="note-icon">ⓘ</div>
+                <div>
+                    <strong>Evidence availability is not scientific relevance</strong>
+                    <p>
+                        An investigation can be scientifically relevant even
+                        when its numerical dataset has not been integrated
+                        into IGNIS. Metadata and NASA source records are not
+                        presented as measured experimental results.
+                    </p>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="detail-section" id="scientific-evidence-coverage">
+            <div class="section-kicker">05A / SCIENTIFIC EVIDENCE COVERAGE</div>
+            <h3>Evidence coverage across investigations</h3>
+            <p class="section-note">
+                A transparent view of the scientific data and supporting
+                documentation currently integrated into IGNIS. Select an
+                investigation to inspect its linked evidence.
+            </p>
+
+            <div class="coverage-matrix-summary" id="coverageMatrixSummary">
+                Loading investigation coverage...
+            </div>
+
+            <div class="coverage-matrix-wrap">
+                <table class="coverage-matrix" id="evidenceCoverageMatrix">
+                    <thead>
+                        <tr>
+                            <th>Investigation</th>
+                            <th>Telemetry</th>
+                            <th>Numerical results</th>
+                            <th>Metadata / reports</th>
+                            <th>NASA PSI record</th>
+                        </tr>
+                    </thead>
+                    <tbody id="evidenceCoverageBody">
+                        <tr>
+                            <td colspan="5">Loading evidence coverage...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="coverage-matrix-legend">
+                <span><i class="coverage-dot available"></i> Available locally</span>
+                <span><i class="coverage-dot unavailable"></i> Not locally integrated</span>
+                <span><i class="coverage-dot verified"></i> NASA source verified</span>
+            </div>
+
+            <p class="section-note" id="coverageMatrixNote">
+                Local availability describes the files currently integrated
+                into IGNIS. It does not imply that NASA has no additional data.
+            </p>
+        </section>
+
         <section class="detail-section" id="scientific-evidence-register">
 
-            <div class="section-kicker">05 / SCIENTIFIC EVIDENCE REGISTER</div>
+            <div class="section-kicker">06 / SCIENTIFIC EVIDENCE REGISTER</div>
             <h3>Traceable scientific findings</h3>
 
             <p class="evidence-register-intro">
-                Every finding is linked to its underlying SAFFIRE-I telemetry,
-                calculation method, interpretation and source record.
+                Each finding is classified by evidence type and linked to its
+                available dataset or metadata, interpretation, limitations
+                and NASA source record.
             </p>
 
             <div class="evidence-register-summary">
@@ -456,7 +763,7 @@
 
         <section class="detail-section">
 
-            <div class="section-kicker">06 / EVIDENCE AVAILABILITY</div>
+            <div class="section-kicker">07 / EVIDENCE AVAILABILITY</div>
             <h3>What can currently be compared?</h3>
 
             <div class="comparison-grid">
@@ -505,7 +812,7 @@
 
         <section class="detail-section">
 
-            <div class="section-kicker">07 / SCIENTIFIC INTERPRETATION</div>
+            <div class="section-kicker">08 / SCIENTIFIC INTERPRETATION</div>
             <h3>Scientific findings & limitations</h3>
 
             <div class="comparison-grid">
@@ -587,7 +894,7 @@
 
         <section class="detail-section">
 
-            <div class="section-kicker">08 / RESEARCH TRACEABILITY</div>
+            <div class="section-kicker">09 / RESEARCH TRACEABILITY</div>
             <h3>NASA source records</h3>
 
             <div class="detail-card">
@@ -1107,17 +1414,26 @@ function populateEvidenceFilter(selectId, values, defaultLabel) {
 }
 
 function setupScientificEvidenceFilters(records) {
-    const investigations = [...new Map(
-        records.map(record => [
-            record.investigation,
-            {
-                value: record.investigation,
-                label: record.investigation_name
-                    ? record.investigation_name + " (" + record.investigation + ")"
-                    : record.investigation
-            }
-        ])
-    ).values()];
+    // Prefer the complete investigation catalogue, including
+    // investigations that do not yet have locally integrated findings.
+    const investigations = crossExplorerInvestigations.length
+        ? crossExplorerInvestigations.map(investigation => ({
+            value: investigation.id,
+            label: investigation.name
+                ? investigation.name + " (" + investigation.id + ")"
+                : investigation.id
+        }))
+        : [...new Map(
+            records.map(record => [
+                record.investigation,
+                {
+                    value: record.investigation,
+                    label: record.investigation_name
+                        ? record.investigation_name + " (" + record.investigation + ")"
+                        : record.investigation
+                }
+            ])
+        ).values()];
 
     const evidenceTypes = [...new Map(
         records.map(record => {
@@ -1243,6 +1559,892 @@ function initialiseEvidenceFilterEvents() {
 
 initialiseEvidenceFilterEvents();
 
+
+function formatSamerNumber(value, digits = 6) {
+    const number = Number(value);
+    return Number.isFinite(number) ? number.toFixed(digits) : "Unavailable";
+}
+
+function renderSamerCohort(records) {
+    const container = document.getElementById("samerCohortPlot");
+    container.replaceChildren();
+
+    records.forEach(record => {
+        const row = createEvidenceElement(
+            "div",
+            "samer-cohort-row" + (record.is_target ? " is-target" : "")
+        );
+
+        const label = createEvidenceElement("div", "samer-cohort-label");
+        label.appendChild(createEvidenceElement(
+            "strong", "",
+            (record.is_target ? "T11 · " : "") + record.test_id.trim()
+        ));
+        label.appendChild(createEvidenceElement(
+            "span", "",
+            "SAME #" + record.same_number + " · " + record.material
+        ));
+
+        const track = createEvidenceElement("div", "samer-cohort-track");
+        const bar = createEvidenceElement("div", "samer-cohort-bar");
+        const width = Math.max(0.35, Math.min(100, record.sts_voltage / 5 * 100));
+        bar.style.width = width + "%";
+        track.appendChild(bar);
+
+        const value = createEvidenceElement(
+            "strong",
+            "samer-cohort-value",
+            formatSamerNumber(record.sts_voltage, 6) + " V"
+        );
+
+        row.append(label, track, value);
+        container.appendChild(row);
+    });
+}
+
+async function loadSamerAnomaly() {
+    const plot = document.getElementById("samerCohortPlot");
+
+    try {
+        const response = await fetch("/api/samer-anomaly");
+        const data = await response.json();
+
+        if (!response.ok || data.error) {
+            throw new Error(data.error || "Unable to retrieve SAME-R analysis.");
+        }
+
+        const target = data.target;
+        const reference = data.reference;
+        const cohort = data.cohort;
+
+        document.getElementById("samerT11Voltage").textContent =
+            formatSamerNumber(target.sts_voltage, 9) + " V";
+        document.getElementById("samerReferenceMedian").textContent =
+            formatSamerNumber(reference.median, 6) + " V";
+        document.getElementById("samerReferenceRange").textContent =
+            formatSamerNumber(reference.minimum, 4) + "–" +
+            formatSamerNumber(reference.maximum, 4) + " V";
+        document.getElementById("samerEnabledCount").textContent =
+            cohort.valid_reading_count + " / " + cohort.enabled_test_count;
+
+        document.getElementById("samerIssScatter").textContent =
+            formatSamerNumber(target.iss_scatter, 6) + " V";
+        document.getElementById("samerDusttrak").textContent =
+            formatSamerNumber(target.dusttrak_b, 5) + " mg/m³";
+        document.getElementById("samerPtrak").textContent =
+            Number(target.ptrak).toLocaleString() + " PT/cc";
+        document.getElementById("samerStsOffset").textContent =
+            formatSamerNumber(target.sts_offset, 9) + " V";
+
+        document.getElementById("samerAnomalyInterpretation").textContent =
+            data.interpretation;
+        document.getElementById("samerAnomalyLimitation").textContent =
+            data.limitation;
+
+        document.getElementById("samerCohortSummary").textContent =
+            "T11 is compared with " + reference.count +
+            " other STS-enabled records. Their median is " +
+            formatSamerNumber(reference.median, 6) + " V; their recorded range is " +
+            formatSamerNumber(reference.minimum, 6) + "–" +
+            formatSamerNumber(reference.maximum, 6) +
+            " V. These are recorded outputs, not calibrated detector sensitivities.";
+
+        renderSamerCohort(data.comparison);
+
+    } catch (error) {
+        console.error("SAME-R anomaly error:", error);
+        plot.replaceChildren(createEvidenceElement(
+            "p", "section-note",
+            "Unable to load SAME-R comparison: " + error.message
+        ));
+    }
+}
+
+
+function formatSamerPairValue(value, digits = 3) {
+    if (value === null || value === undefined || !Number.isFinite(Number(value))) {
+        return "Unavailable";
+    }
+
+    return Number(value).toLocaleString(undefined, {
+        maximumFractionDigits: digits
+    });
+}
+
+function renderSamerConditions(containerId, conditions, isDifferent) {
+    const container = document.getElementById(containerId);
+    container.replaceChildren();
+
+    conditions.forEach(condition => {
+        const row = createEvidenceElement("div", "samer-condition-row");
+        const label = createEvidenceElement("strong", "", condition.label);
+
+        const values = createEvidenceElement("div", "samer-condition-values");
+
+        function display(value) {
+            if (typeof value === "boolean") {
+                return value ? "Enabled" : "Disabled";
+            }
+
+            return formatSamerPairValue(value, 4) +
+                (condition.unit ? " " + condition.unit : "");
+        }
+
+        values.append(
+            createEvidenceElement("span", "", "T08: " + display(condition.t08)),
+            createEvidenceElement("span", "", "T11: " + display(condition.t11))
+        );
+
+        row.append(label, values);
+        container.appendChild(row);
+    });
+
+    if (!conditions.length) {
+        container.appendChild(
+            createEvidenceElement(
+                "p",
+                "section-note",
+                isDifferent ? "No differing conditions found." :
+                    "No matched conditions found."
+            )
+        );
+    }
+}
+
+function renderSamerInstrumentComparison(instruments) {
+    const container = document.getElementById("samerInstrumentComparison");
+    container.replaceChildren();
+
+    instruments.forEach(instrument => {
+        const values = [instrument.t08, instrument.t11]
+            .filter(value => value !== null && Number.isFinite(Number(value)));
+
+        const maximum = Math.max(...values, 0);
+
+        const row = createEvidenceElement("article", "samer-instrument-row");
+        const heading = createEvidenceElement("div", "samer-instrument-title");
+        heading.append(
+            createEvidenceElement("strong", "", instrument.label),
+            createEvidenceElement("span", "", instrument.unit)
+        );
+
+        const tracks = createEvidenceElement("div", "samer-instrument-tracks");
+
+        [
+            { label: "T08", value: instrument.t08, target: false },
+            { label: "T11", value: instrument.t11, target: true }
+        ].forEach(item => {
+            const line = createEvidenceElement("div", "samer-instrument-line");
+            const label = createEvidenceElement("span", "", item.label);
+            const track = createEvidenceElement("div", "samer-instrument-track");
+            const bar = createEvidenceElement(
+                "div",
+                "samer-instrument-bar" + (item.target ? " target" : "")
+            );
+
+            const width = item.value === null || maximum === 0
+                ? 0
+                : Math.max(0, Number(item.value) / maximum * 100);
+
+            bar.style.width = width + "%";
+            track.appendChild(bar);
+
+            const value = createEvidenceElement(
+                "strong",
+                "",
+                formatSamerPairValue(item.value, instrument.key === "ptrak" ? 0 : 6)
+            );
+
+            line.append(label, track, value);
+            tracks.appendChild(line);
+        });
+
+        row.append(heading, tracks);
+        container.appendChild(row);
+    });
+}
+
+async function loadSamerPairComparison() {
+    const container = document.getElementById("samerInstrumentComparison");
+
+    try {
+        const response = await fetch("/api/samer-t08-t11");
+        const data = await response.json();
+
+        if (!response.ok || data.error) {
+            throw new Error(data.error || "Unable to load T08/T11 comparison.");
+        }
+
+        const summary = data.condition_summary;
+
+        document.getElementById("samerMatchedCount").textContent =
+            summary.matched_count;
+
+        document.getElementById("samerDifferentCount").textContent =
+            summary.different_count;
+
+        document.getElementById("samerComparisonType").textContent =
+            data.comparison_type;
+
+        renderSamerConditions(
+            "samerMatchedConditions",
+            summary.matched,
+            false
+        );
+
+        renderSamerConditions(
+            "samerDifferentConditions",
+            summary.different,
+            true
+        );
+
+        renderSamerInstrumentComparison(data.instruments);
+
+        document.getElementById("samerPairInterpretation").textContent =
+            data.interpretation;
+
+        document.getElementById("samerPairLimitation").textContent =
+            data.limitation;
+
+    } catch (error) {
+        console.error("SAME-R pair comparison error:", error);
+
+        container.replaceChildren(
+            createEvidenceElement(
+                "p",
+                "section-note",
+                "Unable to load T08/T11 comparison: " + error.message
+            )
+        );
+    }
+}
+
+
+const crossScientificRelationships = [
+    {
+        from: "PSI-98",
+        to: "PSI-25",
+        title: "Material flammability and flame behaviour",
+        description:
+            "SAFFIRE-I provides recorded spacecraft-relevant flame and " +
+            "thermal telemetry. BASS-II investigates solid-fuel ignition, " +
+            "flame growth, spread and extinction limits under varied " +
+            "microgravity flow and oxygen conditions.",
+        relation: "RELATED PREVENTION RESEARCH"
+    },
+    {
+        from: "PSI-101",
+        to: "PSI-98",
+        title: "Fire behaviour and smoke detection",
+        description:
+            "SAME-R investigates smoke aerosol properties and detector " +
+            "response. SAFFIRE-I provides combustion-related telemetry. " +
+            "Together they inform different parts of spacecraft fire " +
+            "safety, but their measurements are not interchangeable.",
+        relation: "COMPLEMENTARY SAFETY EVIDENCE"
+    },
+    {
+        from: "PSI-69",
+        to: "PSI-98",
+        title: "Combustion and fire suppression",
+        description:
+            "FLEX focuses on liquid-fuel flame behaviour and gaseous " +
+            "suppressants. SAFFIRE-I studies flame growth involving a " +
+            "solid composite fabric sample. These are different fuel " +
+            "systems and experimental questions.",
+        relation: "COMPLEMENTARY PREVENTION / SUPPRESSION RESEARCH"
+    },
+    {
+        from: "PSI-62",
+        to: "PSI-25",
+        title: "Experimental research and computational modelling",
+        description:
+            "The ground-based Flame Spread Modelling investigation " +
+            "develops computational approaches to concurrent flame " +
+            "spread, with comparison to BASS experiments. It is supporting " +
+            "modelling research, not an additional flight experiment.",
+        relation: "MODELLING SUPPORT"
+    }
+];
+
+let crossExplorerInvestigations = [];
+let crossExplorerAvailability = [];
+let crossExplorerEvidence = [];
+
+function crossEvidenceLevelLabel(level) {
+    const labels = {
+        telemetry_and_metadata: "TELEMETRY + METADATA",
+        numerical_results_and_metadata: "NUMERICAL RESULTS + REPORT",
+        metadata_only: "METADATA ONLY",
+        source_record_only: "NASA SOURCE RECORD ONLY"
+    };
+
+    return labels[level] || "AVAILABILITY UNVERIFIED";
+}
+
+function crossEvidenceLevelClass(level) {
+    if (
+        level === "telemetry_and_metadata" ||
+        level === "numerical_results_and_metadata"
+    ) {
+        return "available";
+    }
+
+    if (level === "metadata_only") {
+        return "metadata";
+    }
+
+    return "source-only";
+}
+
+function focusInvestigationEvidence(investigationId, investigationName) {
+    const investigationFilter = document.getElementById(
+        "evidenceInvestigationFilter"
+    );
+
+    const typeFilter = document.getElementById("evidenceTypeFilter");
+    const sensorFilter = document.getElementById("evidenceSensorFilter");
+
+    // Add an option for investigations that currently have no local findings.
+    const hasOption = Array.from(investigationFilter.options).some(
+        option => option.value === investigationId
+    );
+
+    if (!hasOption) {
+        const option = document.createElement("option");
+        option.value = investigationId;
+        option.textContent =
+            investigationName + " (" + investigationId + ")";
+        investigationFilter.appendChild(option);
+    }
+
+    investigationFilter.value = investigationId;
+    typeFilter.value = "all";
+    sensorFilter.value = "all";
+
+    applyScientificEvidenceFilters();
+
+    const matchingRecords = scientificEvidenceRecords.filter(
+        record => record.investigation === investigationId
+    );
+
+    const resultCount = document.getElementById(
+        "scientificEvidenceResultCount"
+    );
+
+    const evidenceList = document.getElementById(
+        "scientificEvidenceList"
+    );
+
+    const evidenceNote = document.getElementById(
+        "scientificEvidenceNote"
+    );
+
+    if (matchingRecords.length === 0) {
+        resultCount.textContent =
+            "No locally integrated findings for " + investigationName + ".";
+
+        evidenceList.replaceChildren(
+            createEvidenceElement(
+                "p",
+                "section-note",
+                "IGNIS currently has no locally integrated numerical findings " +
+                "for " + investigationName + " (" + investigationId + "). " +
+                "Its NASA PSI source record remains available above. " +
+                "This does not mean the investigation has no scientific results."
+            )
+        );
+
+        evidenceNote.textContent =
+            "Evidence availability reflects the datasets and documents " +
+            "currently integrated into IGNIS.";
+    }
+
+    document.getElementById("scientific-evidence-register").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+}
+
+function renderCrossInvestigationCards() {
+    const container = document.getElementById("crossInvestigationCards");
+    const pillarFilter = document.getElementById("crossPillarFilter").value;
+    const availabilityFilter =
+        document.getElementById("crossAvailabilityFilter").value;
+
+    container.replaceChildren();
+
+    const availabilityById = new Map(
+        crossExplorerAvailability.map(item => [item.id, item])
+    );
+
+    const evidenceCounts = new Map();
+
+    crossExplorerEvidence.forEach(record => {
+        const id = record.investigation;
+        evidenceCounts.set(id, (evidenceCounts.get(id) || 0) + 1);
+    });
+
+    const filtered = crossExplorerInvestigations.filter(investigation => {
+        const availability = availabilityById.get(investigation.id);
+
+        if (!availability) {
+            return false;
+        }
+
+        if (
+            pillarFilter !== "all" &&
+            investigation.pillar !== pillarFilter
+        ) {
+            return false;
+        }
+
+        if (
+            availabilityFilter === "numerical" &&
+            !(
+                availability.has_numerical_telemetry ||
+                availability.has_numerical_results
+            )
+        ) {
+            return false;
+        }
+
+        if (
+            availabilityFilter === "metadata" &&
+            availability.evidence_level !== "metadata_only"
+        ) {
+            return false;
+        }
+
+        if (
+            availabilityFilter === "source" &&
+            availability.evidence_level !== "source_record_only"
+        ) {
+            return false;
+        }
+
+        return true;
+    });
+
+    document.getElementById("crossExplorerStatus").textContent =
+        "Showing " + filtered.length + " of " +
+        crossExplorerInvestigations.length + " investigations.";
+
+    if (filtered.length === 0) {
+        container.appendChild(
+            createEvidenceElement(
+                "p",
+                "section-note",
+                "No investigations match these filters."
+            )
+        );
+        return;
+    }
+
+    filtered.forEach(investigation => {
+        const availability = availabilityById.get(investigation.id);
+        const count = evidenceCounts.get(investigation.id) || 0;
+
+        const card = createEvidenceElement(
+            "article",
+            "cross-investigation-card"
+        );
+
+        const top = createEvidenceElement("div", "cross-card-top");
+
+        top.append(
+            createEvidenceElement(
+                "span",
+                "cross-card-id",
+                investigation.id
+            ),
+            createEvidenceElement(
+                "span",
+                "cross-card-pillar",
+                investigation.pillar
+            )
+        );
+
+        const title = createEvidenceElement("h4", "", investigation.name);
+
+        const fullName = createEvidenceElement(
+            "p",
+            "cross-card-fullname",
+            investigation.full_name
+        );
+
+        const focus = createEvidenceElement(
+            "p",
+            "cross-card-focus",
+            investigation.focus
+        );
+
+        const status = createEvidenceElement(
+            "span",
+            "cross-evidence-status " +
+                crossEvidenceLevelClass(availability.evidence_level),
+            crossEvidenceLevelLabel(availability.evidence_level)
+        );
+
+        const metrics = createEvidenceElement(
+            "div",
+            "cross-card-metrics"
+        );
+
+        metrics.append(
+            createEvidenceElement(
+                "div",
+                "",
+                count + " linked findings"
+            ),
+            createEvidenceElement(
+                "div",
+                "",
+                availability.local_file_count + " local files"
+            )
+        );
+
+        const platform = createEvidenceElement(
+            "p",
+            "cross-card-platform",
+            "Platform: " + investigation.platform
+        );
+
+        const footer = createEvidenceElement(
+            "div",
+            "cross-card-footer"
+        );
+
+        const source = document.createElement("a");
+        source.href = investigation.url;
+        source.target = "_blank";
+        source.rel = "noopener noreferrer";
+        source.textContent = "NASA PSI source record";
+
+        const evidenceButton = document.createElement("button");
+        evidenceButton.type = "button";
+        evidenceButton.className = "cross-card-evidence-button";
+        evidenceButton.textContent = "VIEW LINKED EVIDENCE";
+
+        evidenceButton.addEventListener("click", () => {
+            focusInvestigationEvidence(
+                investigation.id,
+                investigation.name
+            );
+        });
+
+        footer.append(source, evidenceButton);
+
+        card.append(
+            top,
+            title,
+            fullName,
+            focus,
+            status,
+            metrics,
+            platform,
+            footer
+        );
+
+        container.appendChild(card);
+    });
+}
+
+function renderCrossScientificRelationships() {
+    const container = document.getElementById(
+        "crossScientificRelationships"
+    );
+
+    container.replaceChildren();
+
+    const names = new Map(
+        crossExplorerInvestigations.map(item => [item.id, item.name])
+    );
+
+    crossScientificRelationships.forEach(relationship => {
+        const card = createEvidenceElement(
+            "article",
+            "cross-relationship-card"
+        );
+
+        const relation = createEvidenceElement(
+            "span",
+            "cross-relationship-type",
+            relationship.relation
+        );
+
+        const endpoints = createEvidenceElement(
+            "div",
+            "cross-relationship-endpoints"
+        );
+
+        endpoints.append(
+            createEvidenceElement(
+                "strong",
+                "",
+                names.get(relationship.from) || relationship.from
+            ),
+            createEvidenceElement("span", "", "↔"),
+            createEvidenceElement(
+                "strong",
+                "",
+                names.get(relationship.to) || relationship.to
+            )
+        );
+
+        card.append(
+            relation,
+            endpoints,
+            createEvidenceElement("h5", "", relationship.title),
+            createEvidenceElement(
+                "p",
+                "",
+                relationship.description
+            )
+        );
+
+        container.appendChild(card);
+    });
+}
+
+function setupCrossExplorerFilters() {
+    const pillarSelect = document.getElementById("crossPillarFilter");
+
+    const pillars = [
+        ...new Set(
+            crossExplorerInvestigations.map(item => item.pillar)
+        )
+    ];
+
+    pillars.forEach(pillar => {
+        const option = document.createElement("option");
+        option.value = pillar;
+        option.textContent = pillar;
+        pillarSelect.appendChild(option);
+    });
+
+    pillarSelect.addEventListener("change", renderCrossInvestigationCards);
+
+    document.getElementById("crossAvailabilityFilter").addEventListener(
+        "change",
+        renderCrossInvestigationCards
+    );
+}
+
+function renderEvidenceCoverageMatrix() {
+    const body = document.getElementById("evidenceCoverageBody");
+    const summary = document.getElementById("coverageMatrixSummary");
+
+    if (!body || !summary) {
+        return;
+    }
+
+    body.replaceChildren();
+
+    const availabilityById = new Map(
+        crossExplorerAvailability.map(item => [item.id, item])
+    );
+
+    const investigations = crossExplorerInvestigations;
+
+    function createCoverageCell(label, available, verified = false) {
+        const cell = document.createElement("td");
+        const status = document.createElement("span");
+
+        status.className = "coverage-status " +
+            (available
+                ? (verified ? "verified" : "available")
+                : "unavailable");
+
+        status.textContent = available
+            ? (verified ? "VERIFIED" : "AVAILABLE")
+            : "NOT INTEGRATED";
+
+        status.setAttribute("aria-label", label + ": " + status.textContent);
+        cell.appendChild(status);
+
+        return cell;
+    }
+
+    investigations.forEach(investigation => {
+        const availability = availabilityById.get(investigation.id);
+
+        if (!availability) {
+            return;
+        }
+
+        const row = document.createElement("tr");
+
+        const nameCell = document.createElement("td");
+        const nameButton = document.createElement("button");
+
+        nameButton.type = "button";
+        nameButton.className = "coverage-investigation-link";
+        nameButton.textContent = investigation.name;
+        nameButton.addEventListener("click", () => {
+            focusInvestigationEvidence(
+                investigation.id,
+                investigation.name
+            );
+        });
+
+        const idLabel = document.createElement("span");
+        idLabel.className = "coverage-investigation-id";
+        idLabel.textContent = investigation.id;
+
+        nameCell.append(nameButton, idLabel);
+
+        const telemetryCell = createCoverageCell(
+            "Telemetry",
+            availability.has_numerical_telemetry
+        );
+
+        const numericalCell = createCoverageCell(
+            "Numerical results",
+            availability.has_numerical_results
+        );
+
+        const metadataCell = createCoverageCell(
+            "Metadata and reports",
+            availability.has_local_metadata
+        );
+
+        const sourceCell = document.createElement("td");
+        const sourceLink = document.createElement("a");
+
+        sourceLink.href = availability.source_url;
+        sourceLink.target = "_blank";
+        sourceLink.rel = "noopener noreferrer";
+        sourceLink.className = "coverage-source-link";
+
+        if (availability.source_verified) {
+            sourceLink.textContent = "NASA PSI VERIFIED";
+            sourceCell.appendChild(sourceLink);
+        } else {
+            sourceCell.appendChild(
+                createEvidenceElement(
+                    "span",
+                    "coverage-status unavailable",
+                    "NOT VERIFIED"
+                )
+            );
+        }
+
+        row.append(
+            nameCell,
+            telemetryCell,
+            numericalCell,
+            metadataCell,
+            sourceCell
+        );
+
+        body.appendChild(row);
+    });
+
+    const telemetryCount = investigations.filter(item => {
+        const availability = availabilityById.get(item.id);
+        return availability && availability.has_numerical_telemetry;
+    }).length;
+
+    const numericalCount = investigations.filter(item => {
+        const availability = availabilityById.get(item.id);
+        return availability && availability.has_numerical_results;
+    }).length;
+
+    const metadataCount = investigations.filter(item => {
+        const availability = availabilityById.get(item.id);
+        return availability && availability.has_local_metadata;
+    }).length;
+
+    const verifiedCount = investigations.filter(item => {
+        const availability = availabilityById.get(item.id);
+        return availability && availability.source_verified;
+    }).length;
+
+    summary.textContent =
+        investigations.length + " investigations | " +
+        telemetryCount + " with telemetry | " +
+        numericalCount + " with numerical results | " +
+        metadataCount + " with local metadata | " +
+        verifiedCount + " verified NASA PSI records";
+}
+
+async function loadCrossInvestigationExplorer() {
+    const container = document.getElementById("crossInvestigationCards");
+
+    try {
+        const [investigationResponse, availabilityResponse, evidenceResponse] =
+            await Promise.all([
+                fetch("/api/investigations"),
+                fetch("/api/evidence-availability"),
+                fetch("/api/scientific-evidence")
+            ]);
+
+        const responses = [
+            investigationResponse,
+            availabilityResponse,
+            evidenceResponse
+        ];
+
+        if (responses.some(response => !response.ok)) {
+            throw new Error("One or more investigation APIs returned an error.");
+        }
+
+        const [investigationData, availabilityData, evidenceData] =
+            await Promise.all(responses.map(response => response.json()));
+
+        if (
+            !Array.isArray(investigationData.investigations) ||
+            !Array.isArray(availabilityData.investigations) ||
+            !Array.isArray(evidenceData.evidence)
+        ) {
+            throw new Error("The investigation API response has an unexpected structure.");
+        }
+
+        crossExplorerInvestigations = investigationData.investigations;
+        crossExplorerAvailability = availabilityData.investigations;
+        crossExplorerEvidence = evidenceData.evidence;
+
+        renderEvidenceCoverageMatrix();
+
+        // Refresh the evidence filter with all investigations,
+        // including FLEX and Flame Spread Modelling.
+        setupScientificEvidenceFilters(scientificEvidenceRecords);
+        applyScientificEvidenceFilters();
+
+        document.getElementById("crossInvestigationCount").textContent =
+            crossExplorerInvestigations.length;
+
+        document.getElementById("crossEvidenceCount").textContent =
+            crossExplorerEvidence.length;
+
+        document.getElementById("crossNumericalCount").textContent =
+            crossExplorerAvailability.filter(item =>
+                item.has_numerical_telemetry ||
+                item.has_numerical_results
+            ).length;
+
+        setupCrossExplorerFilters();
+        renderCrossInvestigationCards();
+        renderCrossScientificRelationships();
+
+    } catch (error) {
+        console.error("Cross-investigation explorer error:", error);
+
+        container.replaceChildren(
+            createEvidenceElement(
+                "p",
+                "section-note",
+                "Unable to load the cross-investigation explorer: " +
+                    error.message
+            )
+        );
+
+        document.getElementById("crossExplorerStatus").textContent =
+            "Investigation data could not be retrieved.";
+    }
+}
+
 async function loadScientificEvidence() {
     const container = document.getElementById("scientificEvidenceList");
 
@@ -1276,8 +2478,10 @@ async function loadScientificEvidence() {
     }
 }
 
+loadCrossInvestigationExplorer();
 loadScientificEvidence();
-
+loadSamerAnomaly();
+loadSamerPairComparison();
 loadComparisonTelemetry();
 </script>
 

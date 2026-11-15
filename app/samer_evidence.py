@@ -417,3 +417,326 @@ def build_samer_evidence():
     })
 
     return records
+
+
+def build_samer_anomaly_analysis():
+    """
+    Build a descriptive comparison of SAME-R STS-enabled tests.
+    T11 is compared against the other STS-enabled records.
+    This is not a detector calibration or pass/fail assessment.
+    """
+    df = pd.read_excel(
+        WORKBOOK,
+        sheet_name="SAME R Results",
+        header=1
+    )
+
+    required = [
+        "SAME #",
+        "Test ID Number",
+        "Sample Type",
+        "Use STS Detector",
+        "STS Detector (volts)",
+        "STS Detector offset (volts)",
+        "ISS Detector Scatter (volts)",
+        "DustTrak B (mg/m3)",
+        "Ptrak (PT/cc)",
+    ]
+
+    missing = [column for column in required if column not in df.columns]
+    if missing:
+        raise ValueError(
+            "Missing SAME-R anomaly columns: " + ", ".join(missing)
+        )
+
+    enabled = df[
+        df["Use STS Detector"].astype(str).str.strip().str.lower() == "y"
+    ].copy()
+
+    enabled["STS Detector (volts)"] = pd.to_numeric(
+        enabled["STS Detector (volts)"], errors="coerce"
+    )
+    enabled["SAME # numeric"] = pd.to_numeric(
+        enabled["SAME #"], errors="coerce"
+    )
+
+    enabled = enabled.dropna(
+        subset=["STS Detector (volts)", "SAME # numeric"]
+    )
+
+    target_rows = enabled[enabled["SAME # numeric"] == 111]
+    if len(target_rows) != 1:
+        raise ValueError(
+            f"Expected one enabled T11 record; found {len(target_rows)}"
+        )
+
+    target = target_rows.iloc[0]
+    reference = enabled[enabled["SAME # numeric"] != 111].copy()
+
+    if len(reference) < 2:
+        raise ValueError("Insufficient reference tests for comparison.")
+
+    values = reference["STS Detector (volts)"]
+    median = float(values.median())
+
+    def optional_number(row, column):
+        value = pd.to_numeric(
+            pd.Series([row[column]]), errors="coerce"
+        ).iloc[0]
+        return None if pd.isna(value) else float(value)
+
+    comparison = []
+    for _, row in enabled.sort_values(
+        "STS Detector (volts)"
+    ).iterrows():
+        comparison.append({
+            "same_number": int(row["SAME # numeric"]),
+            "test_id": str(row["Test ID Number"]).strip(),
+            "material": str(row["Sample Type"]).strip(),
+            "sts_voltage": float(row["STS Detector (volts)"]),
+            "is_target": int(row["SAME # numeric"]) == 111
+        })
+
+    return {
+        "investigation": "SAME-R",
+        "target": {
+            "same_number": 111,
+            "test_id": str(target["Test ID Number"]).strip(),
+            "material": str(target["Sample Type"]).strip(),
+            "sts_voltage": float(target["STS Detector (volts)"]),
+            "sts_offset": optional_number(
+                target, "STS Detector offset (volts)"
+            ),
+            "iss_scatter": optional_number(
+                target, "ISS Detector Scatter (volts)"
+            ),
+            "dusttrak_b": optional_number(
+                target, "DustTrak B (mg/m3)"
+            ),
+            "ptrak": optional_number(target, "Ptrak (PT/cc)")
+        },
+        "reference": {
+            "count": int(len(reference)),
+            "median": median,
+            "minimum": float(values.min()),
+            "maximum": float(values.max())
+        },
+        "cohort": {
+            "enabled_test_count": int(len(enabled)),
+            "valid_reading_count": int(len(enabled)),
+            "comparison_tests": int(len(reference))
+        },
+        "comparison": comparison,
+        "interpretation": (
+            "T11 has a substantially lower recorded STS voltage than "
+            "the other STS-enabled tests in this workbook cohort. "
+            "This is a descriptive anomaly, not proof of detector failure."
+        ),
+        "limitation": (
+            "The available report does not establish STS-specific "
+            "calibration limits, voltage range, or the prescribed offset "
+            "correction procedure. Differences in material and test "
+            "conditions also limit direct comparisons. The cause remains "
+            "undetermined."
+        ),
+        "source": NASA_SOURCE
+    }
+
+
+def build_samer_t08_t11_comparison():
+    """
+    Compare T08 and T11, two Teflon SAME-R tests.
+
+    The comparison is near-matched, not fully controlled:
+    inlet velocity and Rt/R0 differ.
+    """
+    df = pd.read_excel(
+        WORKBOOK,
+        sheet_name="SAME R Results",
+        header=1
+    )
+
+    required = [
+        "SAME #",
+        "Sample Type",
+        "Sample ID",
+        "Test ID Number",
+        "Description",
+        "Inlet Velocity (cm/sec)",
+        "Rt/R0",
+        "Duration (sec)",
+        "Primary Aging Duration (sec)",
+        "Primary Mixing Duration (sec)",
+        "Use STS Detector",
+        "Use Comm Diag A",
+        "Use Comm Diag B",
+        "Use P-Trak",
+        "ISS Detector Scatter (volts)",
+        "STS Detector (volts)",
+        "STS Detector offset (volts)",
+        "Ptrak (PT/cc)",
+        "DustTrak B (mg/m3)",
+        "Mass Loss (mg)",
+    ]
+
+    missing = [column for column in required if column not in df.columns]
+    if missing:
+        raise ValueError(
+            "Missing T08/T11 comparison columns: " + ", ".join(missing)
+        )
+
+    df["_same_numeric"] = pd.to_numeric(
+        df["SAME #"], errors="coerce"
+    )
+
+    def get_record(same_number):
+        matches = df[df["_same_numeric"] == same_number]
+
+        if len(matches) != 1:
+            raise ValueError(
+                f"Expected one SAME #{same_number} record; found {len(matches)}"
+            )
+
+        row = matches.iloc[0]
+
+        if str(row["Sample Type"]).strip().lower() != "teflon":
+            raise ValueError(
+                f"SAME #{same_number} is not recorded as Teflon."
+            )
+
+        def numeric(column):
+            value = pd.to_numeric(
+                pd.Series([row[column]]), errors="coerce"
+            ).iloc[0]
+
+            return None if pd.isna(value) else float(value)
+
+        def text(column):
+            value = row[column]
+            return "" if pd.isna(value) else str(value).strip()
+
+        def flag(column):
+            value = text(column).lower()
+            return value == "y"
+
+        return {
+            "same_number": same_number,
+            "sample_id": text("Sample ID"),
+            "test_id": text("Test ID Number"),
+            "material": text("Sample Type"),
+            "description": text("Description"),
+            "date": (
+                row["Date (EST)"].isoformat()
+                if not pd.isna(row["Date (EST)"])
+                else None
+            ),
+            "conditions": {
+                "inlet_velocity": numeric("Inlet Velocity (cm/sec)"),
+                "rt_r0": numeric("Rt/R0"),
+                "duration": numeric("Duration (sec)"),
+                "primary_aging": numeric("Primary Aging Duration (sec)"),
+                "primary_mixing": numeric("Primary Mixing Duration (sec)"),
+                "sts_enabled": flag("Use STS Detector"),
+                "comm_diag_a_enabled": flag("Use Comm Diag A"),
+                "comm_diag_b_enabled": flag("Use Comm Diag B"),
+                "ptrak_enabled": flag("Use P-Trak"),
+            },
+            "instruments": {
+                "sts_voltage": numeric("STS Detector (volts)"),
+                "sts_offset": numeric("STS Detector offset (volts)"),
+                "iss_scatter": numeric("ISS Detector Scatter (volts)"),
+                "dusttrak_b": numeric("DustTrak B (mg/m3)"),
+                "ptrak": numeric("Ptrak (PT/cc)"),
+                "mass_loss": numeric("Mass Loss (mg)"),
+            }
+        }
+
+    t08 = get_record(89)
+    t11 = get_record(111)
+
+    if t08["sample_id"] != "T08" or t11["sample_id"] != "T11":
+        raise ValueError("SAME # records do not match expected T08/T11 samples.")
+
+    condition_labels = {
+        "inlet_velocity": ("Inlet velocity", "cm/s"),
+        "rt_r0": ("Rt/R0", ""),
+        "duration": ("Test duration", "s"),
+        "primary_aging": ("Primary aging", "s"),
+        "primary_mixing": ("Primary mixing", "s"),
+        "sts_enabled": ("STS detector", ""),
+        "comm_diag_a_enabled": ("Comm Diag A", ""),
+        "comm_diag_b_enabled": ("Comm Diag B", ""),
+        "ptrak_enabled": ("P-Trak", ""),
+    }
+
+    matched = []
+    different = []
+
+    for key, (label, unit) in condition_labels.items():
+        left = t08["conditions"][key]
+        right = t11["conditions"][key]
+
+        entry = {
+            "key": key,
+            "label": label,
+            "t08": left,
+            "t11": right,
+            "unit": unit,
+        }
+
+        if left == right:
+            matched.append(entry)
+        else:
+            different.append(entry)
+
+    instrument_labels = {
+        "sts_voltage": ("STS Detector output", "V"),
+        "iss_scatter": ("ISS Detector scatter", "V"),
+        "dusttrak_b": ("DustTrak B", "mg/m³"),
+        "ptrak": ("P-Trak", "PT/cc"),
+    }
+
+    instruments = []
+
+    for key, (label, unit) in instrument_labels.items():
+        instruments.append({
+            "key": key,
+            "label": label,
+            "unit": unit,
+            "t08": t08["instruments"][key],
+            "t11": t11["instruments"][key],
+        })
+
+    return {
+        "investigation": "SAME-R",
+        "comparison_type": "Near-matched experimental comparison",
+        "records": {
+            "t08": t08,
+            "t11": t11,
+        },
+        "condition_summary": {
+            "matched_count": len(matched),
+            "different_count": len(different),
+            "matched": matched,
+            "different": different,
+        },
+        "instruments": instruments,
+        "interpretation": (
+            "Both tests used Teflon, a 60-second test duration, "
+            "11-second primary aging, 8-second primary mixing, "
+            "and the same enabled/disabled detector configuration. "
+            "T11 records a much lower STS output while ISS scatter, "
+            "DustTrak B and P-Trak also have non-zero readings."
+        ),
+        "limitation": (
+            "This is not a fully controlled comparison. Inlet velocity "
+            "differs (T08: 8.1 cm/s; T11: 2.0 cm/s), and Rt/R0 differs "
+            "(1.445 versus 1.450). The available report does not establish "
+            "STS-specific calibration limits or the prescribed offset "
+            "correction. Different instrument channels have different "
+            "measurement scales. The cause of the low T11 STS output "
+            "remains undetermined."
+        ),
+        "source": NASA_SOURCE,
+        "dataset": WORKBOOK.name,
+    }

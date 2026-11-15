@@ -4,7 +4,7 @@ from pathlib import Path
 import pandas as pd
 import json
 from app.investigations import INVESTIGATIONS
-from app.samer_evidence import build_samer_evidence
+from app.samer_evidence import build_samer_evidence, build_samer_anomaly_analysis, build_samer_t08_t11_comparison
 
 main = Blueprint("main", __name__)
 
@@ -499,6 +499,22 @@ def saffire_analysis():
 # =========================================
 # IGNIS SCIENTIFIC COMPARISON
 # =========================================
+
+@main.route("/api/samer-anomaly")
+def samer_anomaly_analysis():
+    try:
+        return jsonify(build_samer_anomaly_analysis())
+    except Exception as error:
+        return jsonify({"error": str(error)}), 500
+
+
+@main.route("/api/samer-t08-t11")
+def samer_t08_t11_comparison():
+    try:
+        return jsonify(build_samer_t08_t11_comparison())
+    except Exception as error:
+        return jsonify({"error": str(error)}), 500
+
 
 @main.route("/comparison")
 def comparison_page():
