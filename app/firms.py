@@ -46,27 +46,27 @@ class FirmsAPIError(Exception):
 
 
 def _load_map_key():
-    """Read NASA MAP_KEY without requiring python-dotenv."""
+    """Load the NASA FIRMS key from the environment or local .env file."""
 
-    if not ENV_FILE.exists():
-        raise FirmsAPIError("NASA FIRMS credentials are not configured.")
+    key = os.environ.get("NASA_FIRMS_MAP_KEY", "").strip().strip('"').strip("'")
+    if key:
+        return key
 
-    for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
+    if ENV_FILE.exists():
+        for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
 
-        if not line or line.startswith("#") or "=" not in line:
-            continue
+            if not line or line.startswith("#") or "=" not in line:
+                continue
 
-        name, value = line.split("=", 1)
+            name, value = line.split("=", 1)
 
-        if name.strip() == "NASA_FIRMS_MAP_KEY":
-            value = value.strip().strip('"').strip("'")
-
-            if value:
-                return value
+            if name.strip() == "NASA_FIRMS_MAP_KEY":
+                value = value.strip().strip('"').strip("'")
+                if value:
+                    return value
 
     raise FirmsAPIError("NASA FIRMS credentials are not configured.")
-
 
 def _number(value):
     """Convert a CSV value to a finite numeric value or None."""

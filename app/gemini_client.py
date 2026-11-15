@@ -120,34 +120,27 @@ OUTPUT_SCHEMA = {
 
 
 def _load_api_key():
-    """Load the Gemini key without printing or exposing it."""
+    """Load the Gemini key from the environment or local .env file."""
 
-    if not ENV_FILE.exists():
-        raise GeminiAPIError(
-            "Gemini API credentials are not configured."
-        )
+    key = os.environ.get("GEMINI_API_KEY", "").strip().strip('"').strip("'")
+    if key:
+        return key
 
-    for line in ENV_FILE.read_text(
-        encoding="utf-8"
-    ).splitlines():
+    if ENV_FILE.exists():
+        for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
 
-        line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
 
-        if not line or line.startswith("#") or "=" not in line:
-            continue
+            name, value = line.split("=", 1)
 
-        name, value = line.split("=", 1)
+            if name.strip() == "GEMINI_API_KEY":
+                value = value.strip().strip('"').strip("'")
+                if value:
+                    return value
 
-        if name.strip() == "GEMINI_API_KEY":
-            value = value.strip().strip('"').strip("'")
-
-            if value:
-                return value
-
-    raise GeminiAPIError(
-        "Gemini API credentials are not configured."
-    )
-
+    raise GeminiAPIError("Gemini API credentials are not configured.")
 
 def _collect_valid_evidence_ids(context):
     """Collect IDs from evidence actually supplied to Gemini."""
