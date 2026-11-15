@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#080e18">
+
+    <title>IGNIS | Earth Fire Intelligence</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/earth_fire.css') }}">
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""
+    >
+</head>
+
+<body>
+<div class="app-shell">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">🔥</div>
+            <div>
+                <h1>IGNIS<span>.</span></h1>
+                <small>FIRE SAFETY INTELLIGENCE</small>
+            </div>
+        </div>
+
+        <div class="nav-label">WORKSPACE</div>
+
+        <nav>
+            <a href="/" class="nav-item">
+                <span>◫</span> Overview
+            </a>
+            <a href="/intelligence" class="nav-item">
+                <span>✧</span> Intelligence Engine
+            </a>
+
+            <a href="/investigations" class="nav-item">
+                <span>⌕</span> Investigations
+            </a>
+
+            <a href="/earth-fire" class="nav-item active">
+                <span>◉</span> Earth Fire Intelligence
+            </a>
+
+            <a href="/comparison" class="nav-item">
+                <span>⇄</span> Scientific Comparison
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="source-status">
+                <span class="status-dot"></span>
+                <div>
+                    <strong>DATA ENGINE</strong>
+                    <small>NASA FIRMS connected</small>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                IGNIS · RESEARCH PROTOTYPE<br>
+                NASA FIRMS / VIIRS DATA
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content earth-main">
+
+        <header class="topbar">
+            <div>
+                <div class="breadcrumb">
+                    WORKSPACE / <span>EARTH FIRE INTELLIGENCE</span>
+                </div>
+                <h2>Earth Fire Intelligence</h2>
+            </div>
+
+            <div class="earth-topbar-status">
+                <span class="earth-live-dot"></span>
+                NASA FIRMS DATA
+            </div>
+        </header>
+
+        <section class="earth-hero">
+            <div class="eyebrow">
+                <span class="eyebrow-line"></span>
+                SATELLITE-BASED ENVIRONMENTAL OBSERVATIONS
+            </div>
+
+            <h1>Observe the fire.<br>
+                <span>Understand the environment.</span>
+            </h1>
+
+            <p>
+                Explore near-real-time satellite thermal anomaly observations
+                across Malaysia and Maritime Southeast Asia using NASA's
+                Visible Infrared Imaging Radiometer Suite (VIIRS).
+            </p>
+
+            <div class="earth-hero-meta">
+                <span>NASA FIRMS</span>
+                <span>VIIRS NOAA-20</span>
+                <span>VIIRS NOAA-21</span>
+                <span>REGIONAL COVERAGE</span>
+            </div>
+        </section>
+
+        <section class="earth-controls">
+            <div class="earth-control-heading">
+                <div>
+                    <span class="section-kicker">DATA CONTROLS</span>
+                    <h3>Observation Parameters</h3>
+                </div>
+
+                <button id="earth-refresh" class="earth-refresh-button" type="button">
+                    ↻ Refresh observations
+                </button>
+            </div>
+
+            <div class="earth-control-grid">
+                <label class="earth-field">
+                    <span>SATELLITE SOURCE</span>
+                    <select id="earth-source">
+                        <option value="combined">Combined — NOAA-20 + NOAA-21</option>
+                        <option value="VIIRS_NOAA20_NRT">VIIRS NOAA-20</option>
+                        <option value="VIIRS_NOAA21_NRT">VIIRS NOAA-21</option>
+                    </select>
+                </label>
+
+                <label class="earth-field">
+                    <span>OBSERVATION WINDOW</span>
+                    <select id="earth-days">
+                        <option value="1">Last 1 day</option>
+                        <option value="2">Last 2 days</option>
+                        <option value="3" selected>Last 3 days</option>
+                        <option value="4">Last 4 days</option>
+                        <option value="5">Last 5 days</option>
+                    </select>
+                </label>
+            </div>
+
+            <div class="earth-filter-row">
+                <span class="earth-filter-label">CONFIDENCE FILTER</span>
+
+                <label class="earth-check">
+                    <input type="checkbox" value="h" checked>
+                    <span class="confidence-dot high"></span>
+                    High
+                </label>
+
+                <label class="earth-check">
+                    <input type="checkbox" value="n" checked>
+                    <span class="confidence-dot nominal"></span>
+                    Nominal
+                </label>
+
+                <label class="earth-check">
+                    <input type="checkbox" value="l" checked>
+                    <span class="confidence-dot low"></span>
+                    Low
+                </label>
+
+                <label class="earth-check">
+                    <input type="checkbox" value="unknown" checked>
+                    <span class="confidence-dot unknown"></span>
+                    Unknown
+                </label>
+            </div>
+
+            <div id="earth-status" class="earth-status" role="status">
+                Connecting to NASA FIRMS...
+            </div>
+        </section>
+
+        <section class="earth-metrics">
+            <article class="earth-metric-card">
+                <span class="metric-label">TOTAL OBSERVATIONS</span>
+                <strong id="metric-observations">—</strong>
+                <small>Satellite records after filters</small>
+            </article>
+
+            <article class="earth-metric-card">
+                <span class="metric-label">HIGH CONFIDENCE</span>
+                <strong id="metric-high">—</strong>
+                <small>High-confidence observations</small>
+            </article>
+
+            <article class="earth-metric-card">
+                <span class="metric-label">MAXIMUM FRP</span>
+                <strong id="metric-max-frp">—</strong>
+                <small>Megawatts (MW)</small>
+            </article>
+
+            <article class="earth-metric-card">
+                <span class="metric-label">MEAN FRP</span>
+                <strong id="metric-mean-frp">—</strong>
+                <small>Megawatts (MW)</small>
+            </article>
+        </section>
+
+        <section class="earth-map-section">
+            <div class="earth-section-heading">
+                <div>
+                    <span class="section-kicker">GEOSPATIAL INTELLIGENCE</span>
+                    <h3>Regional Thermal Anomaly Map</h3>
+                    <p>Each marker represents an individual satellite observation.</p>
+                </div>
+
+                <div class="earth-map-count">
+                    <span id="map-visible-count">0</span> VISIBLE
+                </div>
+            </div>
+
+            <div class="earth-map-layout">
+                <div id="earth-map" aria-label="Interactive NASA FIRMS thermal anomaly map"></div>
+
+                <aside class="earth-map-legend">
+                    <h4>CONFIDENCE</h4>
+
+                    <div><span class="confidence-dot high"></span> High</div>
+                    <div><span class="confidence-dot nominal"></span> Nominal</div>
+                    <div><span class="confidence-dot low"></span> Low</div>
+                    <div><span class="confidence-dot unknown"></span> Unknown</div>
+
+                    <div class="legend-divider"></div>
+
+                    <p>
+                        Markers show satellite-reported thermal anomaly
+                        observations, not confirmed fire boundaries.
+                    </p>
+                </aside>
+            </div>
+
+            <div class="earth-map-caption">
+                <span>MAP DATA © OPENSTREETMAP CONTRIBUTORS</span>
+                <span>OBSERVATION SOURCE: NASA FIRMS</span>
+            </div>
+        </section>
+
+        <section class="earth-register-section">
+            <div class="earth-section-heading">
+                <div>
+                    <span class="section-kicker">OBSERVATION REGISTER</span>
+                    <h3>Satellite Detection Records</h3>
+                    <p>Search and inspect individual VIIRS observations.</p>
+                </div>
+            </div>
+
+            <div class="earth-register-controls">
+                <input
+                    id="earth-search"
+                    type="search"
+                    placeholder="Search satellite, date, confidence or coordinates..."
+                    autocomplete="off"
+                >
+
+                <span id="earth-register-count">0 records</span>
+            </div>
+
+            <div class="earth-table-wrap">
+                <table class="earth-table">
+                    <thead>
+                        <tr>
+                            <th>DATE (UTC)</th>
+                            <th>TIME (UTC)</th>
+                            <th>SATELLITE</th>
+                            <th>CONFIDENCE</th>
+                            <th>FRP (MW)</th>
+                            <th>LATITUDE</th>
+                            <th>LONGITUDE</th>
+                            <th>DAY/NIGHT</th>
+                        </tr>
+                    </thead>
+                    <tbody id="earth-table-body">
+                        <tr>
+                            <td colspan="8" class="earth-table-empty">
+                                Loading NASA FIRMS observations...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="earth-pagination">
+                <button id="earth-prev" type="button" disabled>← Previous</button>
+                <span id="earth-page-label">Page 1</span>
+                <button id="earth-next" type="button" disabled>Next →</button>
+            </div>
+        </section>
+
+        <section class="earth-methodology">
+            <span class="section-kicker">SCIENTIFIC INTERPRETATION</span>
+            <h3>Understanding the observations</h3>
+
+            <div class="earth-method-grid">
+                <article>
+                    <h4>Thermal anomalies</h4>
+                    <p>
+                        VIIRS detects thermal signatures that meet the
+                        satellite product's detection criteria. These
+                        observations should not automatically be classified
+                        as confirmed wildfires.
+                    </p>
+                </article>
+
+                <article>
+                    <h4>Fire Radiative Power</h4>
+                    <p>
+                        FRP is a satellite-derived estimate of radiant energy
+                        release rate, reported here in megawatts. It is not a
+                        direct measurement of ground fire intensity.
+                    </p>
+                </article>
+
+                <article>
+                    <h4>Observation limitations</h4>
+                    <p>
+                        Cloud cover, satellite overpass timing, spatial
+                        resolution and detection conditions can affect
+                        observations. Acquisition times are UTC.
+                    </p>
+                </article>
+
+                <article>
+                    <h4>Research separation</h4>
+                    <p>
+                        Earth-based observations provide environmental
+                        context. They are not spacecraft combustion
+                        experiment measurements and are not directly
+                        interchangeable with NASA PSI datasets.
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <footer class="earth-footer">
+            <div>DATA PROVIDER: NASA FIRE INFORMATION FOR RESOURCE MANAGEMENT SYSTEM (FIRMS)</div>
+            <div>IGNIS · EARTH FIRE INTELLIGENCE · RESEARCH PROTOTYPE</div>
+        </footer>
+
+    </main>
+</div>
+
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+></script>
+
+<script src="{{ url_for('static', filename='js/earth_fire.js') }}"></script>
+</body>
+</html>

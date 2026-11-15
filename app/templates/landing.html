@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#080e18">
+    <meta name="description" content="IGNIS turns NASA microgravity combustion research into traceable fire-safety insights for human space exploration.">
+    <title>IGNIS | Understand Fire. Protect Exploration.</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <a class="brand" href="/">
+            <span class="brand-symbol">I</span>
+            <span>IGNIS<span class="orange">.</span><small>FIRE SAFETY INTELLIGENCE</small></span>
+        </a>
+        <div class="nav-links">
+            <a href="#challenge">The Challenge</a>
+            <a href="#solution">Our Solution</a>
+            <a href="#technology">Technology</a>
+            <a href="#setup">Setup</a>
+        </div>
+        <a class="nav-cta" href="/intelligence">Explore IGNIS <span>↗</span></a>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="hero-grid"></div>
+            <div class="hero-copy">
+                <div class="eyebrow"><span class="pulse"></span> NASA SPACE APPS CHALLENGE 2026</div>
+                <h1>UNDERSTAND FIRE.<br><span>PROTECT EXPLORATION.</span></h1>
+                <p class="hero-lead">
+                    Turning microgravity combustion research into traceable,
+                    evidence-driven fire-safety insights for the next era
+                    of human space exploration.
+                </p>
+                <div class="hero-actions">
+                    <a class="button button-primary" href="/intelligence">Explore Intelligence Engine <span>↗</span></a>
+                    <a class="button button-secondary" href="#challenge">Discover the project</a>
+                </div>
+                <div class="hero-meta">
+                    <span>NASA PHYSICAL SCIENCES INFORMATICS</span>
+                    <span>MICROGRAVITY COMBUSTION RESEARCH</span>
+                </div>
+            </div>
+            <div class="hero-visual" aria-label="Abstract orbital fire science illustration">
+                <div class="orbit orbit-a"></div>
+                <div class="orbit orbit-b"></div>
+                <div class="orbit orbit-c"></div>
+                <div class="planet"><span>IGNIS</span><small>COMBUSTION<br>INTELLIGENCE</small></div>
+                <div class="orbit-tag tag-one">PREVENTION</div>
+                <div class="orbit-tag tag-two">DETECTION</div>
+                <div class="orbit-tag tag-three">SUPPRESSION</div>
+            </div>
+            <div class="hero-bottom">01 — RESEARCH <span>02 — ANALYSE</span> <span>03 — INFORM</span></div>
+        </section>
+
+        <section class="section intro-section" id="challenge">
+            <div class="section-label">01 / THE CHALLENGE</div>
+            <div class="intro-grid">
+                <h2>Fire behaves differently<br>when gravity changes.</h2>
+                <div>
+                    <p class="large-copy">
+                        In microgravity, buoyancy-driven convection is greatly reduced.
+                        Flames, heat and smoke can behave differently from what we
+                        observe on Earth.
+                    </p>
+                    <p>
+                        NASA has conducted valuable combustion investigations aboard
+                        the International Space Station and other platforms. But the
+                        information is distributed across investigation records,
+                        technical reports and datasets. Finding relevant experiments,
+                        comparing their conditions and understanding their implications
+                        can take significant effort.
+                    </p>
+                    <p class="muted">
+                        The challenge is not simply a lack of data. It is making
+                        scientific evidence easier to discover, compare and interpret.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section solution-section" id="solution">
+            <div class="section-label">02 / THE IGNIS SOLUTION</div>
+            <div class="section-heading">
+                <h2>From scattered research<br>to structured insight.</h2>
+                <p>
+                    IGNIS is an interactive research platform that organises NASA
+                    combustion investigations and helps users examine their relevance,
+                    experimental conditions and available evidence.
+                </p>
+            </div>
+
+            <div class="feature-grid">
+                <article class="feature-card feature-wide">
+                    <span class="feature-number">01</span>
+                    <div class="feature-icon">⌕</div>
+                    <h3>Discover investigations</h3>
+                    <p>Explore a structured catalogue of combustion research, including
+                    SAFFIRE, BASS, SAME and FLEX investigations.</p>
+                    <a href="/investigations">Open Investigation Explorer ↗</a>
+                </article>
+                <article class="feature-card">
+                    <span class="feature-number">02</span>
+                    <div class="feature-icon">⇄</div>
+                    <h3>Compare conditions</h3>
+                    <p>Examine documented materials, oxygen concentration, airflow and
+                    flow configuration against available experimental profiles.</p>
+                    <a href="/comparison">Open Scientific Comparison ↗</a>
+                </article>
+                <article class="feature-card">
+                    <span class="feature-number">03</span>
+                    <div class="feature-icon">✧</div>
+                    <h3>Interpret with evidence</h3>
+                    <p>Combine deterministic assessments with AI-assisted interpretation
+                    grounded in supplied scientific evidence.</p>
+                    <a href="/intelligence">Open Intelligence Engine ↗</a>
+                </article>
+                <article class="feature-card feature-wide">
+                    <span class="feature-number">04</span>
+                    <div class="feature-icon">◉</div>
+                    <h3>Explore Earth applications</h3>
+                    <p>A separate extension uses NASA FIRMS satellite fire detections
+                    to demonstrate an Earth-focused application of geospatial fire data.
+                    Satellite detections are thermal anomalies, not confirmed fire reports.</p>
+                    <a href="/earth-fire">Open Earth Fire Intelligence ↗</a>
+                </article>
+            </div>
+        </section>
+
+        <section class="section pillars-section">
+            <div class="section-label">03 / FIRE-SAFETY RESEARCH</div>
+            <h2>Three pillars. One mission.</h2>
+            <p class="section-intro">IGNIS groups investigations into platform-defined research categories. These are IGNIS classifications, not official NASA rankings.</p>
+            <div class="pillar-grid">
+                <article class="pillar-card">
+                    <div class="pillar-top"><span>01</span><span>PREVENTION</span></div>
+                    <div class="pillar-symbol">◇</div>
+                    <h3>Prevent ignition<br>and flame spread.</h3>
+                    <p>Research into material flammability, ignition behaviour and flame spread. Examples include SAFFIRE and BASS.</p>
+                </article>
+                <article class="pillar-card">
+                    <div class="pillar-top"><span>02</span><span>DETECTION</span></div>
+                    <div class="pillar-symbol">◎</div>
+                    <h3>Understand smoke<br>and detection.</h3>
+                    <p>Research into smoke particle properties, growth and transport, including SAME and SAME-R.</p>
+                </article>
+                <article class="pillar-card">
+                    <div class="pillar-top"><span>03</span><span>SUPPRESSION</span></div>
+                    <div class="pillar-symbol">⌁</div>
+                    <h3>Study flame<br>extinction.</h3>
+                    <p>Research into flame extinction and suppressant behaviour, including FLEX.</p>
+                </article>
+            </div>
+            <div class="supporting-note">
+                <strong>SUPPORTING RESEARCH</strong>
+                <span>Additional investigations, such as SPICE and flame-spread modelling, provide scientific context without being presented as direct tests of spacecraft fire-safety systems.</span>
+            </div>
+        </section>
+
+        <section class="section workflow-section">
+            <div class="section-label">04 / HOW IT WORKS</div>
+            <h2>A transparent research workflow.</h2>
+            <div class="workflow">
+                <article><span>01</span><h3>NASA PSI sources</h3><p>Investigation records, reports and available datasets.</p></article>
+                <div class="workflow-arrow">→</div>
+                <article><span>02</span><h3>Structured evidence</h3><p>Organised investigation metadata and documented experiment profiles.</p></article>
+                <div class="workflow-arrow">→</div>
+                <article><span>03</span><h3>Deterministic analysis</h3><p>Condition matching, relevance classification and evidence availability.</p></article>
+                <div class="workflow-arrow">→</div>
+                <article><span>04</span><h3>AI interpretation</h3><p>Evidence-grounded explanations with limitations and source references.</p></article>
+            </div>
+        </section>
+
+        <section class="section dimensions-section">
+            <div class="section-label">05 / TRUST AND TRACEABILITY</div>
+            <h2>Three dimensions.<br>Never one misleading score.</h2>
+            <div class="dimension-grid">
+                <article><span>01</span><h3>Scientific relevance</h3><p>Does the investigation address the selected fire-safety problem?</p></article>
+                <article><span>02</span><h3>Experimental comparability</h3><p>How closely do the supplied conditions match documented experiments?</p></article>
+                <article><span>03</span><h3>Evidence availability</h3><p>What source records, metadata, numerical results or telemetry are integrated?</p></article>
+            </div>
+            <p class="integrity-note">
+                IGNIS does not present its relevance categories as NASA rankings.
+                A missing local dataset does not mean an investigation lacks scientific
+                relevance. The platform does not claim to predict fire behaviour or
+                certify spacecraft safety.
+            </p>
+        </section>
+
+        <section class="section tech-section" id="technology">
+            <div class="section-label">06 / TECHNOLOGY STACK</div>
+            <div class="section-heading">
+                <h2>Built with scientific<br>data and practical tools.</h2>
+                <p>Core analysis is handled by deterministic application logic. AI supports interpretation; it does not replace source evidence or condition matching.</p>
+            </div>
+            <div class="tech-grid">
+                <article><b>PYTHON</b><span>Data processing and analysis</span></article>
+                <article><b>FLASK</b><span>Backend and REST API</span></article>
+                <article><b>PANDAS</b><span>Scientific data handling</span></article>
+                <article><b>JAVASCRIPT</b><span>Interactive frontend</span></article>
+                <article><b>CHART.JS</b><span>Data visualisation</span></article>
+                <article><b>GEMINI API</b><span>AI-assisted interpretation · gemini-3.8-flash</span></article>
+                <article><b>NASA PSI</b><span>Combustion research source</span></article>
+                <article><b>NASA FIRMS</b><span>Earth Fire satellite data extension</span></article>
+                <article><b>KALI / LINUX</b><span>Development and testing environment</span></article>
+            </div>
+        </section>
+
+        <section class="section setup-section" id="setup">
+            <div class="section-label">07 / GETTING STARTED</div>
+            <div class="section-heading">
+                <h2>Run IGNIS locally.</h2>
+                <p>These instructions assume Linux or Kali Linux, Python 3.11 or later, Git and an available network connection.</p>
+            </div>
+
+            <div class="setup-layout">
+                <div class="setup-steps">
+                    <article><span>01</span><div><h3>Clone the repository</h3><pre><code>git clone https://github.com/Yan0521-dot/IGNIS.git
+cd IGNIS</code></pre></div></article>
+                    <article><span>02</span><div><h3>Create a virtual environment</h3><pre><code>python3 -m venv venv
+source venv/bin/activate</code></pre></div></article>
+                    <article><span>03</span><div><h3>Install dependencies</h3><pre><code>pip install -r requirements.txt</code></pre></div></article>
+                    <article><span>04</span><div><h3>Configure optional API keys</h3><pre><code>cp .env.example .env
+nano .env</code></pre><p>Enter your own Gemini and NASA FIRMS keys. Keep `.env` private and never commit it.</p></div></article>
+                    <article><span>05</span><div><h3>Start the application</h3><pre><code>python run.py</code></pre><p>Open <code>http://127.0.0.1:5000</code> in your browser.</p></div></article>
+                </div>
+                <aside class="setup-aside">
+                    <h3>Configuration notes</h3>
+                    <p><b>Gemini API</b><br>Enables AI-assisted scientific interpretation. Obtain a key through Google AI Studio.</p>
+                    <p><b>NASA FIRMS</b><br>Enables the Earth Fire Intelligence extension. Obtain a MAP_KEY from NASA FIRMS.</p>
+                    <p><b>NASA PSI datasets</b><br>Some features depend on local research files. Confirm the required dataset files are present after cloning.</p>
+                    <p><b>Security</b><br>Never publish API keys, `.env` files or private credentials.</p>
+                </aside>
+            </div>
+            <div class="env-example">
+                <span>.ENV EXAMPLE</span>
+                <pre><code>GEMINI_API_KEY=your_gemini_api_key
+NASA_FIRMS_MAP_KEY=your_nasa_firms_map_key</code></pre>
+            </div>
+        </section>
+
+
+        <section class="section team-section" id="team">
+            <div class="section-label">08 / THE PEOPLE BEHIND IGNIS</div>
+            <h2>Built by people.<br>Driven by curiosity.</h2>
+            <p class="section-intro">
+                Meet the contributors behind IGNIS, combining software development
+                and AI prompting to make scientific research more accessible.
+            </p>
+
+            <div class="team-grid">
+                <article class="team-card">
+                    <div class="team-avatar">AJ</div>
+                    <div class="team-role">SOFTWARE DEVELOPER</div>
+                    <h3>Aathityan Jayaratnam</h3>
+                    <p>Building the IGNIS platform, backend systems, data workflows
+                    and interactive research experience.</p>
+                </article>
+
+                <article class="team-card">
+                    <div class="team-avatar">SA</div>
+                    <div class="team-role">AI PROMPTER</div>
+                    <h3>Siti Aminah Binti Abdul Razak</h3>
+                    <p>Contributing to AI prompting and evidence-grounded scientific
+                    interpretation workflows.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="closing">
+            <div class="section-label">THE NEXT FRONTIER OF FIRE SAFETY</div>
+            <h2>Better access to research.<br><span>Clearer scientific insight.</span></h2>
+            <p>Explore the evidence behind combustion research in microgravity.</p>
+            <a class="button button-primary" href="/intelligence">Launch IGNIS <span>↗</span></a>
+        </section>
+    </main>
+
+    <footer>
+        <a class="brand footer-brand" href="/"><span class="brand-symbol">I</span><span>IGNIS<span class="orange">.</span><small>UNDERSTAND FIRE. PROTECT EXPLORATION.</small></span></a>
+        <p>Research prototype · NASA PSI source data · AI-assisted interpretation</p>
+        <a href="/dashboard">Open SAFFIRE-I Dashboard ↗</a>
+    </footer>
+</body>
+</html>

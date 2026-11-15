@@ -1,9 +1,16 @@
 
-from flask import Blueprint, jsonify, render_template
+from flask import Blueprint, jsonify, render_template, request
 from pathlib import Path
 import pandas as pd
 import json
 from app.investigations import INVESTIGATIONS
+from app.firms import FirmsAPIError, get_fire_observations, get_combined_fire_observations
+from app.intelligence_engine import build_intelligence_assessment, IntelligenceEngineError
+from app.gemini_client import (
+    start_scientific_interpretation,
+    get_scientific_interpretation_status,
+    GeminiAPIError,
+)
 from app.samer_evidence import build_samer_evidence, build_samer_anomaly_analysis, build_samer_t08_t11_comparison
 
 main = Blueprint("main", __name__)
@@ -44,6 +51,11 @@ def load_dataset():
 
 
 @main.route("/")
+def landing_page():
+    return render_template("landing.html")
+
+
+@main.route("/dashboard")
 def dashboard():
     return render_template("index.html")
 
@@ -1051,3 +1063,221 @@ def scientific_evidence():
         return jsonify({
             "error": str(error)
         }), 500
+
+
+
+
+# =========================================
+# IGNIS SPACECRAFT INTELLIGENCE ENGINE API
+# =========================================
+
+@main.route("/intelligence")
+def intelligence_page():
+    return render_template("intelligence.html")
+
+
+@main.route("/api/intelligence/assess", methods=["POST"])
+def intelligence_assessment_api():
+
+    if not request.is_json:
+        return jsonify({
+            "status": "error",
+            "error": "Request must use Content-Type: application/json."
+        }), 400
+
+    payload = request.get_json(silent=True)
+
+    if not isinstance(payload, dict):
+        return jsonify({
+            "status": "error",
+            "error": "Request body must be a valid JSON object."
+        }), 400
+
+    scenario = payload.get("scenario", payload)
+
+    try:
+        # Reuse the existing scientific evidence builder.
+        evidence_response = scientific_evidence()
+
+        if isinstance(evidence_response, tuple):
+            response, status_code = evidence_response
+            if status_code >= 400:
+                return jsonify({
+                    "status": "error",
+                    "error": "Scientific evidence could not be loaded."
+                }), 503
+            evidence_payload = response.get_json()
+        else:
+            evidence_payload = evidence_response.get_json()
+
+        # Reuse the existing evidence availability classification.
+        availability_response = evidence_availability()
+
+        if isinstance(availability_response, tuple):
+            response, status_code = availability_response
+            if status_code >= 400:
+                return jsonify({
+                    "status": "error",
+                    "error": "Evidence availability could not be loaded."
+                }), 503
+            availability_payload = response.get_json()
+        else:
+            availability_payload = availability_response.get_json()
+
+        if not evidence_payload or not availability_payload:
+            return jsonify({
+                "status": "error",
+                "error": "Required scientific evidence is unavailable."
+            }), 503
+
+        result = build_intelligence_assessment(
+            scenario=scenario,
+            investigations=INVESTIGATIONS,
+            evidence=evidence_payload.get("evidence", []),
+            availability=availability_payload,
+        )
+
+        return jsonify(result), 200
+
+    except IntelligenceEngineError as error:
+        return jsonify({
+            "status": "error",
+            "error": str(error),
+        }), 400
+
+    except Exception:
+        return jsonify({
+            "status": "error",
+            "error": "The intelligence assessment could not be completed."
+        }), 500
+
+
+@main.route("/api/intelligence/ai-assess", methods=["POST"])
+def intelligence_ai_assessment_api():
+    """Create a background Gemini scientific interpretation."""
+
+    try:
+        deterministic_result = intelligence_assessment_api()
+
+        if isinstance(deterministic_result, tuple):
+            deterministic_response, status_code = deterministic_result
+        else:
+            deterministic_response = deterministic_result
+            status_code = 200
+
+        if status_code >= 400:
+            return deterministic_response, status_code
+
+        deterministic_payload = deterministic_response.get_json()
+
+        if not deterministic_payload:
+            return jsonify({
+                "status": "error",
+                "error": "Deterministic assessment returned no data."
+            }), 503
+
+        ai_job = start_scientific_interpretation(
+            deterministic_payload
+        )
+
+        return jsonify({
+            "status": "success",
+            "deterministic_assessment": deterministic_payload,
+            "ai_job": ai_job
+        }), 202
+
+    except GeminiAPIError as error:
+        return jsonify({
+            "status": "error",
+            "error": str(error)
+        }), 502
+
+    except Exception:
+        return jsonify({
+            "status": "error",
+            "error": "The AI scientific interpretation could not be started."
+        }), 500
+
+
+@main.route(
+    "/api/intelligence/ai-assess/<interaction_id>",
+    methods=["GET"]
+)
+def intelligence_ai_assessment_status_api(interaction_id):
+    """Check a Gemini background job and return its validated result."""
+
+    try:
+        result = get_scientific_interpretation_status(interaction_id)
+
+        return jsonify(result), 200
+
+    except GeminiAPIError as error:
+        return jsonify({
+            "status": "error",
+            "error": str(error)
+        }), 502
+
+    except Exception:
+        return jsonify({
+            "status": "error",
+            "error": "The AI interpretation status could not be retrieved."
+        }), 500
+
+
+@main.route("/earth-fire")
+def earth_fire_page():
+    return render_template("earth_fire.html")
+
+
+@main.route("/api/earth-fire")
+def earth_fire_api():
+    source = request.args.get("source", "combined")
+    days_value = request.args.get("days", "3")
+    force_refresh = request.args.get("refresh", "false").lower() == "true"
+
+    try:
+        days = int(days_value)
+    except (TypeError, ValueError):
+        return jsonify({
+            "status": "error",
+            "error": "Day range must be a valid number.",
+        }), 400
+
+    if not 1 <= days <= 5:
+        return jsonify({
+            "status": "error",
+            "error": "Day range must be between 1 and 5.",
+        }), 400
+
+    allowed_sources = {
+        "combined",
+        "VIIRS_NOAA20_NRT",
+        "VIIRS_NOAA21_NRT",
+    }
+
+    if source not in allowed_sources:
+        return jsonify({
+            "status": "error",
+            "error": "Unsupported satellite source selected.",
+        }), 400
+
+    try:
+        if source == "combined":
+            result = get_combined_fire_observations(
+                days=days,
+                force_refresh=force_refresh,
+            )
+        else:
+            result = get_fire_observations(
+                source=source,
+                days=days,
+                force_refresh=force_refresh,
+            )
+
+        return jsonify(result)
+
+    except FirmsAPIError as error:
+        return jsonify({
+            "status": "error",
+            "error": str(error),
+        }), 502

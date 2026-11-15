@@ -23,7 +23,11 @@
         <div class="nav-label">WORKSPACE</div>
         <nav>
             <a href="/" class="nav-item"><span>◫</span> Overview</a>
+            <a href="/intelligence" class="nav-item">
+                <span>✧</span> Intelligence Engine
+            </a>
             <a href="/investigations" class="nav-item active"><span>⌕</span> Investigations</a>
+            <a href="/earth-fire" class="nav-item"><span>◉</span> Earth Fire Intelligence</a>
         </nav>
 
         <div class="sidebar-bottom">
@@ -110,28 +114,6 @@
             </div>
         </section>
 
-               {% if investigation.experimental_details %}
-        <section class="detail-section">
-            <div class="section-kicker">03 / EXPERIMENTAL CONDITIONS</div>
-            <h3>Inside the experiment</h3>
-
-            <div class="detail-grid">
-                {% for detail in investigation.experimental_details %}
-                <article class="detail-card">
-                    <span>{{ detail.label }}</span>
-                    <strong>{{ detail.value }}</strong>
-                </article>
-                {% endfor %}
-            </div>
-
-            <p class="section-note">
-                Source: NASA PSI-25 investigation metadata.
-                Experimental conditions are reported from the original
-                study description.
-            </p>
-        </section>
-        {% endif %}
-
         <section class="detail-section">
             <div class="section-kicker">03 / FIRE SAFETY RELEVANCE</div>
             <h3>Why does it matter?</h3>
@@ -156,7 +138,13 @@
     </div>
 
     <p class="section-note">
-        Source: NASA PSI-25 investigation metadata.
+        {% if investigation.metadata_source %}
+            Local metadata source:
+            {{ investigation.metadata_source.split('/')[-1] }}
+        {% else %}
+            NASA PSI investigation record.
+            Local metadata file is not currently registered.
+        {% endif %}
     </p>
 </section>
 {% endif %}

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#080e18">
+    <title>IGNIS | Spacecraft Intelligence Engine</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/intelligence.css') }}">
+</head>
+<body>
+<div class="app-shell">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">🔥</div>
+            <div>
+                <h1>IGNIS<span>.</span></h1>
+                <small>FIRE SAFETY INTELLIGENCE</small>
+            </div>
+        </div>
+
+        <div class="nav-label">WORKSPACE</div>
+
+        <nav>
+            <a href="/" class="nav-item"><span>◫</span> Overview</a>
+            <a href="/intelligence" class="nav-item active"><span>✧</span> Intelligence Engine</a>
+            <a href="/investigations" class="nav-item"><span>⌕</span> Investigations</a>
+            <a href="/earth-fire" class="nav-item"><span>◉</span> Earth Fire Intelligence</a>
+            <a href="/comparison" class="nav-item"><span>⇄</span> Scientific Comparison</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="source-status">
+                <span class="status-dot"></span>
+                <div>
+                    <strong>ENGINE STATUS</strong>
+                    <small>Deterministic retrieval v0.1</small>
+                </div>
+            </div>
+            <div class="sidebar-footer">
+                IGNIS · RESEARCH PROTOTYPE<br>
+                NASA PSI DATA SOURCE
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content intelligence-main">
+
+        <header class="topbar">
+            <div>
+                <div class="breadcrumb">WORKSPACE / <span>INTELLIGENCE ENGINE</span></div>
+                <h2>Spacecraft Fire Safety Intelligence</h2>
+            </div>
+            <div class="topbar-right">
+                <span class="live-indicator"><i></i> ENGINE AVAILABLE</span>
+            </div>
+        </header>
+
+        <section class="intelligence-hero">
+            <div class="intelligence-hero-copy">
+                <div class="eyebrow">
+                    <span class="eyebrow-line"></span>
+                    NASA EXPERIMENTAL EVIDENCE · SCENARIO ASSESSMENT
+                </div>
+
+                <h1>Understand fire.<br><span>Protect exploration.</span></h1>
+
+                <p>
+                    Explore spacecraft fire-safety scenarios using evidence
+                    from NASA microgravity combustion investigations.
+                    Configure an environment and retrieve relevant scientific
+                    findings with their original source references.
+                </p>
+
+                <div class="intelligence-tags">
+                    <span>PREVENTION</span>
+                    <span>DETECTION</span>
+                    <span>SUPPRESSION</span>
+                    <span>NASA PSI</span>
+                </div>
+            </div>
+
+            <div class="engine-orbit">
+                <div class="engine-orbit-ring ring-one"></div>
+                <div class="engine-orbit-ring ring-two"></div>
+                <div class="engine-orbit-core">✧</div>
+                <span class="orbit-caption">EVIDENCE<br>ENGINE</span>
+            </div>
+        </section>
+
+        <section class="intelligence-section">
+            <div class="section-heading">
+                <div>
+                    <div class="section-kicker">01 / SCENARIO CONFIGURATION</div>
+                    <h3>Define a spacecraft environment</h3>
+                </div>
+                <span class="section-note">INPUT CONDITIONS</span>
+            </div>
+
+            <form id="scenarioForm" class="scenario-panel">
+                <div class="scenario-intro">
+                    <div>
+                        <h4>Scenario parameters</h4>
+                        <p>Enter the conditions you want to investigate. Leave unknown values unspecified.</p>
+                    </div>
+                    <span class="form-step">SCENARIO 01</span>
+                </div>
+
+                <div class="scenario-grid">
+                    <label class="field-group field-wide">
+                        <span>SCENARIO NAME</span>
+                        <input
+                            type="text"
+                            id="scenarioName"
+                            name="name"
+                            maxlength="100"
+                            value="Crew Habitat Fire Safety Scenario"
+                            placeholder="Enter a scenario name"
+                        >
+                    </label>
+
+                    <label class="field-group">
+                        <span>FIRE SAFETY PILLAR</span>
+                        <select id="pillar" name="pillar">
+                            <option value="All">All pillars</option>
+                            <option value="Prevention" selected>Prevention</option>
+                            <option value="Detection">Detection</option>
+                            <option value="Suppression">Suppression</option>
+                            <option value="Supporting Research">Supporting Research</option>
+                        </select>
+                    </label>
+
+                    <label class="field-group">
+                        <span>ENVIRONMENT</span>
+                        <select id="environment" name="environment">
+                            <option value="microgravity" selected>Microgravity</option>
+                            <option value="ground">Ground-based</option>
+                            <option value="any">Any environment</option>
+                        </select>
+                    </label>
+
+                    <label class="field-group">
+                        <span>MATERIAL / FUEL</span>
+                        <input
+                            type="text"
+                            id="material"
+                            name="material"
+                            maxlength="100"
+                            placeholder="e.g. Cotton-based fabric"
+                        >
+                    </label>
+
+                    <label class="field-group">
+                        <span>OXYGEN CONCENTRATION (%)</span>
+                        <input
+                            type="number"
+                            id="oxygen"
+                            name="oxygen_percent"
+                            min="0"
+                            max="100"
+                            step="0.1"
+                            placeholder="Optional"
+                        >
+                    </label>
+
+                    <label class="field-group">
+                        <span>AIRFLOW (cm/s)</span>
+                        <input
+                            type="number"
+                            id="airflow"
+                            name="airflow_cm_s"
+                            min="0"
+                            step="0.1"
+                            placeholder="Optional"
+                        >
+                    </label>
+
+                    <label class="field-group">
+                        <span>FLOW CONFIGURATION</span>
+                        <select id="flowConfiguration" name="flow_configuration">
+                            <option value="">Not specified</option>
+                            <option value="opposed-flow">Opposed flow</option>
+                            <option value="concurrent-flow">Concurrent flow</option>
+                            <option value="no-flow">No flow</option>
+                            <option value="unknown">Unknown</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div class="scenario-actions">
+                    <p><span class="required-dot"></span> The engine retrieves relevant investigations and compares supplied conditions against documented NASA experiment profiles. AI interpretation is a separate optional step.</p>
+                    <button type="submit" id="assessButton">
+                        <span>✧</span> RUN INTELLIGENCE ASSESSMENT
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <div id="engineError" class="engine-message engine-error hidden" role="alert"></div>
+
+        <section id="resultsSection" class="intelligence-section hidden">
+            <div class="section-heading">
+                <div>
+                    <div class="section-kicker">02 / ASSESSMENT OUTPUT</div>
+                    <h3>Scientific evidence assessment</h3>
+                </div>
+                <span class="section-note" id="assessmentMode">DETERMINISTIC RETRIEVAL</span>
+            </div>
+
+            <div class="assessment-banner">
+                <div class="assessment-banner-icon">ⓘ</div>
+                <div>
+                    <strong>Evidence retrieval completed — not a fire prediction</strong>
+                    <p>
+                        The engine retrieves NASA investigations and compares supplied
+                        conditions against documented experimental profiles.
+                        Matching does not establish equivalent fire behaviour.
+                    </p>
+                </div>
+                <span class="assessment-version" id="engineVersion">v0.1.0</span>
+            </div>
+
+            <div class="assessment-metrics">
+                <article class="assessment-metric">
+                    <span>INVESTIGATIONS</span>
+                    <strong id="metricInvestigations">--</strong>
+                    <small>Relevant records retrieved</small>
+                </article>
+                <article class="assessment-metric">
+                    <span>EVIDENCE RECORDS</span>
+                    <strong id="metricEvidence">--</strong>
+                    <small>Across selected investigations</small>
+                </article>
+                <article class="assessment-metric metric-measured">
+                    <span>MEASURED</span>
+                    <strong id="metricMeasured">--</strong>
+                    <small>Source-reported measurements</small>
+                </article>
+                <article class="assessment-metric metric-derived">
+                    <span>DERIVED</span>
+                    <strong id="metricDerived">--</strong>
+                    <small>Calculated or interpreted results</small>
+                </article>
+                <article class="assessment-metric metric-metadata">
+                    <span>DOCUMENTED</span>
+                    <strong id="metricMetadata">--</strong>
+                    <small>Metadata and configurations</small>
+                </article>
+            </div>
+
+            <div class="condition-summary">
+                <div class="condition-summary-heading">
+                    <h4>Submitted scenario</h4>
+                    <span id="conditionStatus" class="condition-status">CONDITION MATCHING NOT ASSESSED</span>
+                </div>
+                <div id="submittedConditions" class="condition-chips"></div>
+            </div>
+
+            <div class="section-heading result-heading">
+                <div>
+                    <div class="section-kicker">03 / EXPERIMENTAL CONDITION MATCHING</div>
+                    <h3>Compare against NASA experiments</h3>
+                </div>
+                <span class="section-note">DOCUMENTED CONDITIONS</span>
+            </div>
+
+            <p class="matching-intro">
+                Scenario conditions are compared against documented NASA
+                experiment profiles. A match indicates condition alignment,
+                not equivalent fire behaviour or a safety prediction.
+            </p>
+
+            <div id="conditionMatchResults" class="condition-match-results">
+                <div class="no-evidence-note">
+                    Condition matching results will appear here after assessment.
+                </div>
+            </div>
+
+            <section class="ai-interpretation-panel" id="aiInterpretationPanel">
+                <div class="ai-panel-heading">
+                    <div>
+                        <div class="section-kicker">03A / AI SCIENTIFIC REASONING</div>
+                        <h3>Gemini evidence interpretation</h3>
+                        <p>
+                            AI-generated interpretation of the deterministic
+                            evidence assessment. Not an official NASA evaluation
+                            or a fire prediction.
+                        </p>
+                    </div>
+                    <span class="ai-provider-label">GOOGLE GEMINI</span>
+                </div>
+
+                <div class="ai-action-area">
+                    <button type="button" id="aiAssessButton" disabled>
+                        <span>✧</span> GENERATE AI SCIENTIFIC INTERPRETATION
+                    </button>
+                    <span id="aiStatus" class="ai-status">
+                        RUN THE DETERMINISTIC ASSESSMENT FIRST
+                    </span>
+                </div>
+
+                <div id="aiError" class="ai-message hidden" role="alert"></div>
+
+                <div id="aiResults" class="ai-results hidden">
+                    <div class="ai-result-status" id="aiValidationStatus"></div>
+
+                    <article class="ai-summary-card">
+                        <span class="ai-card-label">EXECUTIVE SUMMARY</span>
+                        <p id="aiExecutiveSummary"></p>
+                    </article>
+
+                    <div class="ai-output-section">
+                        <div class="ai-output-heading">
+                            <span>01</span>
+                            <h4>Key scientific findings</h4>
+                        </div>
+                        <div id="aiKeyFindings" class="ai-output-grid"></div>
+                    </div>
+
+                    <div class="ai-output-section">
+                        <div class="ai-output-heading">
+                            <span>02</span>
+                            <h4>Research gaps</h4>
+                        </div>
+                        <div id="aiResearchGaps" class="ai-output-grid"></div>
+                    </div>
+
+                    <div class="ai-output-section">
+                        <div class="ai-output-heading">
+                            <span>03</span>
+                            <h4>Recommendations</h4>
+                        </div>
+                        <div id="aiRecommendations" class="ai-output-grid"></div>
+                    </div>
+
+                    <article class="ai-caution-card">
+                        <span class="ai-card-label">SCIENTIFIC CAUTION</span>
+                        <p id="aiScientificCaution"></p>
+                    </article>
+
+                    <div class="ai-footer-note">
+                        AI output is interpretative. Original NASA evidence,
+                        deterministic results and scientific limitations
+                        remain authoritative.
+                    </div>
+                </div>
+            </section>
+
+            <div class="section-heading result-heading">
+                <div>
+                    <div class="section-kicker">04 / INVESTIGATION RETRIEVAL</div>
+                    <h3>Relevant NASA investigations</h3>
+                </div>
+                <span class="section-note">SOURCE-LINKED RECORDS</span>
+            </div>
+
+            <div id="investigationResults" class="intelligence-results"></div>
+
+            <div class="section-heading result-heading">
+                <div>
+                    <div class="section-kicker">05 / SCIENTIFIC LIMITATIONS</div>
+                    <h3>Interpretation boundaries</h3>
+                </div>
+                <span class="section-note">READ BEFORE CONCLUDING</span>
+            </div>
+
+            <div class="limitations-panel">
+                <div class="limitations-icon">⚠</div>
+                <div>
+                    <h4>Scientific limitations</h4>
+                    <ul id="limitationsList"></ul>
+                </div>
+            </div>
+
+            <div class="traceability-panel">
+                <div>
+                    <span class="traceability-label">TRACEABILITY STATUS</span>
+                    <strong id="traceabilityStatus">--</strong>
+                </div>
+                <p>
+                    Original evidence classifications and source references
+                    are retained in the assessment output.
+                </p>
+            </div>
+        </section>
+
+        <section id="emptyResults" class="empty-assessment">
+            <div class="empty-assessment-icon">✧</div>
+            <h3>Your assessment workspace is ready</h3>
+            <p>
+                Configure a scenario above and run an assessment to retrieve
+                relevant NASA investigation records and scientific evidence.
+            </p>
+            <span>NO PREDICTIONS OR RISK SCORES ARE GENERATED</span>
+        </section>
+
+        <footer class="intelligence-footer">
+            <div><strong>IGNIS</strong> · SPACECRAFT FIRE SAFETY INTELLIGENCE</div>
+            <div>RESEARCH PROTOTYPE · NASA PSI DATA</div>
+        </footer>
+
+    </main>
+</div>
+
+<script src="{{ url_for('static', filename='js/intelligence.js') }}"></script>
+</body>
+</html>
